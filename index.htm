@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <title>FootballIQ - AI-Powered Football Learning Platform</title>
+   <meta name="description" content="FootballIQ helps coaches and players build superior football intelligence with AI-driven signal training, dynamic playbooks, and personalized learning paths." />
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+   <script src="https://cdn.tailwindcss.com"></script>
+   <script>
+      tailwind.config = {
+         theme: {
+            extend: {
+               fontFamily: { sans: ["Inter", "ui-sans-serif", "system-ui"] },
+               colors: {
+                  brand: {
+                     50: "#ecfdf5",
+                     100: "#d1fae5",
+                     200: "#a7f3d0",
+                     300: "#6ee7b7",
+                     400: "#34d399",
+                     500: "#10b981",
+                     600: "#059669",
+                     700: "#047857",
+                     800: "#065f46",
+                     900: "#064e3b"
+                  }
+               },
+               boxShadow: {
+                  card: "0 1px 2px rgba(0,0,0,0.08), 0 4px 24px rgba(0,0,0,0.06)"
+               }
+            }
+         }
+      }
+   </script>
+   <style>
+      :root { color-scheme: light; }
+      html, body { height: 100%; }
+      body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+   </style>
+</head>
+
+<body class="bg-white text-slate-900">
+   <!-- Navigation -->
+   <header class="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur">
+      <div class="mx-auto max-w-7xl px-6 py-4">
+         <div class="flex items-center justify-between gap-4">
+            <a href="#" class="flex items-center gap-2">
+               <span class="inline-flex h-9 w-9 items-center justify-center rounded-md bg-brand-600 text-white">FIQ</span>
+               <span class="text-lg font-semibold tracking-tight">FootballIQ</span>
+            </a>
+            <nav class="hidden items-center gap-6 md:flex">
+               <a href="#features" class="text-sm text-slate-600 hover:text-slate-900">Features</a>
+               <a href="#coach-player" class="text-sm text-slate-600 hover:text-slate-900">Coach & Player</a>
+               <a href="#pricing" class="text-sm text-slate-600 hover:text-slate-900">Pricing</a>
+               <a href="#faq" class="text-sm text-slate-600 hover:text-slate-900">FAQ</a>
+            </nav>
+            <div class="flex items-center gap-2">
+               <a href="#pricing" class="hidden rounded-md border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 md:inline-flex">Request demo</a>
+               <a href="#cta" class="inline-flex items-center rounded-md bg-brand-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">Get early access</a>
+            </div>
+         </div>
+      </div>
+   </header>
+
+   <!-- Hero -->
+   <section id="cta" class="relative">
+      <div class="absolute inset-0 -z-10 bg-gradient-to-b from-brand-50 to-white"></div>
+      <div class="mx-auto max-w-7xl px-6 py-20">
+         <div class="grid items-center gap-10 md:grid-cols-2">
+            <div class="flex flex-col gap-6">
+               <div class="flex flex-wrap items-center gap-2">
+                  <span class="inline-flex items-center gap-1 rounded-full border border-brand-200 bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-700">AI-powered</span>
+                  <span class="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700">For Coaches</span>
+                  <span class="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700">For Players</span>
+               </div>
+               <h1 class="text-balance text-4xl font-extrabold tracking-tight sm:text-5xl">Transform Your Team's Football IQ with AI-Powered Learning</h1>
+               <p class="text-pretty text-lg leading-8 text-slate-600">Stop wasting practice time on signal confusion and knowledge gaps. FootballIQ turns your playbook into dynamic, personalized learning experiences that adapt to each player—so everyone knows exactly what to do and why.</p>
+               <div class="flex flex-wrap items-center gap-3">
+                  <a href="#pricing" class="inline-flex items-center justify-center rounded-md bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">Start free pilot</a>
+                  <a href="#features" class="inline-flex items-center justify-center rounded-md border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">See how it works</a>
+               </div>
+               <div class="grid grid-cols-3 gap-6 pt-4">
+                  <div class="rounded-lg border border-slate-200 bg-white p-4 text-center shadow-card">
+                     <div class="text-3xl font-extrabold text-slate-900">95%</div>
+                     <div class="text-xs text-slate-600">Signal accuracy target</div>
+                  </div>
+                  <div class="rounded-lg border border-slate-200 bg-white p-4 text-center shadow-card">
+                     <div class="text-3xl font-extrabold text-slate-900">5 days</div>
+                     <div class="text-xs text-slate-600">New player ramp time</div>
+                  </div>
+                  <div class="rounded-lg border border-slate-200 bg-white p-4 text-center shadow-card">
+                     <div class="text-3xl font-extrabold text-slate-900">10+ hrs</div>
+                     <div class="text-xs text-slate-600">Coach time saved / week</div>
+                  </div>
+               </div>
+            </div>
+            <div class="relative">
+               <div class="absolute -inset-4 -z-10 rounded-xl bg-gradient-to-tr from-brand-200/70 via-brand-100/40 to-transparent blur-2xl"></div>
+               <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-card">
+                  <div class="mb-4 text-sm font-medium text-slate-500">Coach dashboard preview</div>
+                  <div class="grid gap-4">
+                     <div class="rounded-lg border border-slate-200 p-4">
+                        <div class="flex items-center justify-between">
+                           <span class="text-sm font-semibold">Team IQ</span>
+                           <span class="text-xs text-slate-600">+23% MoM</span>
+                        </div>
+                        <div class="mt-2 h-3 w-full overflow-hidden rounded bg-slate-100">
+                           <div class="h-3 w-3/4 bg-brand-600"></div>
+                        </div>
+                     </div>
+                     <div class="rounded-lg border border-slate-200 p-4">
+                        <div class="flex items-center justify-between">
+                           <span class="text-sm font-semibold">Signal Mastery</span>
+                           <span class="text-xs text-slate-600">This week</span>
+                        </div>
+                        <div class="mt-3 grid grid-cols-3 gap-3 text-center text-xs">
+                           <div class="rounded-md bg-brand-50 p-2 text-brand-700">QB 94%</div>
+                           <div class="rounded-md bg-slate-50 p-2 text-slate-700">WR 78%</div>
+                           <div class="rounded-md bg-slate-50 p-2 text-slate-700">OL 85%</div>
+                        </div>
+                     </div>
+                     <div class="rounded-lg border border-slate-200 p-4">
+                        <div class="text-sm font-semibold">Next best actions</div>
+                        <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-600">
+                           <li>Assign Cover 3 adjustment drill to WR group</li>
+                           <li>Upload RPO red zone variation</li>
+                           <li>Review transfer onboarding progress</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <!-- Features -->
+   <section id="features" class="mx-auto max-w-7xl px-6 py-16">
+      <div class="mx-auto max-w-2xl text-center">
+         <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">The Building Blocks of FootballIQ</h2>
+         <p class="mt-3 text-pretty text-slate-600">From signals to scenarios, every component is designed to boost execution on Friday night.</p>
+      </div>
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+         <div class="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-6 shadow-card">
+            <div class="inline-flex h-10 w-10 items-center justify-center rounded-md bg-brand-600 text-white">1</div>
+            <h3 class="text-lg font-semibold">Intelligent Signal Management</h3>
+            <p class="text-sm text-slate-600">Record once, practice daily. Time-boxed drills build recognition and confidence across the roster.</p>
+            <div class="mt-2 inline-flex w-fit items-center rounded-full border border-brand-200 bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-700">95%+ recognition</div>
+         </div>
+         <div class="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-6 shadow-card">
+            <div class="inline-flex h-10 w-10 items-center justify-center rounded-md bg-brand-600 text-white">2</div>
+            <h3 class="text-lg font-semibold">Dynamic Playbook Integration</h3>
+            <p class="text-sm text-slate-600">Upload diagrams and let AI tag formation, personnel, and situation—players see only their assignment.</p>
+            <div class="mt-2 inline-flex w-fit items-center rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700">Auto-tagged content</div>
+         </div>
+         <div class="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-6 shadow-card">
+            <div class="inline-flex h-10 w-10 items-center justify-center rounded-md bg-brand-600 text-white">3</div>
+            <h3 class="text-lg font-semibold">AI-Powered Question Generation</h3>
+            <p class="text-sm text-slate-600">Endless, team-specific scenarios that adapt to your terminology and philosophy.</p>
+            <div class="mt-2 inline-flex w-fit items-center rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700">Adaptive drills</div>
+         </div>
+         <div class="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-6 shadow-card">
+            <div class="inline-flex h-10 w-10 items-center justify-center rounded-md bg-brand-600 text-white">4</div>
+            <h3 class="text-lg font-semibold">Personalized Learning Paths</h3>
+            <p class="text-sm text-slate-600">Accelerate transfers, reinforce weak spots, challenge advanced players.</p>
+            <div class="mt-2 inline-flex w-fit items-center rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700">Real-time adaptation</div>
+         </div>
+         <div class="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-6 shadow-card">
+            <div class="inline-flex h-10 w-10 items-center justify-center rounded-md bg-brand-600 text-white">5</div>
+            <h3 class="text-lg font-semibold">Real-Time Intelligence Dashboard</h3>
+            <p class="text-sm text-slate-600">Know where your team stands, spot gaps early, and make data-driven practice plans.</p>
+            <div class="mt-2 inline-flex w-fit items-center rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700">Coach-first analytics</div>
+         </div>
+         <div class="flex flex-col justify-between gap-3 rounded-xl border border-slate-200 bg-gradient-to-tr from-brand-50 to-white p-6 shadow-card">
+            <div>
+               <h3 class="text-lg font-semibold">Outcomes that win games</h3>
+               <p class="text-sm text-slate-600">Fewer mental errors, faster onboarding, synchronized execution.</p>
+            </div>
+            <div class="grid grid-cols-3 gap-3 text-center">
+               <div class="rounded-md bg-white p-3">
+                  <div class="text-xl font-bold">40%</div>
+                  <div class="text-[11px] text-slate-600">Error Reduction</div>
+               </div>
+               <div class="rounded-md bg-white p-3">
+                  <div class="text-xl font-bold">+23%</div>
+                  <div class="text-[11px] text-slate-600">IQ Growth</div>
+               </div>
+               <div class="rounded-md bg-white p-3">
+                  <div class="text-xl font-bold">3h → 30m</div>
+                  <div class="text-[11px] text-slate-600">Coach Prep</div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <!-- Coach & Player Tabs (shadcn-inspired) -->
+   <section id="coach-player" class="mx-auto max-w-7xl px-6 py-16">
+      <div class="mx-auto max-w-2xl text-center">
+         <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">A Day in the Life with FootballIQ</h2>
+         <p class="mt-3 text-pretty text-slate-600">Tailored flows for coaches and players keep everyone aligned and improving.</p>
+      </div>
+      <div class="mt-10">
+         <div class="mx-auto max-w-4xl">
+            <div class="rounded-xl border border-slate-200 bg-white p-2 shadow-card">
+               <div class="flex flex-wrap gap-2 p-1">
+                  <button data-tab="coach" class="tab-trigger active inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Coach</button>
+                  <button data-tab="player" class="tab-trigger inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Player</button>
+               </div>
+               <div class="tab-content p-4" id="tab-coach">
+                  <div class="grid gap-6 md:grid-cols-2">
+                     <div class="rounded-lg border border-slate-200 p-4">
+                        <div class="text-sm font-semibold">Monday Morning</div>
+                        <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-600">
+                           <li>Upload play variation; AI auto-tags and generates drills</li>
+                           <li>Record weekly signals; system creates recognition practice</li>
+                           <li>See who needs reinforcement before practice</li>
+                        </ul>
+                     </div>
+                     <div class="rounded-lg border border-slate-200 p-4">
+                        <div class="text-sm font-semibold">Next Best Actions</div>
+                        <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-600">
+                           <li>Focus WR group on Cover 3 adjustments</li>
+                           <li>Schedule red zone RPO module</li>
+                           <li>Review transfer onboarding metrics</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <div class="tab-content hidden p-4" id="tab-player">
+                  <div class="grid gap-6 md:grid-cols-2">
+                     <div class="rounded-lg border border-slate-200 p-4">
+                        <div class="text-sm font-semibold">Personalized Path</div>
+                        <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-600">
+                           <li>Signal Bootcamp with timed recognition</li>
+                           <li>Interactive playbook with role-specific highlights</li>
+                           <li>Scenario drills: red zone, blitz, hot routes</li>
+                        </ul>
+                     </div>
+                     <div class="rounded-lg border border-slate-200 p-4">
+                        <div class="text-sm font-semibold">Progress & Confidence</div>
+                        <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-600">
+                           <li>Readiness score updates after each module</li>
+                           <li>Confidence check-ins drive targeted review</li>
+                           <li>Level up to advanced concepts as you master basics</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <!-- Pricing -->
+   <section id="pricing" class="mx-auto max-w-7xl px-6 py-16">
+      <div class="mx-auto max-w-2xl text-center">
+         <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Simple pricing for every program</h2>
+         <p class="mt-3 text-pretty text-slate-600">Affordable enough for every program, valuable enough to justify the investment.</p>
+      </div>
+      <div class="mt-10 grid gap-6 lg:grid-cols-3">
+         <div class="flex flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-card">
+            <div class="text-sm font-medium text-slate-600">Starter</div>
+            <div class="mt-2 text-3xl font-extrabold">$500<span class="text-base font-medium text-slate-500">/year</span></div>
+            <div class="mt-3 text-sm text-slate-600">Up to 30 players, core features</div>
+            <ul class="mt-6 grid gap-2 text-sm text-slate-700">
+               <li>Signal management</li>
+               <li>Basic quizzes</li>
+               <li>Progress tracking</li>
+            </ul>
+            <a href="#cta" class="mt-6 inline-flex items-center justify-center rounded-md border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">Start pilot</a>
+         </div>
+         <div class="relative flex flex-col rounded-xl border border-brand-200 bg-gradient-to-tr from-brand-50 to-white p-6 shadow-card">
+            <div class="absolute right-4 top-4 rounded-full border border-brand-200 bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-700">Most popular</div>
+            <div class="text-sm font-medium text-slate-700">Professional</div>
+            <div class="mt-2 text-3xl font-extrabold">$1,200<span class="text-base font-medium text-slate-500">/year</span></div>
+            <div class="mt-3 text-sm text-slate-600">Up to 75 players, advanced analytics</div>
+            <ul class="mt-6 grid gap-2 text-sm text-slate-700">
+               <li>Everything in Starter</li>
+               <li>AI scenario generation</li>
+               <li>Coach analytics dashboard</li>
+            </ul>
+            <a href="#cta" class="mt-6 inline-flex items-center justify-center rounded-md bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">Get started</a>
+         </div>
+         <div class="flex flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-card">
+            <div class="text-sm font-medium text-slate-600">Enterprise</div>
+            <div class="mt-2 text-3xl font-extrabold">$2,500<span class="text-base font-medium text-slate-500">/year</span></div>
+            <div class="mt-3 text-sm text-slate-600">Unlimited players, custom integrations</div>
+            <ul class="mt-6 grid gap-2 text-sm text-slate-700">
+               <li>Dedicated support</li>
+               <li>Custom roles & workflows</li>
+               <li>Integrations on request</li>
+            </ul>
+            <a href="#cta" class="mt-6 inline-flex items-center justify-center rounded-md border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">Talk to sales</a>
+         </div>
+      </div>
+   </section>
+
+   <!-- FAQ (Accordion-inspired) -->
+   <section id="faq" class="mx-auto max-w-7xl px-6 py-16">
+      <div class="mx-auto max-w-2xl text-center">
+         <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Frequently asked questions</h2>
+         <p class="mt-3 text-pretty text-slate-600">Everything you need to know about getting started with FootballIQ.</p>
+      </div>
+      <div class="mx-auto mt-8 max-w-3xl divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white shadow-card">
+         <details class="group p-6" open>
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-2">
+               <span class="text-sm font-semibold">How fast can a new player ramp?</span>
+               <span class="text-slate-500 group-open:rotate-180 transition">⌄</span>
+            </summary>
+            <div class="mt-2 text-sm text-slate-600">Teams report cutting ramp time from 4–6 weeks to about 5 days with personalized learning paths and daily signal drills.</div>
+         </details>
+         <details class="group p-6">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-2">
+               <span class="text-sm font-semibold">Can we use our existing playbook?</span>
+               <span class="text-slate-500 group-open:rotate-180 transition">⌄</span>
+            </summary>
+            <div class="mt-2 text-sm text-slate-600">Yes. Upload PDFs or images and the system auto-tags formations, personnel, and situations to build targeted study modules.</div>
+         </details>
+         <details class="group p-6">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-2">
+               <span class="text-sm font-semibold">What devices are supported?</span>
+               <span class="text-slate-500 group-open:rotate-180 transition">⌄</span>
+            </summary>
+            <div class="mt-2 text-sm text-slate-600">Mobile-first design works great on phones and tablets; coaches often use laptops for uploads and analytics.</div>
+         </details>
+      </div>
+   </section>
+
+   <!-- CTA -->
+   <section class="mx-auto max-w-7xl px-6 pb-20">
+      <div class="relative overflow-hidden rounded-2xl border border-brand-200 bg-gradient-to-tr from-brand-50 to-white p-8 shadow-card">
+         <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-brand-200/30 blur-3xl"></div>
+         <div class="grid items-center gap-6 md:grid-cols-2">
+            <div>
+               <h3 class="text-2xl font-bold tracking-tight">Get your team on the same page faster</h3>
+               <p class="mt-2 text-sm text-slate-700">Launch a free pilot with a position group and see measurable IQ gains in one week.</p>
+            </div>
+            <div class="flex flex-wrap items-center justify-end gap-3">
+               <a href="#pricing" class="inline-flex items-center justify-center rounded-md bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">Start free pilot</a>
+               <a href="#faq" class="inline-flex items-center justify-center rounded-md border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">Learn more</a>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <!-- Footer -->
+   <footer class="border-t border-slate-200 bg-white">
+      <div class="mx-auto max-w-7xl px-6 py-10">
+         <div class="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+            <div class="flex items-center gap-2">
+               <span class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-brand-600 text-white">FIQ</span>
+               <span class="text-sm font-semibold">FootballIQ</span>
+            </div>
+            <div class="text-xs text-slate-500">© <span id="year"></span> FootballIQ. All rights reserved.</div>
+         </div>
+      </div>
+   </footer>
+
+   <script>
+      // Simple tabs behavior
+      const triggers = document.querySelectorAll('.tab-trigger');
+      const coach = document.getElementById('tab-coach');
+      const player = document.getElementById('tab-player');
+      triggers.forEach(btn => {
+         btn.addEventListener('click', () => {
+            triggers.forEach(b => b.classList.remove('active', 'bg-slate-100'));
+            btn.classList.add('active', 'bg-slate-100');
+            if (btn.dataset.tab === 'coach') {
+               coach.classList.remove('hidden');
+               player.classList.add('hidden');
+            } else {
+               player.classList.remove('hidden');
+               coach.classList.add('hidden');
+            }
+         });
+      });
+      // Year
+      document.getElementById('year').textContent = new Date().getFullYear();
+   </script>
+</body> 
+</html> 
