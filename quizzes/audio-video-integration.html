@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootballIQ - Audio/Video Integration Quiz</title>
+</head>
+<body>
+    <div class="audio-video-container">
+        <header class="quiz-header">
+            <div class="header-left">
+                <button class="back-button">← Back</button>
+                <h1>Audio/Video Recognition</h1>
+            </div>
+            <div class="header-right">
+                <div class="volume-control">
+                    <span class="volume-icon">🔊</span>
+                    <input type="range" class="volume-slider" min="0" max="100" value="75">
+                </div>
+            </div>
+        </header>
+
+        <!-- Audio Signal Recognition Mode -->
+        <div class="audio-recognition-mode active">
+            <div class="audio-challenge-header">
+                <h2>What Do You Hear?</h2>
+                <p class="challenge-description">Listen carefully to Coach Rodriguez's audio signal. Can you identify the call?</p>
+            </div>
+
+            <div class="audio-player-section">
+                <div class="audio-player">
+                    <div class="audio-visual">
+                        <div class="sound-waves">
+                            <div class="wave wave-1"></div>
+                            <div class="wave wave-2"></div>
+                            <div class="wave wave-3"></div>
+                            <div class="wave wave-4"></div>
+                            <div class="wave wave-5"></div>
+                        </div>
+                        <div class="audio-status">
+                            <span class="status-text">Ready to play</span>
+                        </div>
+                    </div>
+                    
+                    <div class="audio-controls">
+                        <button class="play-button">▶️ Play Audio</button>
+                        <button class="replay-button">🔄 Replay</button>
+                        <button class="slow-play">½× Slow</button>
+                    </div>
+                    
+                    <audio class="signal-audio" preload="auto">
+                        <source src="audio/hot-route-call.mp3" type="audio/mpeg">
+                        <source src="audio/hot-route-call.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+
+                <div class="audio-context">
+                    <div class="situation-info">
+                        <span class="down">3rd & 8</span>
+                        <span class="field-pos">Red Zone</span>
+                        <span class="time">2:15 left</span>
+                    </div>
+                    <div class="crowd-noise-indicator">
+                        <span class="noise-level">Crowd Noise: High</span>
+                        <div class="noise-meter">
+                            <div class="noise-fill" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="audio-options">
+                <div class="option-grid">
+                    <button class="audio-option">
+                        <div class="option-text">"Hot! Hot! Slant now!"</div>
+                        <div class="option-meaning">Hot Route to Slant</div>
+                    </button>
+                    <button class="audio-option">
+                        <div class="option-text">"Blue 42! Blue 42!"</div>
+                        <div class="option-meaning">Audible Change</div>
+                    </button>
+                    <button class="audio-option">
+                        <div class="option-text">"Kill! Kill! Kill!"</div>
+                        <div class="option-meaning">Kill the Play</div>
+                    </button>
+                    <button class="audio-option">
+                        <div class="option-text">"Check! Check! Stick!"</div>
+                        <div class="option-meaning">Route Adjustment</div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="listening-help">
+                <button class="help-toggle">🎧 Listening Tips</button>
+                <div class="help-content" style="display: none;">
+                    <div class="tip">
+                        <strong>Focus on:</strong> Key words like "Hot", "Kill", "Check"
+                    </div>
+                    <div class="tip">
+                        <strong>Listen for:</strong> Urgency and repetition in the voice
+                    </div>
+                    <div class="tip">
+                        <strong>Context clues:</strong> Down and distance affect the call type
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Video Analysis Mode -->
+        <div class="video-analysis-mode" style="display: none;">
+            <div class="video-challenge-header">
+                <h2>Real Game Situation Analysis</h2>
+                <p class="challenge-description">Watch this game clip and identify what the quarterback should do based on what he sees.</p>
+            </div>
+
+            <div class="game-video-section">
+                <div class="video-player">
+                    <video class="game-video" controls poster="game-situation-thumbnail.jpg">
+                        <source src="video/game-situation-1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    
+                    <div class="video-controls-enhanced">
+                        <button class="frame-by-frame">⏸️ Frame by Frame</button>
+                        <button class="focus-qb">👀 Focus on QB</button>
+                        <button class="focus-defense">👀 Focus on Defense</button>
+                        <button class="replay-key-moment">🔄 Replay Key Moment</button>
+                    </div>
+                </div>
+
+                <div class="analysis-tools">
+                    <div class="viewing-angle">
+                        <h4>Camera Angle</h4>
+                        <button class="angle-btn active" data-angle="sideline">Sideline</button>
+                        <button class="angle-btn" data-angle="endzone">End Zone</button>
+                        <button class="angle-btn" data-angle="all22">All-22</button>
+                    </div>
+                    
+                    <div class="focus-filters">
+                        <h4>Focus On</h4>
+                        <label class="filter-option">
+                            <input type="checkbox" checked> Show Routes
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" checked> Show Coverage
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox"> Show Pressure
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-question">
+                <h3>Based on what you observed, what should the quarterback do?</h3>
+                <div class="video-options">
+                    <button class="video-option">
+                        <div class="option-action">Throw to the slant route</div>
+                        <div class="option-reasoning">Safety is dropping, creating opening</div>
+                    </button>
+                    <button class="video-option">
+                        <div class="option-action">Check down to running back</div>
+                        <div class="option-reasoning">Pressure coming, take safe option</div>
+                    </button>
+                    <button class="video-option">
+                        <div class="option-action">Throw deep to corner route</div>
+                        <div class="option-reasoning">Corner has single coverage</div>
+                    </button>
+                    <button class="video-option">
+                        <div class="option-action">Scramble for yards</div>
+                        <div class="option-reasoning">Pocket breaking down, running lane open</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Voice Response Mode -->
+        <div class="voice-response-mode" style="display: none;">
+            <div class="voice-challenge-header">
+                <h2>Speak Your Answer</h2>
+                <p class="challenge-description">Use your voice to respond to this game situation. Speak clearly and confidently!</p>
+            </div>
+
+            <div class="voice-scenario">
+                <div class="scenario-setup">
+                    <h3>You're the quarterback in the huddle</h3>
+                    <p>The coach just signaled a hot route change. Communicate this to your receivers using the proper terminology.</p>
+                    
+                    <div class="scenario-details">
+                        <div class="formation">Formation: Trips Right</div>
+                        <div class="coverage">Defense: Cover 2</div>
+                        <div class="adjustment">Change: #1 receiver to comeback</div>
+                    </div>
+                </div>
+
+                <div class="voice-recorder">
+                    <div class="mic-visual">
+                        <div class="mic-icon">🎤</div>
+                        <div class="recording-indicator" style="display: none;">
+                            <div class="pulse-ring"></div>
+                            <div class="pulse-ring delay-1"></div>
+                            <div class="pulse-ring delay-2"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="recording-controls">
+                        <button class="start-recording">Start Recording</button>
+                        <button class="stop-recording" disabled>Stop Recording</button>
+                        <button class="play-recording" disabled>Play Back</button>
+                    </div>
+                    
+                    <div class="recording-status">
+                        <span class="status-text">Ready to record</span>
+                        <span class="timer">00:00</span>
+                    </div>
+                </div>
+
+                <div class="voice-hints">
+                    <h4>Expected Response Examples:</h4>
+                    <div class="hint-item">"X receiver, comeback at 12!"</div>
+                    <div class="hint-item">"Hot route! #1 comeback!"</div>
+                    <div class="hint-item">"Trips right, X comeback now!"</div>
+                </div>
+            </div>
+
+            <div class="voice-analysis" style="display: none;">
+                <div class="analysis-results">
+                    <h3>Voice Analysis Results</h3>
+                    <div class="analysis-metrics">
+                        <div class="metric">
+                            <div class="metric-label">Clarity</div>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: 85%;"></div>
+                            </div>
+                            <div class="metric-score">85%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Confidence</div>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: 78%;"></div>
+                            </div>
+                            <div class="metric-score">78%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Terminology</div>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: 92%;"></div>
+                            </div>
+                            <div class="metric-score">92%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="transcription">
+                        <h4>What we heard:</h4>
+                        <div class="transcribed-text">"X receiver, run a comeback at twelve yards"</div>
+                        <div class="feedback correct">✅ Correct terminology and instruction!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mixed Audio/Video Challenge -->
+        <div class="mixed-challenge-mode" style="display: none;">
+            <div class="mixed-header">
+                <h2>Complete Communication Challenge</h2>
+                <p>This challenge combines visual signals, audio calls, and game video. Stay focused!</p>
+            </div>
+
+            <div class="challenge-sequence">
+                <div class="sequence-step active" data-step="1">
+                    <h3>Step 1: Watch the Signal</h3>
+                    <div class="signal-video">
+                        <video class="step-video" poster="signal-thumb.jpg">
+                            <source src="video/mixed-signal-1.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+
+                <div class="sequence-step" data-step="2" style="display: none;">
+                    <h3>Step 2: Listen to the Audio Call</h3>
+                    <div class="audio-component">
+                        <audio class="step-audio">
+                            <source src="audio/mixed-call-1.mp3" type="audio/mpeg">
+                        </audio>
+                        <button class="play-audio">🔊 Play Call</button>
+                    </div>
+                </div>
+
+                <div class="sequence-step" data-step="3" style="display: none;">
+                    <h3>Step 3: Analyze the Game Situation</h3>
+                    <div class="situation-video">
+                        <video class="step-video" poster="situation-thumb.jpg">
+                            <source src="video/mixed-situation-1.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+
+                <div class="sequence-step" data-step="4" style="display: none;">
+                    <h3>Step 4: What's the Complete Call?</h3>
+                    <div class="final-question">
+                        <p>Combining the visual signal, audio call, and game situation, what should the team execute?</p>
+                        <div class="comprehensive-options">
+                            <button class="comp-option">
+                                <div class="option-title">Hot Route to Slant + Blitz Protection</div>
+                                <div class="option-breakdown">Signal: Hot route, Audio: Protection call, Situation: Blitz coming</div>
+                            </button>
+                            <button class="comp-option">
+                                <div class="option-title">Audible to Run + Hard Count</div>
+                                <div class="option-breakdown">Signal: Change play, Audio: New play call, Situation: Defense shifted</div>
+                            </button>
+                            <button class="comp-option">
+                                <div class="option-title">Timeout + Coaching Input</div>
+                                <div class="option-breakdown">Signal: Timeout, Audio: Confirmation, Situation: Confusion evident</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sequence-navigation">
+                <button class="seq-button previous" disabled>Previous</button>
+                <div class="step-indicators">
+                    <div class="step-dot active"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-dot"></div>
+                </div>
+                <button class="seq-button next">Next</button>
+            </div>
+        </div>
+
+        <!-- Challenge Type Selector -->
+        <div class="av-challenge-menu" style="display: none;">
+            <h2>Audio/Video Challenges</h2>
+            <div class="challenge-types">
+                <button class="av-challenge" data-mode="audio">
+                    <div class="challenge-icon">🎧</div>
+                    <div class="challenge-title">Audio Recognition</div>
+                    <div class="challenge-desc">Identify calls by sound alone</div>
+                </button>
+                
+                <button class="av-challenge" data-mode="video">
+                    <div class="challenge-icon">📹</div>
+                    <div class="challenge-title">Game Video Analysis</div>
+                    <div class="challenge-desc">Real game situation breakdown</div>
+                </button>
+                
+                <button class="av-challenge" data-mode="voice">
+                    <div class="challenge-icon">🎤</div>
+                    <div class="challenge-title">Voice Response</div>
+                    <div class="challenge-desc">Speak your answers aloud</div>
+                </button>
+                
+                <button class="av-challenge" data-mode="mixed">
+                    <div class="challenge-icon">🎭</div>
+                    <div class="challenge-title">Complete Communication</div>
+                    <div class="challenge-desc">Multi-step audio/video challenge</div>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

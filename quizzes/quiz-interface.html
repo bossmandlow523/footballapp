@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootballIQ - Quiz Interface</title>
+</head>
+<body>
+    <div class="quiz-container">
+        <header class="quiz-header">
+            <div class="progress-section">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 40%"></div>
+                </div>
+                <span class="progress-text">Question 4 of 10</span>
+            </div>
+            <div class="timer-section">
+                <div class="timer">02:45</div>
+                <span class="timer-label">Time Remaining</span>
+            </div>
+        </header>
+
+        <main class="quiz-content">
+            <div class="question-section">
+                <div class="question-header">
+                    <span class="question-type">Signal Recognition</span>
+                    <span class="difficulty">Medium</span>
+                </div>
+                <h2 class="question-text">
+                    3rd and 7, trips right formation, safety rotating down - what's the correct hot route signal for this situation?
+                </h2>
+                <div class="scenario-info">
+                    <div class="field-position">Red Zone • 1st Quarter</div>
+                    <div class="formation">11 Personnel • Shotgun</div>
+                </div>
+            </div>
+
+            <div class="options-section">
+                <div class="option-card">
+                    <input type="radio" id="option-a" name="answer" value="a">
+                    <label for="option-a" class="option-label">
+                        <span class="option-letter">A</span>
+                        <span class="option-text">Point to receiver, tap helmet twice</span>
+                    </label>
+                </div>
+                <div class="option-card">
+                    <input type="radio" id="option-b" name="answer" value="b">
+                    <label for="option-b" class="option-label">
+                        <span class="option-letter">B</span>
+                        <span class="option-text">Fist pump, then point downfield</span>
+                    </label>
+                </div>
+                <div class="option-card">
+                    <input type="radio" id="option-c" name="answer" value="c">
+                    <label for="option-c" class="option-label">
+                        <span class="option-letter">C</span>
+                        <span class="option-text">Tap chest, sweep arm left to right</span>
+                    </label>
+                </div>
+                <div class="option-card">
+                    <input type="radio" id="option-d" name="answer" value="d">
+                    <label for="option-d" class="option-label">
+                        <span class="option-letter">D</span>
+                        <span class="option-text">Two quick claps, point to slot receiver</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="confidence-section">
+                <label for="confidence">How confident are you in this answer?</label>
+                <div class="confidence-slider">
+                    <input type="range" id="confidence" min="1" max="5" value="3">
+                    <div class="confidence-labels">
+                        <span>Not Sure</span>
+                        <span>Very Confident</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="quiz-navigation">
+            <button class="nav-button previous" disabled>Previous</button>
+            <button class="nav-button skip">Skip Question</button>
+            <button class="nav-button next">Next Question</button>
+        </footer>
+    </div>
+
+    <!-- Results Screen (Hidden by default) -->
+    <div class="results-screen" style="display: none;">
+        <header class="results-header">
+            <h1>Quiz Complete!</h1>
+            <div class="overall-score">
+                <div class="score-circle">
+                    <span class="score-number">85%</span>
+                    <span class="score-label">Overall Score</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="results-content">
+            <div class="performance-stats">
+                <div class="stat-card">
+                    <div class="stat-number">8/10</div>
+                    <div class="stat-label">Correct Answers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4:32</div>
+                    <div class="stat-label">Time Taken</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">92%</div>
+                    <div class="stat-label">Signal Recognition</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">78%</div>
+                    <div class="stat-label">Game Situations</div>
+                </div>
+            </div>
+
+            <div class="improvement-areas">
+                <h3>Areas for Improvement</h3>
+                <div class="improvement-item">
+                    <div class="improvement-topic">Cover 3 Adjustments</div>
+                    <div class="improvement-score">2/4 correct</div>
+                    <button class="study-button">Study Now</button>
+                </div>
+                <div class="improvement-item">
+                    <div class="improvement-topic">Red Zone Signals</div>
+                    <div class="improvement-score">1/2 correct</div>
+                    <button class="study-button">Study Now</button>
+                </div>
+            </div>
+
+            <div class="question-review">
+                <h3>Question Review</h3>
+                <div class="review-item correct">
+                    <div class="review-number">Q1</div>
+                    <div class="review-text">Signal recognition in shotgun formation</div>
+                    <div class="review-status">Correct</div>
+                </div>
+                <div class="review-item incorrect">
+                    <div class="review-number">Q2</div>
+                    <div class="review-text">Hot route vs Cover 3 defense</div>
+                    <div class="review-status">Incorrect</div>
+                </div>
+                <div class="review-item correct">
+                    <div class="review-number">Q3</div>
+                    <div class="review-text">Red zone play calling</div>
+                    <div class="review-status">Correct</div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="results-actions">
+            <button class="action-button secondary">Review Answers</button>
+            <button class="action-button primary">Take Another Quiz</button>
+            <button class="action-button secondary">Back to Dashboard</button>
+        </footer>
+    </div>
+</body>
+</html>

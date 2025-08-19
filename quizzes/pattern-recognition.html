@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootballIQ - Visual Pattern Recognition</title>
+</head>
+<body>
+    <div class="pattern-recognition-container">
+        <header class="pattern-header">
+            <div class="header-left">
+                <button class="back-button">← Back</button>
+                <h1>Pattern Recognition</h1>
+            </div>
+            <div class="header-right">
+                <div class="recognition-stats">
+                    <div class="stat">
+                        <span class="stat-value">87%</span>
+                        <span class="stat-label">Pattern Accuracy</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">2.3s</span>
+                        <span class="stat-label">Avg Recognition Time</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Formation Recognition Mode -->
+        <div class="formation-recognition-mode active">
+            <div class="recognition-challenge">
+                <h2>Formation Recognition Challenge</h2>
+                <div class="challenge-timer">
+                    <span class="timer-label">Recognition Time:</span>
+                    <div class="timer-display">4.2s</div>
+                </div>
+            </div>
+
+            <div class="formation-display">
+                <div class="field-view">
+                    <div class="formation-field">
+                        <!-- Offensive formation -->
+                        <div class="offensive-formation">
+                            <div class="player offense qb" style="left: 50%; top: 60%;" data-position="QB">QB</div>
+                            <div class="player offense rb" style="left: 45%; top: 70%;" data-position="RB">RB</div>
+                            <div class="player offense wr" style="left: 15%; top: 45%;" data-position="X">X</div>
+                            <div class="player offense wr" style="left: 85%; top: 40%;" data-position="Z">Z</div>
+                            <div class="player offense te" style="left: 75%; top: 50%;" data-position="Y">TE</div>
+                            <div class="player offense ol" style="left: 40%; top: 55%;" data-position="LT">LT</div>
+                            <div class="player offense ol" style="left: 45%; top: 55%;" data-position="LG">LG</div>
+                            <div class="player offense ol" style="left: 50%; top: 55%;" data-position="C">C</div>
+                            <div class="player offense ol" style="left: 55%; top: 55%;" data-position="RG">RG</div>
+                            <div class="player offense ol" style="left: 60%; top: 55%;" data-position="RT">RT</div>
+                        </div>
+
+                        <!-- Motion indicators -->
+                        <div class="motion-arrows">
+                            <div class="motion-arrow" style="left: 85%; top: 40%;">
+                                <div class="arrow-path">→</div>
+                                <div class="motion-label">Pre-snap motion</div>
+                            </div>
+                        </div>
+
+                        <!-- Formation highlights -->
+                        <div class="formation-highlights">
+                            <div class="highlight-zone trips" style="left: 70%; top: 35%; width: 20%; height: 25%;">
+                                <div class="zone-label">Focus Area</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field-controls">
+                        <button class="field-control" data-action="highlight-skill">🎯 Highlight Skill Players</button>
+                        <button class="field-control" data-action="show-motion">↗️ Show Motion Path</button>
+                        <button class="field-control" data-action="zoom-formation">🔍 Zoom to Formation</button>
+                    </div>
+                </div>
+
+                <div class="formation-question">
+                    <h3>What formation concept is this offense showing?</h3>
+                    <div class="formation-options">
+                        <button class="formation-option">
+                            <div class="option-name">I-Formation</div>
+                            <div class="option-details">Traditional fullback and halfback</div>
+                        </button>
+                        <button class="formation-option">
+                            <div class="option-name">Singleback</div>
+                            <div class="option-details">One running back, multiple receivers</div>
+                        </button>
+                        <button class="formation-option correct">
+                            <div class="option-name">12 Personnel</div>
+                            <div class="option-details">1 RB, 2 TE, 2 WR formation</div>
+                        </button>
+                        <button class="formation-option">
+                            <div class="option-name">Trips Formation</div>
+                            <div class="option-details">Three receivers to one side</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="formation-feedback" style="display: none;">
+                <div class="feedback-content">
+                    <h3>✅ Correct! 12 Personnel</h3>
+                    <div class="formation-breakdown">
+                        <p>You correctly identified this as 12 Personnel (1 RB, 2 TE, 2 WR). Key indicators:</p>
+                        <ul class="formation-keys">
+                            <li>Two tight ends on the field (Y and H positions)</li>
+                            <li>Single running back in traditional position</li>
+                            <li>Only two wide receivers split out</li>
+                            <li>Strong formation suggesting run or play action</li>
+                        </ul>
+                    </div>
+                    <div class="tactical-insight">
+                        <h4>Tactical Insight:</h4>
+                        <p>12 Personnel typically indicates power running game or play action passing. Defense likely to respond with base 3-4 or 4-3 personnel.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coverage Recognition Mode -->
+        <div class="coverage-recognition-mode" style="display: none;">
+            <div class="coverage-challenge">
+                <h2>Coverage Recognition with Motion</h2>
+                <div class="challenge-setup">
+                    <p>Watch the defensive movement and identify the coverage. Pay attention to how defenders react to the motion.</p>
+                </div>
+            </div>
+
+            <div class="coverage-display">
+                <div class="animated-field">
+                    <!-- Defensive formation with movement -->
+                    <div class="defensive-formation">
+                        <div class="defender moving" style="left: 25%; top: 20%;" data-coverage="corner">
+                            <div class="defender-icon">CB</div>
+                            <div class="movement-trail"></div>
+                        </div>
+                        <div class="defender moving" style="left: 75%; top: 20%;" data-coverage="corner">
+                            <div class="defender-icon">CB</div>
+                            <div class="movement-trail"></div>
+                        </div>
+                        <div class="defender static" style="left: 50%; top: 10%;" data-coverage="safety">
+                            <div class="defender-icon">FS</div>
+                        </div>
+                        <div class="defender rotating" style="left: 65%; top: 25%;" data-coverage="safety">
+                            <div class="defender-icon">SS</div>
+                            <div class="rotation-indicator">↺</div>
+                        </div>
+                        <div class="defender static" style="left: 35%; top: 35%;" data-coverage="linebacker">
+                            <div class="defender-icon">MLB</div>
+                        </div>
+                        <div class="defender moving" style="left: 55%; top: 40%;" data-coverage="linebacker">
+                            <div class="defender-icon">OLB</div>
+                            <div class="blitz-indicator">⚡</div>
+                        </div>
+                    </div>
+
+                    <!-- Coverage zones visualization -->
+                    <div class="coverage-zones">
+                        <div class="coverage-zone deep-left" data-defender="CB"></div>
+                        <div class="coverage-zone deep-middle" data-defender="FS"></div>
+                        <div class="coverage-zone deep-right" data-defender="CB"></div>
+                        <div class="coverage-zone shallow-middle" data-defender="SS"></div>
+                        <div class="coverage-zone underneath" data-defender="LB"></div>
+                    </div>
+
+                    <!-- Motion tracking -->
+                    <div class="motion-tracking">
+                        <div class="motion-receiver" style="left: 80%; top: 35%;">
+                            <div class="receiver-icon">WR</div>
+                            <div class="motion-path">←←←</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="coverage-analysis-tools">
+                    <h4>Analysis Tools</h4>
+                    <div class="analysis-buttons">
+                        <button class="analysis-btn" data-tool="replay">🔄 Replay Motion</button>
+                        <button class="analysis-btn" data-tool="slow-motion">⏱️ Slow Motion</button>
+                        <button class="analysis-btn" data-tool="freeze">⏸️ Freeze Frame</button>
+                        <button class="analysis-btn" data-tool="highlight">🎯 Highlight Coverage</button>
+                    </div>
+                </div>
+
+                <div class="coverage-question">
+                    <h3>What coverage is the defense showing?</h3>
+                    <div class="coverage-clues">
+                        <h4>Key Observations:</h4>
+                        <div class="clue-list">
+                            <div class="clue">Safety rotating down to cover motion</div>
+                            <div class="clue">Corners in press coverage</div>
+                            <div class="clue">Linebacker showing blitz</div>
+                        </div>
+                    </div>
+
+                    <div class="coverage-options">
+                        <button class="coverage-option">
+                            <div class="coverage-name">Cover 2</div>
+                            <div class="coverage-description">Two high safeties, corners in zones</div>
+                        </button>
+                        <button class="coverage-option">
+                            <div class="coverage-name">Cover 3</div>
+                            <div class="coverage-description">Three deep defenders, four underneath</div>
+                        </button>
+                        <button class="coverage-option correct">
+                            <div class="coverage-name">Cover 1 Robber</div>
+                            <div class="coverage-description">Man coverage with safety robbing underneath</div>
+                        </button>
+                        <button class="coverage-option">
+                            <div class="coverage-name">Cover 0 Blitz</div>
+                            <div class="coverage-description">No safety help, all-out pressure</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mismatch Identification Mode -->
+        <div class="mismatch-mode" style="display: none;">
+            <div class="mismatch-challenge">
+                <h2>Spot the Mismatch</h2>
+                <div class="challenge-instruction">
+                    <p>Analyze the matchups on the field and click on the area where the offense has the best advantage.</p>
+                </div>
+            </div>
+
+            <div class="mismatch-field">
+                <div class="matchup-display">
+                    <!-- Individual matchups -->
+                    <div class="matchup" style="left: 20%; top: 30%;" data-mismatch="false">
+                        <div class="offensive-player">
+                            <div class="player-info">
+                                <span class="player-name">Johnson</span>
+                                <span class="player-stats">6'2", 4.4 speed</span>
+                            </div>
+                        </div>
+                        <div class="vs-indicator">VS</div>
+                        <div class="defensive-player">
+                            <div class="player-info">
+                                <span class="player-name">Williams</span>
+                                <span class="player-stats">CB, 5'10", 4.5 speed</span>
+                            </div>
+                        </div>
+                        <div class="matchup-rating even">Even</div>
+                    </div>
+
+                    <div class="matchup" style="left: 50%; top: 35%;" data-mismatch="true">
+                        <div class="offensive-player">
+                            <div class="player-info">
+                                <span class="player-name">Miller</span>
+                                <span class="player-stats">TE, 6'4", Great hands</span>
+                            </div>
+                        </div>
+                        <div class="vs-indicator">VS</div>
+                        <div class="defensive-player">
+                            <div class="player-info">
+                                <span class="player-name">Davis</span>
+                                <span class="player-stats">LB, 6'0", Run stopper</span>
+                            </div>
+                        </div>
+                        <div class="matchup-rating advantage">Advantage</div>
+                    </div>
+
+                    <div class="matchup" style="left: 80%; top: 25%;" data-mismatch="false">
+                        <div class="offensive-player">
+                            <div class="player-info">
+                                <span class="player-name">Wilson</span>
+                                <span class="player-stats">WR, 5'9", Route runner</span>
+                            </div>
+                        </div>
+                        <div class="vs-indicator">VS</div>
+                        <div class="defensive-player">
+                            <div class="player-info">
+                                <span class="player-name">Thompson</span>
+                                <span class="player-stats">CB, 5'11", Physical</span>
+                            </div>
+                        </div>
+                        <div class="matchup-rating disadvantage">Disadvantage</div>
+                    </div>
+
+                    <!-- Clickable areas -->
+                    <div class="mismatch-zones">
+                        <div class="mismatch-zone" data-zone="outside-left" style="left: 15%; top: 25%; width: 15%; height: 20%;">
+                            <div class="zone-label">Outside Left</div>
+                        </div>
+                        <div class="mismatch-zone correct" data-zone="seam" style="left: 45%; top: 30%; width: 15%; height: 20%;">
+                            <div class="zone-label">Seam Area</div>
+                        </div>
+                        <div class="mismatch-zone" data-zone="outside-right" style="left: 75%; top: 20%; width: 15%; height: 20%;">
+                            <div class="zone-label">Outside Right</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mismatch-tools">
+                    <h4>Analysis Tools</h4>
+                    <div class="tool-buttons">
+                        <button class="tool-btn" data-tool="player-stats">📊 Player Stats</button>
+                        <button class="tool-btn" data-tool="tendency">📈 Tendencies</button>
+                        <button class="tool-btn" data-tool="situation">🎯 Situation Factor</button>
+                    </div>
+                </div>
+
+                <div class="mismatch-feedback" style="display: none;">
+                    <div class="feedback-explanation">
+                        <h3>🎯 Perfect Mismatch Identification!</h3>
+                        <p>You correctly identified the TE vs LB mismatch in the seam. Here's why this is advantageous:</p>
+                        <ul class="mismatch-reasons">
+                            <li><strong>Size advantage:</strong> 6'4" TE vs 6'0" LB</li>
+                            <li><strong>Skill mismatch:</strong> Pass-catching TE vs run-stopping LB</li>
+                            <li><strong>Route advantage:</strong> TE can run precise routes vs LB coverage</li>
+                            <li><strong>Leverage:</strong> LB has to cover deep while watching run fake</li>
+                        </ul>
+                        <div class="exploitation-tip">
+                            <strong>How to exploit:</strong> Run TE on seam route or comeback at 12-15 yard depth
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Before/After Analysis Mode -->
+        <div class="before-after-mode" style="display: none;">
+            <div class="comparison-header">
+                <h2>Before/After Coverage Analysis</h2>
+                <div class="comparison-controls">
+                    <button class="comparison-btn active" data-view="before">Before Snap</button>
+                    <button class="comparison-btn" data-view="after">After Snap</button>
+                    <button class="comparison-btn" data-view="overlay">Overlay View</button>
+                </div>
+            </div>
+
+            <div class="comparison-display">
+                <div class="comparison-view before active">
+                    <h3>Pre-Snap Alignment</h3>
+                    <div class="field-state">
+                        <!-- Pre-snap defensive alignment -->
+                        <div class="defensive-alignment">
+                            <div class="defender pre-snap" style="left: 25%; top: 25%;" data-position="CB">
+                                <div class="defender-icon">CB</div>
+                                <div class="alignment-note">Press coverage</div>
+                            </div>
+                            <div class="defender pre-snap" style="left: 50%; top: 15%;" data-position="FS">
+                                <div class="defender-icon">FS</div>
+                                <div class="alignment-note">Center field</div>
+                            </div>
+                            <div class="defender pre-snap" style="left: 75%; top: 25%;" data-position="CB">
+                                <div class="defender-icon">CB</div>
+                                <div class="alignment-note">Off coverage</div>
+                            </div>
+                            <div class="defender pre-snap" style="left: 60%; top: 30%;" data-position="SS">
+                                <div class="defender-icon">SS</div>
+                                <div class="alignment-note">Box safety</div>
+                            </div>
+                        </div>
+                        <div class="pre-snap-read">
+                            <h4>What does this tell you?</h4>
+                            <div class="read-options">
+                                <div class="read-item">Press coverage suggests man-to-man</div>
+                                <div class="read-item">Safety in box indicates run support</div>
+                                <div class="read-item">Different CB alignments show pattern</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-view after">
+                    <h3>Post-Snap Movement</h3>
+                    <div class="field-state">
+                        <!-- Post-snap defensive movement -->
+                        <div class="defensive-movement">
+                            <div class="defender post-snap" style="left: 25%; top: 35%;" data-position="CB">
+                                <div class="defender-icon">CB</div>
+                                <div class="movement-arrow">↓</div>
+                                <div class="movement-note">Zone drop</div>
+                            </div>
+                            <div class="defender post-snap" style="left: 50%; top: 25%;" data-position="FS">
+                                <div class="defender-icon">FS</div>
+                                <div class="movement-arrow">←</div>
+                                <div class="movement-note">Rotating over</div>
+                            </div>
+                            <div class="defender post-snap" style="left: 75%; top: 15%;" data-position="CB">
+                                <div class="defender-icon">CB</div>
+                                <div class="movement-arrow">↗️</div>
+                                <div class="movement-note">Deep third</div>
+                            </div>
+                            <div class="defender post-snap" style="left: 40%; top: 40%;" data-position="SS">
+                                <div class="defender-icon">SS</div>
+                                <div class="movement-arrow">↙️</div>
+                                <div class="movement-note">Underneath</div>
+                            </div>
+                        </div>
+                        <div class="post-snap-analysis">
+                            <h4>Coverage Revealed:</h4>
+                            <div class="coverage-revelation">
+                                <p>The movement reveals Cover 3 Match - not the man coverage the pre-snap alignment suggested!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-view overlay">
+                    <h3>Movement Overlay</h3>
+                    <div class="field-state">
+                        <!-- Overlay showing movement paths -->
+                        <div class="movement-overlay">
+                            <svg class="movement-paths" width="100%" height="300">
+                                <path d="M 100,100 Q 150,150 200,120" stroke="#ff6b6b" stroke-width="3" fill="none" />
+                                <path d="M 300,60 Q 250,100 200,120" stroke="#4ecdc4" stroke-width="3" fill="none" />
+                                <path d="M 450,100 Q 400,80 350,60" stroke="#45b7d1" stroke-width="3" fill="none" />
+                                <path d="M 360,120 Q 300,140 240,160" stroke="#f9ca24" stroke-width="3" fill="none" />
+                            </svg>
+                            <div class="path-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #ff6b6b;"></div>
+                                    <span>Left CB movement</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #4ecdc4;"></div>
+                                    <span>Free Safety rotation</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #45b7d1;"></div>
+                                    <span>Right CB to deep third</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #f9ca24;"></div>
+                                    <span>Strong Safety drop</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analysis-question">
+                <h3>Based on the movement patterns, what should the quarterback do?</h3>
+                <div class="analysis-options">
+                    <button class="analysis-option">
+                        <div class="option-action">Attack the deep middle</div>
+                        <div class="option-reasoning">Safety rotated away, leaving hole</div>
+                    </button>
+                    <button class="analysis-option correct">
+                        <div class="option-action">Hit the underneath route</div>
+                        <div class="option-reasoning">Everyone dropping deep, underneath open</div>
+                    </button>
+                    <button class="analysis-option">
+                        <div class="option-action">Go to the corner route</div>
+                        <div class="option-reasoning">Corner has single coverage</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pattern Recognition Menu -->
+        <div class="pattern-menu" style="display: none;">
+            <h2>Visual Pattern Recognition</h2>
+            <div class="pattern-modes">
+                <button class="pattern-card" data-mode="formation">
+                    <div class="mode-icon">⚡</div>
+                    <div class="mode-title">Formation Recognition</div>
+                    <div class="mode-desc">Identify offensive formations quickly</div>
+                    <div class="mode-stats">Best: 1.8s • Accuracy: 92%</div>
+                </button>
+                
+                <button class="pattern-card" data-mode="coverage">
+                    <div class="mode-icon">👁️</div>
+                    <div class="mode-title">Coverage Recognition</div>
+                    <div class="mode-desc">Read defensive coverage patterns</div>
+                    <div class="mode-stats">Best: 2.5s • Accuracy: 85%</div>
+                </button>
+                
+                <button class="pattern-card" data-mode="mismatch">
+                    <div class="mode-icon">🎯</div>
+                    <div class="mode-title">Spot the Mismatch</div>
+                    <div class="mode-desc">Find offensive advantages</div>
+                    <div class="mode-stats">Best: 3.1s • Accuracy: 78%</div>
+                </button>
+                
+                <button class="pattern-card" data-mode="before-after">
+                    <div class="mode-icon">🔄</div>
+                    <div class="mode-title">Before/After Analysis</div>
+                    <div class="mode-desc">Compare pre and post-snap reads</div>
+                    <div class="mode-stats">Best: 4.2s • Accuracy: 81%</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Pattern Recognition Results -->
+        <div class="pattern-results" style="display: none;">
+            <div class="results-header">
+                <h2>Pattern Recognition Assessment</h2>
+                <div class="overall-score">
+                    <div class="score-circle">
+                        <span class="score-number">84%</span>
+                        <span class="score-label">Pattern IQ</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="skill-breakdown">
+                <div class="skill-category">
+                    <div class="skill-name">Formation Recognition</div>
+                    <div class="skill-metrics">
+                        <div class="metric">
+                            <span class="metric-label">Speed</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: 92%;"></div>
+                            </div>
+                            <span class="metric-value">1.9s avg</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Accuracy</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: 88%;"></div>
+                            </div>
+                            <span class="metric-value">88%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <div class="skill-name">Coverage Reading</div>
+                    <div class="skill-metrics">
+                        <div class="metric">
+                            <span class="metric-label">Speed</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: 75%;"></div>
+                            </div>
+                            <span class="metric-value">2.8s avg</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Accuracy</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: 82%;"></div>
+                            </div>
+                            <span class="metric-value">82%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <div class="skill-name">Mismatch Identification</div>
+                    <div class="skill-metrics">
+                        <div class="metric">
+                            <span class="metric-label">Speed</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: 68%;"></div>
+                            </div>
+                            <span class="metric-value">3.4s avg</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Accuracy</span>
+                            <div class="metric-bar">
+                                <div class="metric-fill" style="width: 79%;"></div>
+                            </div>
+                            <span class="metric-value">79%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="improvement-recommendations">
+                <h3>Focus Areas for Improvement</h3>
+                <div class="recommendation">
+                    <div class="rec-title">Coverage Disguise Recognition</div>
+                    <div class="rec-description">Practice identifying when defenses show one coverage pre-snap but rotate to another post-snap</div>
+                    <button class="rec-action">Practice This Skill</button>
+                </div>
+                <div class="recommendation">
+                    <div class="rec-title">Speed vs Accuracy Balance</div>
+                    <div class="rec-description">Work on maintaining accuracy while increasing recognition speed</div>
+                    <button class="rec-action">Timed Drills</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootballIQ - Signal Recognition Quiz</title>
+</head>
+<body>
+    <div class="signal-recognition-container">
+        <header class="quiz-header">
+            <div class="header-left">
+                <button class="back-button">← Back</button>
+                <h1>Signal Recognition Challenge</h1>
+            </div>
+            <div class="header-right">
+                <div class="score-display">Score: 850</div>
+                <div class="streak-counter">Streak: 7</div>
+            </div>
+        </header>
+
+        <!-- Main Quiz Mode -->
+        <div class="quiz-mode active">
+            <div class="quiz-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 60%"></div>
+                </div>
+                <span class="progress-text">Signal 6 of 10</span>
+                <div class="timer">00:15</div>
+            </div>
+
+            <div class="video-section">
+                <div class="video-container">
+                    <video class="signal-video" controls poster="coach-signal-thumbnail.jpg">
+                        <source src="signals/hot-route-signal.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-controls">
+                        <button class="replay-button">↻ Replay</button>
+                        <button class="slow-motion">½× Speed</button>
+                    </div>
+                </div>
+                <div class="signal-prompt">
+                    <h2>What signal is Coach Rodriguez showing?</h2>
+                    <p class="context">3rd down, Red Zone, 11 Personnel</p>
+                </div>
+            </div>
+
+            <div class="answer-options">
+                <div class="option-grid">
+                    <button class="signal-option">
+                        <div class="option-icon">👉</div>
+                        <div class="option-text">Hot Route Alert</div>
+                    </button>
+                    <button class="signal-option">
+                        <div class="option-icon">✋</div>
+                        <div class="option-text">Timeout</div>
+                    </button>
+                    <button class="signal-option">
+                        <div class="option-icon">👆</div>
+                        <div class="option-text">Audible Change</div>
+                    </button>
+                    <button class="signal-option">
+                        <div class="option-icon">👊</div>
+                        <div class="option-text">Run Protection</div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="feedback-section" style="display: none;">
+                <div class="feedback correct">
+                    <div class="feedback-icon">✅</div>
+                    <div class="feedback-content">
+                        <h3>Correct! Hot Route Alert</h3>
+                        <p>This signal tells receivers to adjust their routes based on defensive coverage. Used in 3rd down situations when a quick read is needed.</p>
+                    </div>
+                    <button class="next-signal">Next Signal →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Drag and Drop Challenge -->
+        <div class="drag-drop-mode" style="display: none;">
+            <div class="challenge-header">
+                <h2>Build the Complete Signal</h2>
+                <p>Drag the signal components in the correct order</p>
+            </div>
+
+            <div class="signal-components">
+                <div class="component-bank">
+                    <h3>Available Components</h3>
+                    <div class="draggable-components">
+                        <div class="signal-component" draggable="true">
+                            <div class="component-icon">👉</div>
+                            <span>Point Right</span>
+                        </div>
+                        <div class="signal-component" draggable="true">
+                            <div class="component-icon">👏</div>
+                            <span>Two Claps</span>
+                        </div>
+                        <div class="signal-component" draggable="true">
+                            <div class="component-icon">✊</div>
+                            <span>Fist Pump</span>
+                        </div>
+                        <div class="signal-component" draggable="true">
+                            <div class="component-icon">👋</div>
+                            <span>Wave Motion</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drop-zone">
+                    <h3>Signal Sequence</h3>
+                    <div class="signal-builder">
+                        <div class="drop-slot">
+                            <span class="slot-number">1</span>
+                            <div class="drop-area">Drop first action</div>
+                        </div>
+                        <div class="drop-slot">
+                            <span class="slot-number">2</span>
+                            <div class="drop-area">Drop second action</div>
+                        </div>
+                        <div class="drop-slot">
+                            <span class="slot-number">3</span>
+                            <div class="drop-area">Drop third action</div>
+                        </div>
+                    </div>
+                    <button class="check-sequence" disabled>Check Sequence</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Speed Challenge Mode -->
+        <div class="speed-challenge-mode" style="display: none;">
+            <div class="challenge-header">
+                <h2>Speed Challenge: Rapid Fire</h2>
+                <div class="challenge-stats">
+                    <div class="stat">
+                        <span class="stat-number">30</span>
+                        <span class="stat-label">Seconds Left</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">7</span>
+                        <span class="stat-label">Correct</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">2</span>
+                        <span class="stat-label">Wrong</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rapid-fire-content">
+                <div class="signal-flash">
+                    <div class="flash-video">
+                        <div class="signal-preview">
+                            <div class="signal-demonstration">👉 → 👏 → ✊</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-answers">
+                    <button class="quick-option">Hot Route</button>
+                    <button class="quick-option">Audible</button>
+                    <button class="quick-option">Timeout</button>
+                    <button class="quick-option">Protection</button>
+                </div>
+
+                <div class="rapid-progress">
+                    <div class="signal-queue">
+                        <div class="queued-signal completed">✅</div>
+                        <div class="queued-signal completed">✅</div>
+                        <div class="queued-signal incorrect">❌</div>
+                        <div class="queued-signal completed">✅</div>
+                        <div class="queued-signal current">?</div>
+                        <div class="queued-signal pending">○</div>
+                        <div class="queued-signal pending">○</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Challenge Selection Menu -->
+        <div class="challenge-menu" style="display: none;">
+            <h2>Choose Your Challenge</h2>
+            <div class="challenge-options">
+                <button class="challenge-card" data-mode="standard">
+                    <div class="challenge-icon">🎯</div>
+                    <div class="challenge-info">
+                        <h3>Standard Recognition</h3>
+                        <p>Watch signals and identify meanings</p>
+                        <div class="difficulty">Difficulty: Medium</div>
+                    </div>
+                </button>
+
+                <button class="challenge-card" data-mode="drag-drop">
+                    <div class="challenge-icon">🔄</div>
+                    <div class="challenge-info">
+                        <h3>Build the Signal</h3>
+                        <p>Drag components to create complete signals</p>
+                        <div class="difficulty">Difficulty: Hard</div>
+                    </div>
+                </button>
+
+                <button class="challenge-card" data-mode="speed">
+                    <div class="challenge-icon">⚡</div>
+                    <div class="challenge-info">
+                        <h3>Speed Challenge</h3>
+                        <p>How fast can you identify 10 signals?</p>
+                        <div class="difficulty">Difficulty: Expert</div>
+                    </div>
+                </button>
+
+                <button class="challenge-card" data-mode="memory">
+                    <div class="challenge-icon">🧠</div>
+                    <div class="challenge-info">
+                        <h3>Memory Test</h3>
+                        <p>Remember signal sequences</p>
+                        <div class="difficulty">Difficulty: Hard</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Summary -->
+        <div class="results-summary" style="display: none;">
+            <div class="results-header">
+                <h2>Challenge Complete!</h2>
+                <div class="final-score">
+                    <div class="score-circle">
+                        <span class="score-number">8/10</span>
+                        <span class="score-label">Correct</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="performance-breakdown">
+                <div class="performance-stat">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-info">
+                        <div class="stat-title">Average Response Time</div>
+                        <div class="stat-value">3.2 seconds</div>
+                    </div>
+                </div>
+                <div class="performance-stat">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-info">
+                        <div class="stat-title">Accuracy Rate</div>
+                        <div class="stat-value">80%</div>
+                    </div>
+                </div>
+                <div class="performance-stat">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-info">
+                        <div class="stat-title">Improvement</div>
+                        <div class="stat-value">+15% vs last time</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="missed-signals">
+                <h3>Review Missed Signals</h3>
+                <div class="missed-item">
+                    <div class="missed-signal">👊 → 👋 → 👆</div>
+                    <div class="missed-info">
+                        <div class="correct-answer">Correct: Blitz Protection</div>
+                        <div class="your-answer">Your answer: Hot Route</div>
+                    </div>
+                    <button class="review-button">Review</button>
+                </div>
+            </div>
+
+            <div class="results-actions">
+                <button class="action-button secondary">Try Again</button>
+                <button class="action-button primary">Next Challenge</button>
+                <button class="action-button secondary">Back to Menu</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

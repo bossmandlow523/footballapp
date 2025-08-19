@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootballIQ - Signal Creation</title>
+</head>
+<body>
+    <div class="signal-creation-container">
+        <header class="creation-header">
+            <div class="header-left">
+                <button class="back-button">← Back to Dashboard</button>
+                <h1>Create New Signal</h1>
+            </div>
+            <div class="header-right">
+                <button class="save-draft-button">Save Draft</button>
+                <button class="publish-button" disabled>Publish Signal</button>
+            </div>
+        </header>
+
+        <div class="creation-content">
+            <div class="main-creation-area">
+                <!-- Video Upload Section -->
+                <section class="video-upload-section">
+                    <h2>Signal Video</h2>
+                    <div class="upload-area">
+                        <div class="upload-zone">
+                            <div class="upload-icon">📹</div>
+                            <div class="upload-text">
+                                <h3>Drag & drop your signal video here</h3>
+                                <p>or click to browse files</p>
+                            </div>
+                            <div class="upload-specs">
+                                <span>Supports MP4, MOV, AVI • Max 50MB</span>
+                            </div>
+                            <input type="file" class="file-input" accept="video/*" hidden>
+                        </div>
+                        
+                        <!-- File uploaded state (hidden by default) -->
+                        <div class="uploaded-file" style="display: none;">
+                            <div class="file-info">
+                                <div class="file-icon">🎬</div>
+                                <div class="file-details">
+                                    <div class="file-name">hot_route_signal.mp4</div>
+                                    <div class="file-size">2.3 MB • 15 seconds</div>
+                                </div>
+                                <button class="remove-file">×</button>
+                            </div>
+                            <div class="upload-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                                <span class="progress-text">Upload complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Signal Details Form -->
+                <section class="signal-details-section">
+                    <h2>Signal Details</h2>
+                    <form class="signal-form">
+                        <div class="form-group">
+                            <label for="signal-name">Signal Name</label>
+                            <input type="text" id="signal-name" placeholder="e.g., Hot Route Alert">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="signal-type">Signal Type</label>
+                                <select id="signal-type">
+                                    <option value="">Select type...</option>
+                                    <option value="offensive">Offensive</option>
+                                    <option value="defensive">Defensive</option>
+                                    <option value="special-teams">Special Teams</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="difficulty">Difficulty Level</label>
+                                <select id="difficulty">
+                                    <option value="">Select difficulty...</option>
+                                    <option value="beginner">Beginner</option>
+                                    <option value="intermediate">Intermediate</option>
+                                    <option value="advanced">Advanced</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="signal-meaning">Signal Meaning</label>
+                            <textarea id="signal-meaning" placeholder="Describe what this signal means and when to use it..." rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="game-situations">Game Situations</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="red-zone">
+                                    <span>Red Zone</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="third-down">
+                                    <span>3rd Down</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="two-minute">
+                                    <span>Two Minute Drill</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="goal-line">
+                                    <span>Goal Line</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="fourth-down">
+                                    <span>4th Down</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" value="short-yardage">
+                                    <span>Short Yardage</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="personnel-groups">Personnel Groups</label>
+                            <div class="tag-input">
+                                <div class="selected-tags">
+                                    <span class="tag">11 Personnel <button class="remove-tag">×</button></span>
+                                    <span class="tag">Shotgun <button class="remove-tag">×</button></span>
+                                </div>
+                                <input type="text" placeholder="Add formation or personnel..." class="tag-input-field">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="related-plays">Related Plays</label>
+                            <div class="related-plays-selector">
+                                <input type="text" placeholder="Search existing plays..." class="play-search">
+                                <div class="selected-plays">
+                                    <div class="play-item">
+                                        <span class="play-name">Smash Concept</span>
+                                        <button class="remove-play">×</button>
+                                    </div>
+                                    <div class="play-item">
+                                        <span class="play-name">Quick Slant RPO</span>
+                                        <button class="remove-play">×</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Preview Section -->
+                <section class="preview-section">
+                    <h2>Preview</h2>
+                    <div class="preview-card">
+                        <div class="preview-video">
+                            <div class="video-placeholder">
+                                <div class="play-icon">▶</div>
+                                <span>Video Preview</span>
+                            </div>
+                        </div>
+                        <div class="preview-info">
+                            <h3 class="preview-title">Hot Route Alert</h3>
+                            <div class="preview-meta">
+                                <span class="preview-type">Offensive</span>
+                                <span class="preview-difficulty">Intermediate</span>
+                            </div>
+                            <p class="preview-description">Used to alert receivers to change their route based on defensive coverage...</p>
+                            <div class="preview-tags">
+                                <span class="preview-tag">Red Zone</span>
+                                <span class="preview-tag">3rd Down</span>
+                                <span class="preview-tag">11 Personnel</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Signals Library Sidebar -->
+            <aside class="signals-library">
+                <div class="library-header">
+                    <h3>Existing Signals</h3>
+                    <div class="library-search">
+                        <input type="text" placeholder="Search signals..." class="search-input">
+                    </div>
+                    <div class="library-filters">
+                        <button class="filter-btn active">All</button>
+                        <button class="filter-btn">Offensive</button>
+                        <button class="filter-btn">Defensive</button>
+                        <button class="filter-btn">Special Teams</button>
+                    </div>
+                </div>
+
+                <div class="library-content">
+                    <div class="signal-item">
+                        <div class="signal-thumbnail">
+                            <div class="thumbnail-placeholder">🎬</div>
+                        </div>
+                        <div class="signal-info">
+                            <div class="signal-name">Audible Call</div>
+                            <div class="signal-meta">Offensive • Advanced</div>
+                            <div class="signal-usage">Used 15 times</div>
+                        </div>
+                        <button class="signal-action">Edit</button>
+                    </div>
+
+                    <div class="signal-item">
+                        <div class="signal-thumbnail">
+                            <div class="thumbnail-placeholder">🎬</div>
+                        </div>
+                        <div class="signal-info">
+                            <div class="signal-name">Timeout</div>
+                            <div class="signal-meta">General • Beginner</div>
+                            <div class="signal-usage">Used 8 times</div>
+                        </div>
+                        <button class="signal-action">Edit</button>
+                    </div>
+
+                    <div class="signal-item">
+                        <div class="signal-thumbnail">
+                            <div class="thumbnail-placeholder">🎬</div>
+                        </div>
+                        <div class="signal-info">
+                            <div class="signal-name">Blitz Protection</div>
+                            <div class="signal-meta">Offensive • Intermediate</div>
+                            <div class="signal-usage">Used 23 times</div>
+                        </div>
+                        <button class="signal-action">Edit</button>
+                    </div>
+
+                    <div class="signal-item">
+                        <div class="signal-thumbnail">
+                            <div class="thumbnail-placeholder">🎬</div>
+                        </div>
+                        <div class="signal-info">
+                            <div class="signal-name">Coverage Change</div>
+                            <div class="signal-meta">Defensive • Advanced</div>
+                            <div class="signal-usage">Used 12 times</div>
+                        </div>
+                        <button class="signal-action">Edit</button>
+                    </div>
+
+                    <div class="signal-item">
+                        <div class="signal-thumbnail">
+                            <div class="thumbnail-placeholder">🎬</div>
+                        </div>
+                        <div class="signal-info">
+                            <div class="signal-name">Fake Punt</div>
+                            <div class="signal-meta">Special Teams • Advanced</div>
+                            <div class="signal-usage">Used 3 times</div>
+                        </div>
+                        <button class="signal-action">Edit</button>
+                    </div>
+                </div>
+
+                <div class="library-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">27</div>
+                        <div class="stat-label">Total Signals</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">94%</div>
+                        <div class="stat-label">Team Recognition Rate</div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootballIQ - Mini-Games</title>
+</head>
+<body>
+    <div class="mini-games-container">
+        <header class="games-header">
+            <div class="header-left">
+                <button class="back-button">← Back</button>
+                <h1>Football IQ Mini-Games</h1>
+            </div>
+            <div class="header-right">
+                <div class="arcade-stats">
+                    <div class="tokens">🎮 Tokens: 150</div>
+                    <div class="high-scores">👑 Total High Scores: 7</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Signal Memory Game -->
+        <div class="signal-memory-game active">
+            <div class="game-header">
+                <h2>🧠 Signal Memory Challenge</h2>
+                <div class="game-stats">
+                    <div class="stat">
+                        <span class="stat-label">Level:</span>
+                        <span class="stat-value">7</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Score:</span>
+                        <span class="stat-value">2,340</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Lives:</span>
+                        <span class="stat-value">❤️❤️🤍</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="memory-game-area">
+                <div class="sequence-display">
+                    <h3>Watch the sequence:</h3>
+                    <div class="signal-sequence">
+                        <div class="sequence-slot flashing" data-signal="1">
+                            <div class="signal-icon">👉</div>
+                            <div class="signal-name">Point</div>
+                        </div>
+                        <div class="sequence-slot" data-signal="2">
+                            <div class="signal-icon">👏</div>
+                            <div class="signal-name">Clap</div>
+                        </div>
+                        <div class="sequence-slot" data-signal="3">
+                            <div class="signal-icon">✊</div>
+                            <div class="signal-name">Fist</div>
+                        </div>
+                        <div class="sequence-slot" data-signal="4">
+                            <div class="signal-icon">👋</div>
+                            <div class="signal-name">Wave</div>
+                        </div>
+                        <div class="sequence-slot" data-signal="5">
+                            <div class="signal-icon">👆</div>
+                            <div class="signal-name">Up</div>
+                        </div>
+                        <div class="sequence-slot hidden" data-signal="6">
+                            <div class="signal-icon">?</div>
+                            <div class="signal-name">?</div>
+                        </div>
+                        <div class="sequence-slot hidden" data-signal="7">
+                            <div class="signal-icon">?</div>
+                            <div class="signal-name">?</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="memory-controls">
+                    <div class="sequence-timer">
+                        <div class="timer-label">Memorize Time:</div>
+                        <div class="timer-display">8</div>
+                    </div>
+                    <button class="replay-sequence">🔄 Replay Sequence</button>
+                </div>
+
+                <div class="input-area">
+                    <h3>Repeat the sequence:</h3>
+                    <div class="signal-input-grid">
+                        <button class="signal-input" data-signal="point">
+                            <div class="input-icon">👉</div>
+                            <div class="input-label">Point</div>
+                        </button>
+                        <button class="signal-input" data-signal="clap">
+                            <div class="input-icon">👏</div>
+                            <div class="input-label">Clap</div>
+                        </button>
+                        <button class="signal-input" data-signal="fist">
+                            <div class="input-icon">✊</div>
+                            <div class="input-label">Fist</div>
+                        </button>
+                        <button class="signal-input" data-signal="wave">
+                            <div class="input-icon">👋</div>
+                            <div class="input-label">Wave</div>
+                        </button>
+                        <button class="signal-input" data-signal="up">
+                            <div class="input-icon">👆</div>
+                            <div class="input-label">Up</div>
+                        </button>
+                        <button class="signal-input" data-signal="down">
+                            <div class="input-icon">👇</div>
+                            <div class="input-label">Down</div>
+                        </button>
+                        <button class="signal-input" data-signal="circle">
+                            <div class="input-icon">🔄</div>
+                            <div class="input-label">Circle</div>
+                        </button>
+                        <button class="signal-input" data-signal="stop">
+                            <div class="input-icon">✋</div>
+                            <div class="input-label">Stop</div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="player-sequence">
+                    <h4>Your sequence:</h4>
+                    <div class="player-input-display">
+                        <div class="input-slot empty">?</div>
+                        <div class="input-slot empty">?</div>
+                        <div class="input-slot empty">?</div>
+                        <div class="input-slot empty">?</div>
+                        <div class="input-slot empty">?</div>
+                    </div>
+                    <button class="clear-sequence">Clear</button>
+                    <button class="submit-sequence" disabled>Submit</button>
+                </div>
+            </div>
+
+            <div class="memory-feedback" style="display: none;">
+                <div class="feedback-result correct">
+                    <h3>🎉 Perfect Memory!</h3>
+                    <div class="score-earned">+500 points</div>
+                    <div class="bonus-info">Bonus: Perfect sequence x2 multiplier</div>
+                </div>
+                <button class="next-level">Next Level →</button>
+            </div>
+        </div>
+
+        <!-- Formation Matcher Game -->
+        <div class="formation-matcher-game" style="display: none;">
+            <div class="game-header">
+                <h2>🎯 Formation Matcher</h2>
+                <div class="matcher-stats">
+                    <div class="time-remaining">⏱️ 45s</div>
+                    <div class="matches-made">Matches: 6/10</div>
+                    <div class="accuracy">Accuracy: 85%</div>
+                </div>
+            </div>
+
+            <div class="matcher-game-area">
+                <div class="challenge-instruction">
+                    <h3>Match each offensive formation with the best defensive counter</h3>
+                    <p>Drag formations to their ideal defensive matchups. Speed and accuracy matter!</p>
+                </div>
+
+                <div class="matching-workspace">
+                    <div class="offensive-formations">
+                        <h4>Offensive Formations</h4>
+                        <div class="formation-cards">
+                            <div class="formation-card" draggable="true" data-formation="trips">
+                                <div class="formation-diagram">
+                                    <div class="formation-visual">
+                                        ○ ○ ○
+                                          ○
+                                        ○ ○ ○ ○ ○
+                                    </div>
+                                    <div class="formation-name">Trips Right</div>
+                                    <div class="formation-desc">3 WR to right side</div>
+                                </div>
+                            </div>
+
+                            <div class="formation-card" draggable="true" data-formation="i-formation">
+                                <div class="formation-diagram">
+                                    <div class="formation-visual">
+                                        ○   ○
+                                          ○
+                                        ○ ○ ○ ○ ○
+                                          ○
+                                          ○
+                                    </div>
+                                    <div class="formation-name">I-Formation</div>
+                                    <div class="formation-desc">FB and RB aligned</div>
+                                </div>
+                            </div>
+
+                            <div class="formation-card" draggable="true" data-formation="empty">
+                                <div class="formation-diagram">
+                                    <div class="formation-visual">
+                                        ○   ○   ○
+                                          ○
+                                        ○ ○ ○ ○ ○
+                                    </div>
+                                    <div class="formation-name">Empty</div>
+                                    <div class="formation-desc">5 WR, no RB</div>
+                                </div>
+                            </div>
+
+                            <div class="formation-card" draggable="true" data-formation="12-personnel">
+                                <div class="formation-diagram">
+                                    <div class="formation-visual">
+                                        ○     ○
+                                          ○ ○
+                                        ○ ○ ○ ○ ○
+                                          ○
+                                    </div>
+                                    <div class="formation-name">12 Personnel</div>
+                                    <div class="formation-desc">2 TE, 1 RB</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="defensive-counters">
+                        <h4>Defensive Counters</h4>
+                        <div class="counter-zones">
+                            <div class="drop-zone" data-counter="nickel" data-matches="trips,empty">
+                                <div class="zone-header">
+                                    <h5>Nickel Defense</h5>
+                                    <p>Extra DB for pass coverage</p>
+                                </div>
+                                <div class="drop-area">
+                                    <span class="drop-hint">Drop formations here</span>
+                                </div>
+                                <div class="zone-reasoning">
+                                    <strong>Best against:</strong> Multiple receiver sets
+                                </div>
+                            </div>
+
+                            <div class="drop-zone" data-counter="base-43" data-matches="i-formation">
+                                <div class="zone-header">
+                                    <h5>Base 4-3</h5>
+                                    <p>Standard run defense</p>
+                                </div>
+                                <div class="drop-area">
+                                    <span class="drop-hint">Drop formations here</span>
+                                </div>
+                                <div class="zone-reasoning">
+                                    <strong>Best against:</strong> Power running formations
+                                </div>
+                            </div>
+
+                            <div class="drop-zone" data-counter="big-nickel" data-matches="12-personnel">
+                                <div class="zone-header">
+                                    <h5>Big Nickel</h5>
+                                    <p>Extra safety for TE coverage</p>
+                                </div>
+                                <div class="drop-area">
+                                    <span class="drop-hint">Drop formations here</span>
+                                </div>
+                                <div class="zone-reasoning">
+                                    <strong>Best against:</strong> Multiple tight end sets
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="matching-score">
+                    <div class="score-display">
+                        <div class="current-score">Score: 1,250</div>
+                        <div class="time-bonus">Time Bonus: x1.5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clock Management Game -->
+        <div class="clock-management-game" style="display: none;">
+            <div class="game-header">
+                <h2>⏰ Clock Master Challenge</h2>
+                <div class="clock-scenario">
+                    <div class="game-situation">
+                        <span class="score-info">Down 24-21</span>
+                        <span class="field-pos">Own 25-yard line</span>
+                        <span class="timeouts">2 timeouts left</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clock-game-area">
+                <div class="game-clock-display">
+                    <div class="main-clock">
+                        <div class="clock-time">2:47</div>
+                        <div class="quarter">4th Quarter</div>
+                    </div>
+                    <div class="play-clock">
+                        <div class="play-time">25</div>
+                        <div class="play-label">Play Clock</div>
+                    </div>
+                </div>
+
+                <div class="clock-challenge">
+                    <h3>Scenario: Drive for the winning score</h3>
+                    <p>You need to score a touchdown. Make smart decisions about clock management while moving down the field.</p>
+
+                    <div class="clock-decisions">
+                        <div class="decision-prompt">
+                            <h4>3rd & 8 at your own 25. What's your priority?</h4>
+                        </div>
+
+                        <div class="clock-options">
+                            <button class="clock-option" data-strategy="aggressive">
+                                <div class="option-strategy">🚀 Aggressive</div>
+                                <div class="option-play">Deep pass to sideline</div>
+                                <div class="option-clock">Stops clock if incomplete</div>
+                                <div class="option-risk">High risk, high reward</div>
+                            </button>
+
+                            <button class="clock-option" data-strategy="safe">
+                                <div class="option-strategy">🛡️ Safe</div>
+                                <div class="option-play">Short crossing route</div>
+                                <div class="option-clock">Clock keeps running</div>
+                                <div class="option-risk">Higher completion chance</div>
+                            </button>
+
+                            <button class="clock-option" data-strategy="timeout">
+                                <div class="option-strategy">⏸️ Timeout</div>
+                                <div class="option-play">Call timeout first</div>
+                                <div class="option-clock">Stops clock, saves time</div>
+                                <div class="option-risk">Uses precious timeout</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="clock-simulation">
+                        <h4>Clock Simulation</h4>
+                        <div class="sim-controls">
+                            <button class="sim-button">▶️ Run Play</button>
+                            <button class="sim-button">⏸️ Call Timeout</button>
+                            <button class="sim-button">🏃 No Huddle</button>
+                        </div>
+                        <div class="sim-feedback">
+                            <div class="time-used">Time used: 0:35</div>
+                            <div class="field-position">New position: Own 32</div>
+                            <div class="efficiency">Clock efficiency: Good</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clock-pressure-meter">
+                    <h4>Pressure Level</h4>
+                    <div class="pressure-bar">
+                        <div class="pressure-fill" style="width: 75%;"></div>
+                    </div>
+                    <div class="pressure-factors">
+                        <div class="factor">⏰ Time running out</div>
+                        <div class="factor">📍 Need 75 yards</div>
+                        <div class="factor">⏸️ Limited timeouts</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Red Zone Challenge Game -->
+        <div class="red-zone-game" style="display: none;">
+            <div class="game-header">
+                <h2>🎯 Red Zone Master</h2>
+                <div class="red-zone-stats">
+                    <div class="attempts">Attempts: 8</div>
+                    <div class="touchdowns">TDs: 6</div>
+                    <div class="efficiency">Efficiency: 75%</div>
+                </div>
+            </div>
+
+            <div class="red-zone-area">
+                <div class="field-visual">
+                    <div class="red-zone-field">
+                        <!-- Red zone field representation -->
+                        <div class="field-markers">
+                            <div class="yard-marker" data-yard="20">20</div>
+                            <div class="yard-marker" data-yard="15">15</div>
+                            <div class="yard-marker" data-yard="10">10</div>
+                            <div class="yard-marker goal-line" data-yard="goal">GOAL</div>
+                        </div>
+                        
+                        <div class="ball-position" style="left: 50%; top: 85%;">
+                            <div class="ball-marker">🏈</div>
+                            <div class="position-label">12-yard line</div>
+                        </div>
+
+                        <div class="red-zone-challenges">
+                            <div class="challenge-marker" style="left: 30%; top: 60%;" data-challenge="fade">
+                                <div class="challenge-icon">🎯</div>
+                                <div class="challenge-name">Fade Route</div>
+                            </div>
+                            <div class="challenge-marker" style="left: 70%; top: 70%;" data-challenge="slant">
+                                <div class="challenge-icon">⚡</div>
+                                <div class="challenge-name">Quick Slant</div>
+                            </div>
+                            <div class="challenge-marker" style="left: 50%; top: 50%;" data-challenge="goal-line">
+                                <div class="challenge-icon">💪</div>
+                                <div class="challenge-name">Goal Line</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="red-zone-challenge-active">
+                    <h3>Challenge: Goal Line Stand</h3>
+                    <div class="challenge-setup">
+                        <p>2nd & Goal from the 2-yard line. Defense is packed in tight. What play do you call?</p>
+                    </div>
+
+                    <div class="red-zone-options">
+                        <button class="rz-option" data-play="power-run">
+                            <div class="play-icon">🏃‍♂️</div>
+                            <div class="play-info">
+                                <div class="play-name">Power Run</div>
+                                <div class="play-desc">Fullback lead, power gap</div>
+                                <div class="success-rate">Success: 65%</div>
+                            </div>
+                        </button>
+
+                        <button class="rz-option" data-play="play-action">
+                            <div class="play-icon">🎭</div>
+                            <div class="play-info">
+                                <div class="play-name">Play Action</div>
+                                <div class="play-desc">Fake handoff, roll out</div>
+                                <div class="success-rate">Success: 45%</div>
+                            </div>
+                        </button>
+
+                        <button class="rz-option" data-play="qb-sneak">
+                            <div class="play-icon">⚡</div>
+                            <div class="play-info">
+                                <div class="play-name">QB Sneak</div>
+                                <div class="play-desc">Quick push behind center</div>
+                                <div class="success-rate">Success: 78%</div>
+                            </div>
+                        </button>
+
+                        <button class="rz-option" data-play="fade-route">
+                            <div class="play-icon">🎯</div>
+                            <div class="play-info">
+                                <div class="play-name">Fade Route</div>
+                                <div class="play-desc">Back corner throw</div>
+                                <div class="success-rate">Success: 35%</div>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="situational-factors">
+                        <h4>Consider These Factors:</h4>
+                        <div class="factor-list">
+                            <div class="factor">📦 Defense has 8 in the box</div>
+                            <div class="factor">🏃‍♂️ Your RB has been effective today</div>
+                            <div class="factor">⏰ Plenty of time, no rush</div>
+                            <div class="factor">🎯 WR has height advantage</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="red-zone-results" style="display: none;">
+                    <div class="result-animation">
+                        <div class="result-icon touchdown">🏆</div>
+                        <div class="result-text">TOUCHDOWN!</div>
+                        <div class="result-details">QB Sneak successful - great choice!</div>
+                    </div>
+                    <div class="play-breakdown">
+                        <p>The QB sneak was perfect for this situation. With 8 defenders focused on stopping the run, the direct snap gave you the best odds.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mini-Games Menu -->
+        <div class="mini-games-menu" style="display: none;">
+            <h2>🎮 Football IQ Arcade</h2>
+            <div class="games-grid">
+                <button class="game-card" data-game="signal-memory">
+                    <div class="game-icon">🧠</div>
+                    <div class="game-info">
+                        <h3>Signal Memory</h3>
+                        <p>Remember and repeat signal sequences</p>
+                        <div class="game-stats">
+                            <span class="high-score">High Score: 3,240</span>
+                            <span class="difficulty">Difficulty: ⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="play-button">Play</div>
+                </button>
+
+                <button class="game-card" data-game="formation-matcher">
+                    <div class="game-icon">🎯</div>
+                    <div class="game-info">
+                        <h3>Formation Matcher</h3>
+                        <p>Match formations with ideal counters</p>
+                        <div class="game-stats">
+                            <span class="high-score">Best Time: 1:23</span>
+                            <span class="difficulty">Difficulty: ⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="play-button">Play</div>
+                </button>
+
+                <button class="game-card" data-game="clock-management">
+                    <div class="game-icon">⏰</div>
+                    <div class="game-info">
+                        <h3>Clock Master</h3>
+                        <p>Manage game clock under pressure</p>
+                        <div class="game-stats">
+                            <span class="high-score">Efficiency: 92%</span>
+                            <span class="difficulty">Difficulty: ⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="play-button">Play</div>
+                </button>
+
+                <button class="game-card" data-game="red-zone">
+                    <div class="game-icon">🎯</div>
+                    <div class="game-info">
+                        <h3>Red Zone Challenge</h3>
+                        <p>Score touchdowns in tight spaces</p>
+                        <div class="game-stats">
+                            <span class="high-score">Success Rate: 78%</span>
+                            <span class="difficulty">Difficulty: ⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="play-button">Play</div>
+                </button>
+
+                <button class="game-card coming-soon">
+                    <div class="game-icon">🎪</div>
+                    <div class="game-info">
+                        <h3>Pocket Presence</h3>
+                        <p>Avoid the pass rush simulator</p>
+                        <div class="game-stats">
+                            <span class="coming-soon-text">Coming Soon!</span>
+                        </div>
+                    </div>
+                    <div class="play-button disabled">Soon</div>
+                </button>
+
+                <button class="game-card coming-soon">
+                    <div class="game-icon">🎲</div>
+                    <div class="game-info">
+                        <h3>Audible Roulette</h3>
+                        <p>Quick audible decision making</p>
+                        <div class="game-stats">
+                            <span class="coming-soon-text">Coming Soon!</span>
+                        </div>
+                    </div>
+                    <div class="play-button disabled">Soon</div>
+                </button>
+            </div>
+
+            <div class="arcade-achievements">
+                <h3>🏆 Recent Achievements</h3>
+                <div class="achievement-list">
+                    <div class="achievement-item">
+                        <div class="achievement-badge">🧠</div>
+                        <div class="achievement-info">
+                            <div class="achievement-name">Memory Master</div>
+                            <div class="achievement-desc">Perfect 10-signal sequence</div>
+                        </div>
+                        <div class="achievement-date">2 days ago</div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-badge">⚡</div>
+                        <div class="achievement-info">
+                            <div class="achievement-name">Speed Demon</div>
+                            <div class="achievement-desc">Formation match in under 30s</div>
+                        </div>
+                        <div class="achievement-date">1 week ago</div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-badge">🎯</div>
+                        <div class="achievement-info">
+                            <div class="achievement-name">Red Zone Warrior</div>
+                            <div class="achievement-desc">5 straight touchdown calls</div>
+                        </div>
+                        <div class="achievement-date">2 weeks ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div class="game-over-screen" style="display: none;">
+            <div class="game-over-content">
+                <h2>🎉 Game Complete!</h2>
+                <div class="final-score">
+                    <div class="score-number">2,850</div>
+                    <div class="score-label">Final Score</div>
+                </div>
+                <div class="game-achievements">
+                    <div class="achievement unlocked">
+                        <div class="achievement-icon">🏆</div>
+                        <div class="achievement-text">New High Score!</div>
+                    </div>
+                    <div class="achievement unlocked">
+                        <div class="achievement-icon">⚡</div>
+                        <div class="achievement-text">Speed Bonus</div>
+                    </div>
+                </div>
+                <div class="game-over-actions">
+                    <button class="action-btn primary">Play Again</button>
+                    <button class="action-btn secondary">Try Different Game</button>
+                    <button class="action-btn secondary">Back to Menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootballIQ - Interactive Play Building</title>
+</head>
+<body>
+    <div class="play-building-container">
+        <header class="building-header">
+            <div class="header-left">
+                <button class="back-button">← Back</button>
+                <h1>Play Builder Challenge</h1>
+            </div>
+            <div class="header-right">
+                <div class="building-tools">
+                    <button class="tool-button undo">↶ Undo</button>
+                    <button class="tool-button redo">↷ Redo</button>
+                    <button class="tool-button save">💾 Save</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Drag Routes onto Formation Mode -->
+        <div class="route-building-mode active">
+            <div class="building-scenario">
+                <h2>Build the Perfect Play</h2>
+                <div class="scenario-details">
+                    <div class="situation">
+                        <span class="down">3rd & 8</span>
+                        <span class="field-pos">Own 35</span>
+                        <span class="formation">11 Personnel</span>
+                    </div>
+                    <div class="objective">
+                        <p>Design a play to beat Cover 3 defense. Drag routes onto each receiver position.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="play-workspace">
+                <div class="formation-field">
+                    <!-- Football field with formation -->
+                    <div class="field-background">
+                        <div class="field-lines">
+                            <div class="yard-line">30</div>
+                            <div class="yard-line">35</div>
+                            <div class="yard-line">40</div>
+                        </div>
+                        <div class="hash-marks"></div>
+                    </div>
+
+                    <!-- Offensive formation positions -->
+                    <div class="offensive-positions">
+                        <div class="position qb" style="left: 50%; top: 60%;" data-position="QB">
+                            <div class="position-icon">QB</div>
+                            <div class="position-label">Quarterback</div>
+                        </div>
+                        <div class="position wr drop-zone" style="left: 15%; top: 45%;" data-position="X">
+                            <div class="position-icon">X</div>
+                            <div class="position-label">Split End</div>
+                            <div class="route-slot empty">Drop route here</div>
+                        </div>
+                        <div class="position wr drop-zone" style="left: 35%; top: 50%;" data-position="Z">
+                            <div class="position-icon">Z</div>
+                            <div class="position-label">Flanker</div>
+                            <div class="route-slot empty">Drop route here</div>
+                        </div>
+                        <div class="position wr drop-zone" style="left: 85%; top: 45%;" data-position="Y">
+                            <div class="position-icon">Y</div>
+                            <div class="position-label">Tight End</div>
+                            <div class="route-slot empty">Drop route here</div>
+                        </div>
+                        <div class="position rb drop-zone" style="left: 45%; top: 65%;" data-position="RB">
+                            <div class="position-icon">RB</div>
+                            <div class="position-label">Running Back</div>
+                            <div class="route-slot empty">Drop route here</div>
+                        </div>
+                    </div>
+
+                    <!-- Defensive formation (for reference) -->
+                    <div class="defensive-positions">
+                        <div class="defender" style="left: 20%; top: 25%;" data-coverage="deep-third">
+                            <div class="defender-icon">CB</div>
+                            <div class="coverage-indicator">Deep 1/3</div>
+                        </div>
+                        <div class="defender" style="left: 50%; top: 15%;" data-coverage="deep-middle">
+                            <div class="defender-icon">FS</div>
+                            <div class="coverage-indicator">Deep Middle</div>
+                        </div>
+                        <div class="defender" style="left: 80%; top: 25%;" data-coverage="deep-third">
+                            <div class="defender-icon">CB</div>
+                            <div class="coverage-indicator">Deep 1/3</div>
+                        </div>
+                        <div class="defender" style="left: 35%; top: 35%;" data-coverage="underneath">
+                            <div class="defender-icon">LB</div>
+                            <div class="coverage-indicator">Underneath</div>
+                        </div>
+                        <div class="defender" style="left: 65%; top: 35%;" data-coverage="underneath">
+                            <div class="defender-icon">LB</div>
+                            <div class="coverage-indicator">Underneath</div>
+                        </div>
+                    </div>
+
+                    <!-- Visual route paths (drawn after assignment) -->
+                    <canvas class="route-canvas" width="800" height="400"></canvas>
+                </div>
+
+                <div class="route-library">
+                    <h3>Available Routes</h3>
+                    <div class="route-categories">
+                        <button class="category-tab active" data-category="short">Short Routes</button>
+                        <button class="category-tab" data-category="intermediate">Intermediate</button>
+                        <button class="category-tab" data-category="deep">Deep Routes</button>
+                        <button class="category-tab" data-category="special">Special</button>
+                    </div>
+
+                    <div class="route-options">
+                        <div class="route-category active" data-category="short">
+                            <div class="route-card" draggable="true" data-route="slant">
+                                <div class="route-diagram">📐</div>
+                                <div class="route-info">
+                                    <div class="route-name">Slant</div>
+                                    <div class="route-timing">3-step timing</div>
+                                </div>
+                            </div>
+                            <div class="route-card" draggable="true" data-route="hitch">
+                                <div class="route-diagram">🔄</div>
+                                <div class="route-info">
+                                    <div class="route-name">Hitch</div>
+                                    <div class="route-timing">5-step timing</div>
+                                </div>
+                            </div>
+                            <div class="route-card" draggable="true" data-route="curl">
+                                <div class="route-diagram">↩️</div>
+                                <div class="route-info">
+                                    <div class="route-name">Curl</div>
+                                    <div class="route-timing">5-step timing</div>
+                                </div>
+                            </div>
+                            <div class="route-card" draggable="true" data-route="out">
+                                <div class="route-diagram">↗️</div>
+                                <div class="route-info">
+                                    <div class="route-name">Out</div>
+                                    <div class="route-timing">5-step timing</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="route-category" data-category="intermediate" style="display: none;">
+                            <div class="route-card" draggable="true" data-route="dig">
+                                <div class="route-diagram">⬅️</div>
+                                <div class="route-info">
+                                    <div class="route-name">Dig</div>
+                                    <div class="route-timing">7-step timing</div>
+                                </div>
+                            </div>
+                            <div class="route-card" draggable="true" data-route="comeback">
+                                <div class="route-diagram">⤴️</div>
+                                <div class="route-info">
+                                    <div class="route-name">Comeback</div>
+                                    <div class="route-timing">7-step timing</div>
+                                </div>
+                            </div>
+                            <div class="route-card" draggable="true" data-route="seam">
+                                <div class="route-diagram">⬆️</div>
+                                <div class="route-info">
+                                    <div class="route-name">Seam</div>
+                                    <div class="route-timing">7-step timing</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="route-category" data-category="deep" style="display: none;">
+                            <div class="route-card" draggable="true" data-route="go">
+                                <div class="route-diagram">⬆️</div>
+                                <div class="route-info">
+                                    <div class="route-name">Go Route</div>
+                                    <div class="route-timing">Deep timing</div>
+                                </div>
+                            </div>
+                            <div class="route-card" draggable="true" data-route="post">
+                                <div class="route-diagram">⤴️</div>
+                                <div class="route-info">
+                                    <div class="route-name">Post</div>
+                                    <div class="route-timing">Deep timing</div>
+                                </div>
+                            </div>
+                            <div class="route-card" draggable="true" data-route="corner">
+                                <div class="route-diagram">⤷</div>
+                                <div class="route-info">
+                                    <div class="route-name">Corner</div>
+                                    <div class="route-timing">Deep timing</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="route-category" data-category="special" style="display: none;">
+                            <div class="route-card" draggable="true" data-route="drag">
+                                <div class="route-diagram">↔️</div>
+                                <div class="route-info">
+                                    <div class="route-name">Drag</div>
+                                    <div class="route-timing">Crossing route</div>
+                                </div>
+                            </div>
+                            <div class="route-card" draggable="true" data-route="screen">
+                                <div class="route-diagram">🛡️</div>
+                                <div class="route-info">
+                                    <div class="route-name">Screen</div>
+                                    <div class="route-timing">Quick screen</div>
+                                </div>
+                            </div>
+                            <div class="route-card" draggable="true" data-route="wheel">
+                                <div class="route-diagram">🔄</div>
+                                <div class="route-info">
+                                    <div class="route-name">Wheel</div>
+                                    <div class="route-timing">RB special</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="play-analysis">
+                <h3>Play Analysis</h3>
+                <div class="analysis-feedback">
+                    <div class="analysis-item incomplete">
+                        <div class="analysis-icon">⚠️</div>
+                        <div class="analysis-text">Need to assign routes to all receivers</div>
+                    </div>
+                    <div class="analysis-item pending">
+                        <div class="analysis-icon">⏳</div>
+                        <div class="analysis-text">Coverage analysis pending...</div>
+                    </div>
+                </div>
+                <button class="analyze-play" disabled>Analyze Play Effectiveness</button>
+            </div>
+        </div>
+
+        <!-- Step-by-Step Building Mode -->
+        <div class="step-building-mode" style="display: none;">
+            <div class="step-progress">
+                <div class="step-indicator">
+                    <div class="step completed" data-step="1">1</div>
+                    <div class="step active" data-step="2">2</div>
+                    <div class="step" data-step="3">3</div>
+                    <div class="step" data-step="4">4</div>
+                    <div class="step" data-step="5">5</div>
+                </div>
+                <div class="step-description">
+                    <h3>Step 2: Choose Primary Route</h3>
+                    <p>Select the route that will be the primary option against Cover 3</p>
+                </div>
+            </div>
+
+            <div class="step-content">
+                <div class="step-question">
+                    <h4>What's the best route to attack the deep middle hole in Cover 3?</h4>
+                    <div class="coverage-hint">
+                        <div class="hint-diagram">
+                            <!-- Simple coverage diagram -->
+                            <div class="coverage-zones">
+                                <div class="zone left-third">CB</div>
+                                <div class="zone middle-third weak">Weak Spot</div>
+                                <div class="zone right-third">CB</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-options">
+                    <button class="step-option">
+                        <div class="option-route">Seam Route</div>
+                        <div class="option-explanation">Attacks the gap between safeties</div>
+                    </button>
+                    <button class="step-option">
+                        <div class="option-route">Deep Dig</div>
+                        <div class="option-explanation">Crosses behind linebackers</div>
+                    </button>
+                    <button class="step-option">
+                        <div class="option-route">Post Route</div>
+                        <div class="option-explanation">Breaks to the middle</div>
+                    </button>
+                </div>
+
+                <div class="step-feedback" style="display: none;">
+                    <div class="feedback-content correct">
+                        <h4>Excellent Choice!</h4>
+                        <p>The seam route is perfect for attacking Cover 3. It hits the natural gap between the deep thirds coverage.</p>
+                        <div class="coaching-point">
+                            <strong>Coaching Point:</strong> Time this route to arrive at 12-15 yard depth where the hole appears.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-navigation">
+                    <button class="step-button previous">← Previous</button>
+                    <button class="step-button next" disabled>Next →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Concept Completion Mode -->
+        <div class="concept-completion-mode" style="display: none;">
+            <div class="concept-header">
+                <h2>Complete the Concept</h2>
+                <div class="concept-type">
+                    <span class="concept-name">Smash Concept</span>
+                    <span class="concept-formation">Trips Formation</span>
+                </div>
+            </div>
+
+            <div class="concept-workspace">
+                <div class="partial-concept">
+                    <h3>Partial Play Design</h3>
+                    <div class="existing-routes">
+                        <div class="route-assignment">
+                            <span class="position">X Receiver:</span>
+                            <span class="assigned-route">Speed Out (8 yards)</span>
+                            <span class="route-status complete">✓</span>
+                        </div>
+                        <div class="route-assignment">
+                            <span class="position">#1 in Trips:</span>
+                            <span class="assigned-route">Fade Route</span>
+                            <span class="route-status complete">✓</span>
+                        </div>
+                        <div class="route-assignment incomplete">
+                            <span class="position">#2 in Trips:</span>
+                            <span class="assigned-route">??? Route</span>
+                            <span class="route-status incomplete">?</span>
+                        </div>
+                        <div class="route-assignment incomplete">
+                            <span class="position">#3 in Trips:</span>
+                            <span class="assigned-route">??? Route</span>
+                            <span class="route-status incomplete">?</span>
+                        </div>
+                        <div class="route-assignment incomplete">
+                            <span class="position">Running Back:</span>
+                            <span class="assigned-route">??? Assignment</span>
+                            <span class="route-status incomplete">?</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="completion-challenge">
+                    <h4>What route should #2 in trips run to complete the Smash concept?</h4>
+                    <div class="concept-explanation">
+                        <p>Smash concept combines a speed out with a corner route to create a high-low stretch on the outside defender.</p>
+                    </div>
+
+                    <div class="completion-options">
+                        <button class="completion-option">
+                            <div class="option-route">Slant Route</div>
+                            <div class="option-logic">Quick inside route</div>
+                        </button>
+                        <button class="completion-option correct">
+                            <div class="option-route">Corner Route</div>
+                            <div class="option-logic">High route in smash concept</div>
+                        </button>
+                        <button class="completion-option">
+                            <div class="option-route">Curl Route</div>
+                            <div class="option-logic">Comeback route</div>
+                        </button>
+                        <button class="completion-option">
+                            <div class="option-route">Hitch Route</div>
+                            <div class="option-logic">Quick stop route</div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="concept-visual">
+                    <div class="concept-diagram">
+                        <!-- Visual representation of smash concept -->
+                        <div class="route-tree">
+                            <div class="route completed">Speed Out ↗️</div>
+                            <div class="route question">? Route</div>
+                            <div class="route question">? Route</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mix and Match Mode -->
+        <div class="mix-match-mode" style="display: none;">
+            <div class="mix-match-header">
+                <h2>Mix & Match Challenge</h2>
+                <p>Combine formations with route concepts to create effective plays</p>
+            </div>
+
+            <div class="combination-workspace">
+                <div class="formation-selector">
+                    <h3>Choose Formation</h3>
+                    <div class="formation-options">
+                        <button class="formation-card" data-formation="11-personnel">
+                            <div class="formation-diagram">
+                                <div class="formation-name">11 Personnel</div>
+                                <div class="formation-layout">1 RB, 1 TE, 3 WR</div>
+                            </div>
+                        </button>
+                        <button class="formation-card" data-formation="12-personnel">
+                            <div class="formation-diagram">
+                                <div class="formation-name">12 Personnel</div>
+                                <div class="formation-layout">1 RB, 2 TE, 2 WR</div>
+                            </div>
+                        </button>
+                        <button class="formation-card" data-formation="trips">
+                            <div class="formation-diagram">
+                                <div class="formation-name">Trips</div>
+                                <div class="formation-layout">3 WR to one side</div>
+                            </div>
+                        </button>
+                        <button class="formation-card" data-formation="empty">
+                            <div class="formation-diagram">
+                                <div class="formation-name">Empty</div>
+                                <div class="formation-layout">5 WR, No RB</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="concept-selector">
+                    <h3>Choose Route Concept</h3>
+                    <div class="concept-options">
+                        <button class="concept-card" data-concept="mesh">
+                            <div class="concept-info">
+                                <div class="concept-name">Mesh Concept</div>
+                                <div class="concept-description">Crossing routes with picks</div>
+                            </div>
+                        </button>
+                        <button class="concept-card" data-concept="flood">
+                            <div class="concept-info">
+                                <div class="concept-name">Flood Concept</div>
+                                <div class="concept-description">Multiple routes to one level</div>
+                            </div>
+                        </button>
+                        <button class="concept-card" data-concept="smash">
+                            <div class="concept-info">
+                                <div class="concept-name">Smash Concept</div>
+                                <div class="concept-description">High-low combination</div>
+                            </div>
+                        </button>
+                        <button class="concept-card" data-concept="four-verts">
+                            <div class="concept-info">
+                                <div class="concept-name">Four Verticals</div>
+                                <div class="concept-description">Stress deep coverage</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="combination-result">
+                    <h3>Your Combination</h3>
+                    <div class="selected-combo">
+                        <div class="combo-formation">
+                            <span class="combo-label">Formation:</span>
+                            <span class="combo-value">Not Selected</span>
+                        </div>
+                        <div class="combo-concept">
+                            <span class="combo-label">Concept:</span>
+                            <span class="combo-value">Not Selected</span>
+                        </div>
+                    </div>
+                    
+                    <div class="effectiveness-rating" style="display: none;">
+                        <h4>Effectiveness vs Coverage</h4>
+                        <div class="coverage-ratings">
+                            <div class="rating-item">
+                                <span class="coverage">vs Cover 2</span>
+                                <div class="rating-bar">
+                                    <div class="rating-fill excellent" style="width: 90%;"></div>
+                                </div>
+                                <span class="rating-score">90%</span>
+                            </div>
+                            <div class="rating-item">
+                                <span class="coverage">vs Cover 3</span>
+                                <div class="rating-bar">
+                                    <div class="rating-fill good" style="width: 75%;"></div>
+                                </div>
+                                <span class="rating-score">75%</span>
+                            </div>
+                            <div class="rating-item">
+                                <span class="coverage">vs Man</span>
+                                <div class="rating-bar">
+                                    <div class="rating-fill poor" style="width: 45%;"></div>
+                                </div>
+                                <span class="rating-score">45%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Building Mode Selector -->
+        <div class="building-menu" style="display: none;">
+            <h2>Choose Building Challenge</h2>
+            <div class="building-modes">
+                <button class="building-card" data-mode="route-building">
+                    <div class="mode-icon">🏗️</div>
+                    <div class="mode-title">Route Builder</div>
+                    <div class="mode-desc">Drag routes onto formation positions</div>
+                </button>
+                
+                <button class="building-card" data-mode="step-building">
+                    <div class="mode-icon">📝</div>
+                    <div class="mode-title">Step-by-Step Design</div>
+                    <div class="mode-desc">Build plays with guided steps</div>
+                </button>
+                
+                <button class="building-card" data-mode="concept-completion">
+                    <div class="mode-icon">🧩</div>
+                    <div class="mode-title">Complete the Concept</div>
+                    <div class="mode-desc">Finish partial play designs</div>
+                </button>
+                
+                <button class="building-card" data-mode="mix-match">
+                    <div class="mode-icon">🔀</div>
+                    <div class="mode-title">Mix & Match</div>
+                    <div class="mode-desc">Combine formations with concepts</div>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
