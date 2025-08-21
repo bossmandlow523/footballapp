@@ -1,0 +1,267 @@
+graph TD
+    %% External Services
+    subgraph "External Services"
+        OpenAI[OpenAI GPT-4 API]
+        Vercel[Vercel Platform]
+        SupabaseCloud[Supabase Cloud]
+    end
+
+    %% Frontend Layer
+    subgraph "Frontend (Next.js 15)"
+        NextJSApp[Next.js 15 App]
+        subgraph "UI Components (shadcn/ui)"
+            ShadcnButton[Button Components]
+            ShadcnForm[Form Components]
+            ShadcnCard[Card Components]
+            ShadcnDialog[Dialog Components]
+            ShadcnTable[Table Components]
+            ShadcnChart[Chart Components]
+        end
+        subgraph "Page Components"
+            CoachDash[Coach Dashboard]
+            PlayerInterface[Player Interface]
+            QuizUI[Quiz Interface]
+            SignalCreation[Signal Creation]
+        end
+    end
+
+    %% Next.js API Routes Layer
+    subgraph "API Layer (Next.js API Routes)"
+        AuthAPI[Auth API Routes]
+        TeamsAPI[Teams API Routes]
+        PlaysAPI[Plays API Routes]
+        SignalsAPI[Signals API Routes]
+        AIAPI[AI API Routes]
+        AnalyticsAPI[Analytics API Routes]
+        FilesAPI[Files API Routes]
+        LearningAPI[Learning API Routes]
+    end
+
+    %% Server Actions & Business Logic
+    subgraph "Server Actions & Services"
+        subgraph "Playbook Services"
+            PlayParser[Play Parser Action]
+            PlayMapper[Play Mapper Action]
+            ConceptExtractor[Concept Extractor]
+            RouteAnalyzer[Route Analyzer]
+        end
+        
+        subgraph "Signal Services"
+            SignalProcessor[Signal Processor Action]
+            VideoHandler[Video Upload Handler]
+            CombinationBuilder[Signal Builder]
+            RecognitionTester[Quiz Generator]
+        end
+        
+        subgraph "Learning Services"
+            ProgressTracker[Progress Tracker Action]
+            TeamAnalytics[Team Analytics]
+            AdaptiveLearning[Adaptive Learning]
+            SpacedRepetition[Spaced Repetition]
+        end
+        
+        subgraph "AI Services"
+            QuestionGenerator[Question Generator Action]
+            ScenarioBuilder[Scenario Builder]
+            PhilosophyTrainer[Philosophy Trainer]
+            ContentCustomizer[Content Customizer]
+        end
+    end
+
+    %% Supabase Services
+    subgraph "Supabase Platform"
+        subgraph "Supabase Database"
+            Users[(Users Table)]
+            Teams[(Teams Table)]
+            Coaches[(Coaches Table)]
+            Players[(Players Table)]
+            Plays[(Plays Table)]
+            Signals[(Signals Table)]
+            Questions[(Questions Table)]
+            Progress[(Progress Table)]
+            Sessions[(Learning Sessions)]
+            Philosophies[(Team Philosophies)]
+        end
+        
+        subgraph "Supabase Auth"
+            AuthService[Supabase Auth Service]
+            RLS[Row Level Security]
+            JWTTokens[JWT Token Management]
+        end
+        
+        subgraph "Supabase Storage"
+            VideoStorage[Signal Videos]
+            DiagramStorage[Play Diagrams]
+            GeneratedContent[AI Generated Content]
+            CDN[Supabase CDN]
+        end
+        
+        subgraph "Supabase Real-time"
+            RealtimeService[Real-time Subscriptions]
+            LiveProgress[Live Progress Updates]
+            TeamCollaboration[Team Collaboration]
+            ProgressNotifications[Progress Notifications]
+        end
+    end
+
+    %% State Management
+    subgraph "Frontend State (Zustand)"
+        AuthStore[Auth Store]
+        TeamStore[Team Store]
+        LearningStore[Learning Store]
+        UIStore[UI State Store]
+    end
+
+    %% Middleware & Edge Functions
+    subgraph "Middleware & Security"
+        AuthMiddleware[Next.js Auth Middleware]
+        RateLimiting[Rate Limiting]
+        CORS[CORS Headers]
+        Validation[Input Validation]
+    end
+
+    %% Frontend Connections
+    NextJSApp --> CoachDash
+    NextJSApp --> PlayerInterface
+    NextJSApp --> QuizUI
+    NextJSApp --> SignalCreation
+    
+    %% shadcn/ui Component Usage
+    CoachDash --> ShadcnCard
+    CoachDash --> ShadcnChart
+    CoachDash --> ShadcnTable
+    PlayerInterface --> ShadcnButton
+    PlayerInterface --> ShadcnCard
+    QuizUI --> ShadcnForm
+    QuizUI --> ShadcnButton
+    QuizUI --> ShadcnDialog
+    SignalCreation --> ShadcnForm
+    SignalCreation --> ShadcnCard
+    
+    %% Frontend to API Routes
+    CoachDash --> TeamsAPI
+    CoachDash --> AnalyticsAPI
+    PlayerInterface --> LearningAPI
+    QuizUI --> LearningAPI
+    SignalCreation --> SignalsAPI
+    
+    %% All frontend components connect to state
+    CoachDash --> AuthStore
+    CoachDash --> TeamStore
+    PlayerInterface --> LearningStore
+    QuizUI --> LearningStore
+    SignalCreation --> UIStore
+    
+    %% Middleware Layer
+    NextJSApp --> AuthMiddleware
+    AuthMiddleware --> RateLimiting
+    RateLimiting --> CORS
+    CORS --> Validation
+    
+    %% API Routes to Services
+    AuthAPI --> AuthService
+    TeamsAPI --> TeamAnalytics
+    PlaysAPI --> PlayParser
+    PlaysAPI --> PlayMapper
+    SignalsAPI --> SignalProcessor
+    SignalsAPI --> VideoHandler
+    AIAPI --> QuestionGenerator
+    AIAPI --> ScenarioBuilder
+    LearningAPI --> ProgressTracker
+    AnalyticsAPI --> TeamAnalytics
+    FilesAPI --> VideoHandler
+    
+    %% Server Actions to External Services
+    QuestionGenerator --> OpenAI
+    ScenarioBuilder --> OpenAI
+    PhilosophyTrainer --> OpenAI
+    ContentCustomizer --> OpenAI
+    
+    %% Services to Database
+    PlayParser --> Plays
+    SignalProcessor --> Signals
+    ProgressTracker --> Progress
+    ProgressTracker --> Sessions
+    TeamAnalytics --> Teams
+    TeamAnalytics --> Progress
+    QuestionGenerator --> Questions
+    PhilosophyTrainer --> Philosophies
+    
+    %% Auth Flow
+    AuthAPI --> AuthService
+    AuthService --> JWTTokens
+    AuthService --> RLS
+    AuthService --> Users
+    AuthService --> Teams
+    
+    %% File Storage Flow
+    VideoHandler --> VideoStorage
+    PlayParser --> DiagramStorage
+    QuestionGenerator --> GeneratedContent
+    VideoStorage --> CDN
+    DiagramStorage --> CDN
+    
+    %% Real-time Connections
+    ProgressTracker --> RealtimeService
+    RealtimeService --> LiveProgress
+    RealtimeService --> TeamCollaboration
+    RealtimeService --> ProgressNotifications
+    
+    %% Real-time to Frontend
+    LiveProgress --> CoachDash
+    TeamCollaboration --> PlayerInterface
+    ProgressNotifications --> CoachDash
+    
+    %% Row Level Security
+    RLS --> Users
+    RLS --> Teams
+    RLS --> Plays
+    RLS --> Signals
+    RLS --> Progress
+    
+    %% Deployment
+    NextJSApp --> Vercel
+    AuthAPI --> Vercel
+    TeamsAPI --> Vercel
+    PlaysAPI --> Vercel
+    SignalsAPI --> Vercel
+    AIAPI --> Vercel
+    
+    %% External Service Connections
+    SupabaseCloud --> Users
+    SupabaseCloud --> Teams
+    SupabaseCloud --> AuthService
+    SupabaseCloud --> VideoStorage
+    SupabaseCloud --> RealtimeService
+    
+    %% Service Relationships
+    PlayMapper --> ConceptExtractor
+    ConceptExtractor --> RouteAnalyzer
+    SignalProcessor --> CombinationBuilder
+    CombinationBuilder --> RecognitionTester
+    TeamAnalytics --> AdaptiveLearning
+    AdaptiveLearning --> SpacedRepetition
+    PhilosophyTrainer --> ContentCustomizer
+    
+    %% Styling
+    classDef frontend fill:#e1f5fe
+    classDef api fill:#f3e5f5
+    classDef service fill:#e8f5e8
+    classDef database fill:#fce4ec
+    classDef auth fill:#fff3e0
+    classDef storage fill:#fff8e1
+    classDef realtime fill:#e0f2f1
+    classDef external fill:#f1f8e9
+    classDef state fill:#fafafa
+    classDef shadcn fill:#e8f4fd
+    
+    class NextJSApp,CoachDash,PlayerInterface,QuizUI,SignalCreation frontend
+    class ShadcnButton,ShadcnForm,ShadcnCard,ShadcnDialog,ShadcnTable,ShadcnChart shadcn
+    class AuthAPI,TeamsAPI,PlaysAPI,SignalsAPI,AIAPI,AnalyticsAPI,FilesAPI,LearningAPI api
+    class PlayParser,SignalProcessor,ProgressTracker,QuestionGenerator service
+    class Users,Teams,Plays,Signals,Questions,Progress database
+    class AuthService,RLS,JWTTokens auth
+    class VideoStorage,DiagramStorage,CDN storage
+    class RealtimeService,LiveProgress,TeamCollaboration realtime
+    class OpenAI,Vercel,SupabaseCloud external
+    class AuthStore,TeamStore,LearningStore,UIStore state
