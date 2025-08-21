@@ -4,361 +4,483 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FootballIQ - Audio/Video Integration Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ["Inter", "ui-sans-serif", "system-ui"] },
+                    colors: {
+                        brand: { 500: "#10b981", 600: "#059669", 700: "#047857" },
+                        accent: { 500: "#22c55e", 600: "#16a34a" }
+                    },
+                    boxShadow: {
+                        card: "0 1px 2px rgba(0,0,0,0.08), 0 8px 30px rgba(2,6,23,0.08)",
+                        glow: "0 0 0 1px rgba(16,185,129,0.3), 0 8px 30px rgba(16,185,129,0.15)"
+                    },
+                    keyframes: {
+                        gradient: { '0%,100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } },
+                        shimmer: { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(100%)' } },
+                        pop: { '0%': { transform: 'scale(0.95)' }, '100%': { transform: 'scale(1)' } },
+                        ripple: { '0%': { transform: 'scale(0)', opacity: '0.4' }, '100%': { transform: 'scale(1)', opacity: '0' } }
+                    },
+                    animation: {
+                        gradient: 'gradient 12s ease infinite',
+                        shimmer: 'shimmer 1.5s linear infinite',
+                        pop: 'pop 120ms ease-out',
+                        ripple: 'ripple 500ms ease-out'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html, body { height: 100%; }
+        body { font-family: Inter, ui-sans-serif, system-ui; }
+        /* particle dots */
+        .particle { position: absolute; border-radius: 9999px; opacity: .25; filter: blur(0.5px); }
+    </style>
 </head>
-<body>
-    <div class="audio-video-container">
-        <header class="quiz-header">
-            <div class="header-left">
-                <button class="back-button">← Back</button>
-                <h1>Audio/Video Recognition</h1>
-            </div>
-            <div class="header-right">
-                <div class="volume-control">
-                    <span class="volume-icon">🔊</span>
-                    <input type="range" class="volume-slider" min="0" max="100" value="75">
+<body class="min-h-screen bg-[radial-gradient(1250px_600px_at_50%_-200px,theme(colors.brand.500/.15),transparent_60%),radial-gradient(650px_300px_at_10%_10%,theme(colors.emerald.400/.12),transparent_50%),radial-gradient(650px_300px_at_90%_10%,theme(colors.green.500/.10),transparent_50%)] relative overflow-x-hidden">
+    <div class="pointer-events-none absolute inset-0 -z-10" id="particles"></div>
+
+    <div class="mx-auto max-w-6xl px-6 py-8">
+        <header class="quiz-header sticky top-4 z-20">
+            <div class="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur shadow-card">
+                <div class="header-left flex items-center gap-3">
+                    <button class="back-button relative inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm font-medium text-white shadow-sm ring-1 ring-white/10 transition-all hover:translate-y-[-1px] hover:bg-white/20 hover:shadow-glow active:translate-y-0">
+                        ← Back
+                    </button>
+                    <h1 class="text-base font-semibold tracking-tight text-white">Audio/Video Recognition</h1>
                 </div>
+                <div class="header-right">
+                    <div class="volume-control flex items-center gap-3">
+                        <span class="volume-icon text-white/80">🔊</span>
+                        <input type="range" class="volume-slider h-1 w-40 cursor-pointer appearance-none rounded bg-white/20 accent-emerald-500" min="0" max="100" value="75">
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3 h-1 w-full overflow-hidden rounded-full bg-white/10">
+                <div class="h-full w-1/3 bg-gradient-to-r from-emerald-400 via-emerald-500 to-lime-400 animate-[gradient_6s_ease_infinite] bg-[length:200%_100%]"></div>
             </div>
         </header>
 
         <!-- Audio Signal Recognition Mode -->
-        <div class="audio-recognition-mode active">
-            <div class="audio-challenge-header">
-                <h2>What Do You Hear?</h2>
-                <p class="challenge-description">Listen carefully to Coach Rodriguez's audio signal. Can you identify the call?</p>
-            </div>
-
-            <div class="audio-player-section">
-                <div class="audio-player">
-                    <div class="audio-visual">
-                        <div class="sound-waves">
-                            <div class="wave wave-1"></div>
-                            <div class="wave wave-2"></div>
-                            <div class="wave wave-3"></div>
-                            <div class="wave wave-4"></div>
-                            <div class="wave wave-5"></div>
-                        </div>
-                        <div class="audio-status">
-                            <span class="status-text">Ready to play</span>
-                        </div>
-                    </div>
-                    
-                    <div class="audio-controls">
-                        <button class="play-button">▶️ Play Audio</button>
-                        <button class="replay-button">🔄 Replay</button>
-                        <button class="slow-play">½× Slow</button>
-                    </div>
-                    
-                    <audio class="signal-audio" preload="auto">
-                        <source src="audio/hot-route-call.mp3" type="audio/mpeg">
-                        <source src="audio/hot-route-call.wav" type="audio/wav">
-                        Your browser does not support the audio element.
-                    </audio>
+        <div class="audio-recognition-mode active mt-8">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur">
+                <div class="audio-challenge-header">
+                    <h2 class="text-2xl font-bold tracking-tight text-white">What Do You Hear?</h2>
+                    <p class="mt-1 text-sm text-white/70">Listen carefully to Coach Rodriguez's audio signal. Can you identify the call?</p>
                 </div>
 
-                <div class="audio-context">
-                    <div class="situation-info">
-                        <span class="down">3rd & 8</span>
-                        <span class="field-pos">Red Zone</span>
-                        <span class="time">2:15 left</span>
+                <div class="audio-player-section mt-6 grid gap-6 md:grid-cols-[1.2fr_0.8fr]">
+                    <div class="audio-player rounded-xl border border-white/10 bg-black/20 p-5">
+                        <div class="audio-visual">
+                            <div class="sound-waves flex h-28 items-end justify-between overflow-hidden rounded-md bg-gradient-to-b from-emerald-500/10 to-transparent p-3">
+                                <div class="wave wave-1 h-12 w-1 rounded bg-emerald-400/70"></div>
+                                <div class="wave wave-2 h-20 w-1 rounded bg-emerald-400/70"></div>
+                                <div class="wave wave-3 h-10 w-1 rounded bg-emerald-400/70"></div>
+                                <div class="wave wave-4 h-24 w-1 rounded bg-emerald-400/70"></div>
+                                <div class="wave wave-5 h-14 w-1 rounded bg-emerald-400/70"></div>
+                            </div>
+                            <div class="audio-status mt-3 text-sm text-white/70"><span class="status-text">Ready to play</span></div>
+                        </div>
+
+                        <div class="audio-controls mt-4 flex flex-wrap items-center gap-3">
+                            <button class="ui-btn play-button group relative inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                                ▶️ <span>Play Audio</span>
+                                <span class="pointer-events-none absolute inset-0 overflow-hidden rounded-md">
+                                    <span class="absolute inset-y-0 left-0 w-1/3 translate-x-[-100%] bg-white/20 blur-sm group-hover:animate-shimmer"></span>
+                                </span>
+                            </button>
+                            <button class="ui-btn replay-button relative inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-4 py-2 text-sm font-medium text-white/90 transition-all hover:bg-white/20">
+                                🔄 <span>Replay</span>
+                            </button>
+                            <button class="ui-btn slow-play relative inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-4 py-2 text-sm font-medium text-white/90 transition-all hover:bg-white/20">
+                                ½× <span>Slow</span>
+                            </button>
+                        </div>
+
+                        <audio class="signal-audio" preload="auto">
+                            <source src="audio/hot-route-call.mp3" type="audio/mpeg">
+                            <source src="audio/hot-route-call.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
                     </div>
-                    <div class="crowd-noise-indicator">
-                        <span class="noise-level">Crowd Noise: High</span>
-                        <div class="noise-meter">
-                            <div class="noise-fill" style="width: 85%;"></div>
+
+                    <div class="audio-context rounded-xl border border-white/10 bg-white/5 p-5">
+                        <div class="situation-info flex items-center gap-3 text-sm text-white/80">
+                            <span class="down inline-flex items-center rounded-full bg-white/10 px-2.5 py-1">3rd & 8</span>
+                            <span class="field-pos inline-flex items-center rounded-full bg-white/10 px-2.5 py-1">Red Zone</span>
+                            <span class="time inline-flex items-center rounded-full bg-white/10 px-2.5 py-1">2:15 left</span>
+                        </div>
+                        <div class="crowd-noise-indicator mt-4">
+                            <span class="noise-level text-xs font-medium text-white/70">Crowd Noise: High</span>
+                            <div class="noise-meter mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+                                <div class="noise-fill h-2 w-[85%] rounded-full bg-gradient-to-r from-emerald-400 via-emerald-500 to-lime-400 animate-[gradient_8s_ease_infinite] bg-[length:200%_100%]"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="audio-options">
-                <div class="option-grid">
-                    <button class="audio-option">
-                        <div class="option-text">"Hot! Hot! Slant now!"</div>
-                        <div class="option-meaning">Hot Route to Slant</div>
-                    </button>
-                    <button class="audio-option">
-                        <div class="option-text">"Blue 42! Blue 42!"</div>
-                        <div class="option-meaning">Audible Change</div>
-                    </button>
-                    <button class="audio-option">
-                        <div class="option-text">"Kill! Kill! Kill!"</div>
-                        <div class="option-meaning">Kill the Play</div>
-                    </button>
-                    <button class="audio-option">
-                        <div class="option-text">"Check! Check! Stick!"</div>
-                        <div class="option-meaning">Route Adjustment</div>
-                    </button>
+                <div class="audio-options mt-6">
+                    <div class="option-grid grid gap-3 md:grid-cols-2">
+                        <button class="answer audio-option group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:translate-y-[-1px] hover:bg-white/10">
+                            <div class="option-text text-base font-semibold text-white">"Hot! Hot! Slant now!"</div>
+                            <div class="option-meaning text-sm text-white/70">Hot Route to Slant</div>
+                            <span class="pointer-events-none absolute inset-0 rounded-xl ring-0 ring-emerald-400/60 transition-all group-[.selected]:ring-4"></span>
+                        </button>
+                        <button class="answer audio-option group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:translate-y-[-1px] hover:bg-white/10">
+                            <div class="option-text text-base font-semibold text-white">"Blue 42! Blue 42!"</div>
+                            <div class="option-meaning text-sm text-white/70">Audible Change</div>
+                            <span class="pointer-events-none absolute inset-0 rounded-xl ring-0 ring-emerald-400/60 transition-all group-[.selected]:ring-4"></span>
+                        </button>
+                        <button class="answer audio-option group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:translate-y-[-1px] hover:bg-white/10">
+                            <div class="option-text text-base font-semibold text-white">"Kill! Kill! Kill!"</div>
+                            <div class="option-meaning text-sm text-white/70">Kill the Play</div>
+                            <span class="pointer-events-none absolute inset-0 rounded-xl ring-0 ring-emerald-400/60 transition-all group-[.selected]:ring-4"></span>
+                        </button>
+                        <button class="answer audio-option group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:translate-y-[-1px] hover:bg-white/10">
+                            <div class="option-text text-base font-semibold text-white">"Check! Check! Stick!"</div>
+                            <div class="option-meaning text-sm text-white/70">Route Adjustment</div>
+                            <span class="pointer-events-none absolute inset-0 rounded-xl ring-0 ring-emerald-400/60 transition-all group-[.selected]:ring-4"></span>
+                        </button>
+                    </div>
                 </div>
-            </div>
 
-            <div class="listening-help">
-                <button class="help-toggle">🎧 Listening Tips</button>
-                <div class="help-content" style="display: none;">
-                    <div class="tip">
-                        <strong>Focus on:</strong> Key words like "Hot", "Kill", "Check"
-                    </div>
-                    <div class="tip">
-                        <strong>Listen for:</strong> Urgency and repetition in the voice
-                    </div>
-                    <div class="tip">
-                        <strong>Context clues:</strong> Down and distance affect the call type
+                <div class="listening-help mt-6">
+                    <button class="help-toggle inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm font-medium text-white/90 transition-all hover:bg-white/20">🎧 Listening Tips</button>
+                    <div class="help-content mt-3 hidden rounded-lg border border-white/10 bg-white/5 p-4 text-sm text-white/80">
+                        <div class="tip"><strong>Focus on:</strong> Key words like "Hot", "Kill", "Check"</div>
+                        <div class="tip"><strong>Listen for:</strong> Urgency and repetition in the voice</div>
+                        <div class="tip"><strong>Context clues:</strong> Down and distance affect the call type</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Game Video Analysis Mode -->
-        <div class="video-analysis-mode" style="display: none;">
-            <div class="video-challenge-header">
-                <h2>Real Game Situation Analysis</h2>
-                <p class="challenge-description">Watch this game clip and identify what the quarterback should do based on what he sees.</p>
-            </div>
+        <div class="video-analysis-mode mt-10 hidden">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur">
+                <div class="video-challenge-header">
+                    <h2 class="text-2xl font-bold tracking-tight text-white">Real Game Situation Analysis</h2>
+                    <p class="mt-1 text-sm text-white/70">Watch this game clip and identify what the quarterback should do based on what he sees.</p>
+                </div>
 
-            <div class="game-video-section">
-                <div class="video-player">
-                    <video class="game-video" controls poster="game-situation-thumbnail.jpg">
-                        <source src="video/game-situation-1.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    
-                    <div class="video-controls-enhanced">
-                        <button class="frame-by-frame">⏸️ Frame by Frame</button>
-                        <button class="focus-qb">👀 Focus on QB</button>
-                        <button class="focus-defense">👀 Focus on Defense</button>
-                        <button class="replay-key-moment">🔄 Replay Key Moment</button>
+                <div class="game-video-section mt-6 grid gap-6 md:grid-cols-[1.2fr_0.8fr]">
+                    <div class="video-player rounded-xl border border-white/10 bg-black/30 p-4">
+                        <video class="game-video w-full rounded-md" controls poster="game-situation-thumbnail.jpg">
+                            <source src="video/game-situation-1.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-controls-enhanced mt-4 flex flex-wrap items-center gap-3">
+                            <button class="ui-btn frame-by-frame rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm text-white hover:bg-white/20">⏸️ Frame by Frame</button>
+                            <button class="ui-btn focus-qb rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm text-white hover:bg-white/20">👀 Focus on QB</button>
+                            <button class="ui-btn focus-defense rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm text-white hover:bg-white/20">👀 Focus on Defense</button>
+                            <button class="ui-btn replay-key-moment rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm text-white hover:bg-white/20">🔄 Replay Key Moment</button>
+                        </div>
+                    </div>
+
+                    <div class="analysis-tools grid gap-6">
+                        <div class="viewing-angle rounded-xl border border-white/10 bg-white/5 p-4">
+                            <h4 class="text-sm font-semibold text-white">Camera Angle</h4>
+                            <div class="mt-3 flex flex-wrap gap-2">
+                                <button class="angle-btn active rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white">Sideline</button>
+                                <button class="angle-btn rounded-md border border-white/10 bg-white/10 px-3 py-1.5 text-xs text-white hover:bg-white/20">End Zone</button>
+                                <button class="angle-btn rounded-md border border-white/10 bg-white/10 px-3 py-1.5 text-xs text-white hover:bg-white/20">All-22</button>
+                            </div>
+                        </div>
+
+                        <div class="focus-filters rounded-xl border border-white/10 bg-white/5 p-4">
+                            <h4 class="text-sm font-semibold text-white">Focus On</h4>
+                            <div class="mt-3 grid gap-2 text-sm text-white/80">
+                                <label class="filter-option inline-flex items-center gap-2"><input type="checkbox" checked class="accent-emerald-500"> Show Routes</label>
+                                <label class="filter-option inline-flex items-center gap-2"><input type="checkbox" checked class="accent-emerald-500"> Show Coverage</label>
+                                <label class="filter-option inline-flex items-center gap-2"><input type="checkbox" class="accent-emerald-500"> Show Pressure</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="analysis-tools">
-                    <div class="viewing-angle">
-                        <h4>Camera Angle</h4>
-                        <button class="angle-btn active" data-angle="sideline">Sideline</button>
-                        <button class="angle-btn" data-angle="endzone">End Zone</button>
-                        <button class="angle-btn" data-angle="all22">All-22</button>
+                <div class="video-question mt-6">
+                    <h3 class="text-lg font-semibold text-white">Based on what you observed, what should the quarterback do?</h3>
+                    <div class="video-options mt-3 grid gap-3 md:grid-cols-2">
+                        <button class="answer video-option group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:bg-white/10">
+                            <div class="option-action text-white">Throw to the slant route</div>
+                            <div class="option-reasoning text-sm text-white/70">Safety is dropping, creating opening</div>
+                            <span class="pointer-events-none absolute inset-0 rounded-xl ring-0 ring-emerald-400/60 transition-all group-[.selected]:ring-4"></span>
+                        </button>
+                        <button class="answer video-option group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:bg-white/10">
+                            <div class="option-action text-white">Check down to running back</div>
+                            <div class="option-reasoning text-sm text-white/70">Pressure coming, take safe option</div>
+                            <span class="pointer-events-none absolute inset-0 rounded-xl ring-0 ring-emerald-400/60 transition-all group-[.selected]:ring-4"></span>
+                        </button>
+                        <button class="answer video-option group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:bg-white/10">
+                            <div class="option-action text-white">Throw deep to corner route</div>
+                            <div class="option-reasoning text-sm text-white/70">Corner has single coverage</div>
+                            <span class="pointer-events-none absolute inset-0 rounded-xl ring-0 ring-emerald-400/60 transition-all group-[.selected]:ring-4"></span>
+                        </button>
+                        <button class="answer video-option group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:bg-white/10">
+                            <div class="option-action text-white">Scramble for yards</div>
+                            <div class="option-reasoning text-sm text-white/70">Pocket breaking down, running lane open</div>
+                            <span class="pointer-events-none absolute inset-0 rounded-xl ring-0 ring-emerald-400/60 transition-all group-[.selected]:ring-4"></span>
+                        </button>
                     </div>
-                    
-                    <div class="focus-filters">
-                        <h4>Focus On</h4>
-                        <label class="filter-option">
-                            <input type="checkbox" checked> Show Routes
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" checked> Show Coverage
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox"> Show Pressure
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="video-question">
-                <h3>Based on what you observed, what should the quarterback do?</h3>
-                <div class="video-options">
-                    <button class="video-option">
-                        <div class="option-action">Throw to the slant route</div>
-                        <div class="option-reasoning">Safety is dropping, creating opening</div>
-                    </button>
-                    <button class="video-option">
-                        <div class="option-action">Check down to running back</div>
-                        <div class="option-reasoning">Pressure coming, take safe option</div>
-                    </button>
-                    <button class="video-option">
-                        <div class="option-action">Throw deep to corner route</div>
-                        <div class="option-reasoning">Corner has single coverage</div>
-                    </button>
-                    <button class="video-option">
-                        <div class="option-action">Scramble for yards</div>
-                        <div class="option-reasoning">Pocket breaking down, running lane open</div>
-                    </button>
                 </div>
             </div>
         </div>
 
         <!-- Voice Response Mode -->
-        <div class="voice-response-mode" style="display: none;">
-            <div class="voice-challenge-header">
-                <h2>Speak Your Answer</h2>
-                <p class="challenge-description">Use your voice to respond to this game situation. Speak clearly and confidently!</p>
-            </div>
+        <div class="voice-response-mode mt-10 hidden">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur">
+                <div class="voice-challenge-header">
+                    <h2 class="text-2xl font-bold tracking-tight text-white">Speak Your Answer</h2>
+                    <p class="mt-1 text-sm text-white/70">Use your voice to respond to this game situation. Speak clearly and confidently!</p>
+                </div>
 
-            <div class="voice-scenario">
-                <div class="scenario-setup">
-                    <h3>You're the quarterback in the huddle</h3>
-                    <p>The coach just signaled a hot route change. Communicate this to your receivers using the proper terminology.</p>
-                    
-                    <div class="scenario-details">
-                        <div class="formation">Formation: Trips Right</div>
-                        <div class="coverage">Defense: Cover 2</div>
-                        <div class="adjustment">Change: #1 receiver to comeback</div>
+                <div class="voice-scenario mt-6 grid gap-6 md:grid-cols-[1.2fr_0.8fr]">
+                    <div class="scenario-setup rounded-xl border border-white/10 bg-white/5 p-5">
+                        <h3 class="text-lg font-semibold text-white">You're the quarterback in the huddle</h3>
+                        <p class="mt-1 text-sm text-white/80">The coach just signaled a hot route change. Communicate this to your receivers using the proper terminology.</p>
+                        <div class="scenario-details mt-4 grid gap-2 text-sm text-white/80">
+                            <div class="formation inline-flex items-center gap-2"><span class="text-white/60">Formation:</span> Trips Right</div>
+                            <div class="coverage inline-flex items-center gap-2"><span class="text-white/60">Defense:</span> Cover 2</div>
+                            <div class="adjustment inline-flex items-center gap-2"><span class="text-white/60">Change:</span> #1 receiver to comeback</div>
+                        </div>
+                    </div>
+
+                    <div class="voice-recorder rounded-xl border border-white/10 bg-black/30 p-5">
+                        <div class="mic-visual flex items-center justify-center">
+                            <div class="mic-icon text-2xl">🎤</div>
+                            <div class="recording-indicator hidden relative ml-3 h-6 w-6">
+                                <div class="pulse-ring absolute inset-0 rounded-full bg-emerald-500/40 animate-[ping_1.5s_ease_in_out_infinite]"></div>
+                                <div class="pulse-ring delay-1 absolute inset-0 rounded-full bg-emerald-500/30 animate-[ping_2s_ease_in_out_infinite]"></div>
+                                <div class="pulse-ring delay-2 absolute inset-0 rounded-full bg-emerald-500/20 animate-[ping_2.5s_ease_in_out_infinite]"></div>
+                            </div>
+                        </div>
+
+                        <div class="recording-controls mt-4 flex flex-wrap items-center gap-3">
+                            <button class="start-recording inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-glow">Start Recording</button>
+                            <button class="stop-recording inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-4 py-2 text-sm font-medium text-white/90" disabled>Stop Recording</button>
+                            <button class="play-recording inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-4 py-2 text-sm font-medium text-white/90" disabled>Play Back</button>
+                        </div>
+
+                        <div class="recording-status mt-3 flex items-center justify-between text-sm text-white/70">
+                            <span class="status-text">Ready to record</span>
+                            <span class="timer">00:00</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="voice-recorder">
-                    <div class="mic-visual">
-                        <div class="mic-icon">🎤</div>
-                        <div class="recording-indicator" style="display: none;">
-                            <div class="pulse-ring"></div>
-                            <div class="pulse-ring delay-1"></div>
-                            <div class="pulse-ring delay-2"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="recording-controls">
-                        <button class="start-recording">Start Recording</button>
-                        <button class="stop-recording" disabled>Stop Recording</button>
-                        <button class="play-recording" disabled>Play Back</button>
-                    </div>
-                    
-                    <div class="recording-status">
-                        <span class="status-text">Ready to record</span>
-                        <span class="timer">00:00</span>
+                <div class="voice-hints mt-6 rounded-xl border border-white/10 bg-white/5 p-5">
+                    <h4 class="text-sm font-semibold text-white">Expected Response Examples:</h4>
+                    <div class="mt-2 grid gap-1 text-sm text-white/80">
+                        <div class="hint-item">"X receiver, comeback at 12!"</div>
+                        <div class="hint-item">"Hot route! #1 comeback!"</div>
+                        <div class="hint-item">"Trips right, X comeback now!"</div>
                     </div>
                 </div>
 
-                <div class="voice-hints">
-                    <h4>Expected Response Examples:</h4>
-                    <div class="hint-item">"X receiver, comeback at 12!"</div>
-                    <div class="hint-item">"Hot route! #1 comeback!"</div>
-                    <div class="hint-item">"Trips right, X comeback now!"</div>
-                </div>
-            </div>
+                <div class="voice-analysis mt-6 hidden rounded-xl border border-white/10 bg-white/5 p-5">
+                    <div class="analysis-results">
+                        <h3 class="text-lg font-semibold text-white">Voice Analysis Results</h3>
+                        <div class="analysis-metrics mt-4 grid gap-4 sm:grid-cols-3">
+                            <div class="metric rounded-lg border border-white/10 bg-white/5 p-4">
+                                <div class="metric-label text-xs text-white/70">Clarity</div>
+                                <div class="metric-bar mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+                                    <div class="metric-fill h-2 w-[85%] rounded-full bg-gradient-to-r from-emerald-400 via-emerald-500 to-lime-400 animate-[gradient_8s_ease_infinite] bg-[length:200%_100%]"></div>
+                                </div>
+                                <div class="metric-score mt-2 text-sm font-semibold text-white">85%</div>
+                            </div>
+                            <div class="metric rounded-lg border border-white/10 bg-white/5 p-4">
+                                <div class="metric-label text-xs text-white/70">Confidence</div>
+                                <div class="metric-bar mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+                                    <div class="metric-fill h-2 w-[78%] rounded-full bg-gradient-to-r from-emerald-400 via-emerald-500 to-lime-400 animate-[gradient_8s_ease_infinite] bg-[length:200%_100%]"></div>
+                                </div>
+                                <div class="metric-score mt-2 text-sm font-semibold text-white">78%</div>
+                            </div>
+                            <div class="metric rounded-lg border border-white/10 bg-white/5 p-4">
+                                <div class="metric-label text-xs text-white/70">Terminology</div>
+                                <div class="metric-bar mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+                                    <div class="metric-fill h-2 w-[92%] rounded-full bg-gradient-to-r from-emerald-400 via-emerald-500 to-lime-400 animate-[gradient_8s_ease_infinite] bg-[length:200%_100%]"></div>
+                                </div>
+                                <div class="metric-score mt-2 text-sm font-semibold text-white">92%</div>
+                            </div>
+                        </div>
 
-            <div class="voice-analysis" style="display: none;">
-                <div class="analysis-results">
-                    <h3>Voice Analysis Results</h3>
-                    <div class="analysis-metrics">
-                        <div class="metric">
-                            <div class="metric-label">Clarity</div>
-                            <div class="metric-bar">
-                                <div class="metric-fill" style="width: 85%;"></div>
-                            </div>
-                            <div class="metric-score">85%</div>
+                        <div class="transcription mt-6 rounded-lg border border-white/10 bg-white/5 p-4">
+                            <h4 class="text-sm font-semibold text-white">What we heard:</h4>
+                            <div class="transcribed-text mt-1 text-sm text-white/80">"X receiver, run a comeback at twelve yards"</div>
+                            <div class="feedback correct mt-2 text-sm">✅ <span class="text-white/80">Correct terminology and instruction!</span></div>
                         </div>
-                        <div class="metric">
-                            <div class="metric-label">Confidence</div>
-                            <div class="metric-bar">
-                                <div class="metric-fill" style="width: 78%;"></div>
-                            </div>
-                            <div class="metric-score">78%</div>
-                        </div>
-                        <div class="metric">
-                            <div class="metric-label">Terminology</div>
-                            <div class="metric-bar">
-                                <div class="metric-fill" style="width: 92%;"></div>
-                            </div>
-                            <div class="metric-score">92%</div>
-                        </div>
-                    </div>
-                    
-                    <div class="transcription">
-                        <h4>What we heard:</h4>
-                        <div class="transcribed-text">"X receiver, run a comeback at twelve yards"</div>
-                        <div class="feedback correct">✅ Correct terminology and instruction!</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Mixed Audio/Video Challenge -->
-        <div class="mixed-challenge-mode" style="display: none;">
-            <div class="mixed-header">
-                <h2>Complete Communication Challenge</h2>
-                <p>This challenge combines visual signals, audio calls, and game video. Stay focused!</p>
-            </div>
-
-            <div class="challenge-sequence">
-                <div class="sequence-step active" data-step="1">
-                    <h3>Step 1: Watch the Signal</h3>
-                    <div class="signal-video">
-                        <video class="step-video" poster="signal-thumb.jpg">
-                            <source src="video/mixed-signal-1.mp4" type="video/mp4">
-                        </video>
-                    </div>
+        <div class="mixed-challenge-mode mt-10 hidden">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur">
+                <div class="mixed-header">
+                    <h2 class="text-2xl font-bold tracking-tight text-white">Complete Communication Challenge</h2>
+                    <p class="mt-1 text-sm text-white/70">This challenge combines visual signals, audio calls, and game video. Stay focused!</p>
                 </div>
 
-                <div class="sequence-step" data-step="2" style="display: none;">
-                    <h3>Step 2: Listen to the Audio Call</h3>
-                    <div class="audio-component">
-                        <audio class="step-audio">
-                            <source src="audio/mixed-call-1.mp3" type="audio/mpeg">
-                        </audio>
-                        <button class="play-audio">🔊 Play Call</button>
+                <div class="challenge-sequence mt-6 grid gap-6">
+                    <div class="sequence-step active rounded-xl border border-white/10 bg-white/5 p-5" data-step="1">
+                        <h3 class="text-lg font-semibold text-white">Step 1: Watch the Signal</h3>
+                        <div class="signal-video mt-3 overflow-hidden rounded-md">
+                            <video class="step-video w-full" poster="signal-thumb.jpg">
+                                <source src="video/mixed-signal-1.mp4" type="video/mp4">
+                            </video>
+                        </div>
                     </div>
-                </div>
 
-                <div class="sequence-step" data-step="3" style="display: none;">
-                    <h3>Step 3: Analyze the Game Situation</h3>
-                    <div class="situation-video">
-                        <video class="step-video" poster="situation-thumb.jpg">
-                            <source src="video/mixed-situation-1.mp4" type="video/mp4">
-                        </video>
+                    <div class="sequence-step hidden rounded-xl border border-white/10 bg-white/5 p-5" data-step="2">
+                        <h3 class="text-lg font-semibold text-white">Step 2: Listen to the Audio Call</h3>
+                        <div class="audio-component mt-3">
+                            <audio class="step-audio">
+                                <source src="audio/mixed-call-1.mp3" type="audio/mpeg">
+                            </audio>
+                            <button class="play-audio mt-3 inline-flex items-center gap-2 rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-glow">🔊 Play Call</button>
+                        </div>
                     </div>
-                </div>
 
-                <div class="sequence-step" data-step="4" style="display: none;">
-                    <h3>Step 4: What's the Complete Call?</h3>
-                    <div class="final-question">
-                        <p>Combining the visual signal, audio call, and game situation, what should the team execute?</p>
-                        <div class="comprehensive-options">
-                            <button class="comp-option">
-                                <div class="option-title">Hot Route to Slant + Blitz Protection</div>
-                                <div class="option-breakdown">Signal: Hot route, Audio: Protection call, Situation: Blitz coming</div>
-                            </button>
-                            <button class="comp-option">
-                                <div class="option-title">Audible to Run + Hard Count</div>
-                                <div class="option-breakdown">Signal: Change play, Audio: New play call, Situation: Defense shifted</div>
-                            </button>
-                            <button class="comp-option">
-                                <div class="option-title">Timeout + Coaching Input</div>
-                                <div class="option-breakdown">Signal: Timeout, Audio: Confirmation, Situation: Confusion evident</div>
-                            </button>
+                    <div class="sequence-step hidden rounded-xl border border-white/10 bg-white/5 p-5" data-step="3">
+                        <h3 class="text-lg font-semibold text-white">Step 3: Analyze the Game Situation</h3>
+                        <div class="situation-video mt-3 overflow-hidden rounded-md">
+                            <video class="step-video w-full" poster="situation-thumb.jpg">
+                                <source src="video/mixed-situation-1.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="sequence-step hidden rounded-xl border border-white/10 bg-white/5 p-5" data-step="4">
+                        <h3 class="text-lg font-semibold text-white">Step 4: What's the Complete Call?</h3>
+                        <div class="final-question mt-3">
+                            <p class="text-sm text-white/80">Combining the visual signal, audio call, and game situation, what should the team execute?</p>
+                            <div class="comprehensive-options mt-3 grid gap-3 md:grid-cols-2">
+                                <button class="answer comp-option group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:bg-white/10">
+                                    <div class="option-title text-white">Hot Route to Slant + Blitz Protection</div>
+                                    <div class="option-breakdown text-sm text-white/70">Signal: Hot route, Audio: Protection call, Situation: Blitz coming</div>
+                                    <span class="pointer-events-none absolute inset-0 rounded-xl ring-0 ring-emerald-400/60 transition-all group-[.selected]:ring-4"></span>
+                                </button>
+                                <button class="answer comp-option group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:bg-white/10">
+                                    <div class="option-title text-white">Audible to Run + Hard Count</div>
+                                    <div class="option-breakdown text-sm text-white/70">Signal: Change play, Audio: New play call, Situation: Defense shifted</div>
+                                    <span class="pointer-events-none absolute inset-0 rounded-xl ring-0 ring-emerald-400/60 transition-all group-[.selected]:ring-4"></span>
+                                </button>
+                                <button class="answer comp-option group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:bg-white/10">
+                                    <div class="option-title text-white">Timeout + Coaching Input</div>
+                                    <div class="option-breakdown text-sm text-white/70">Signal: Timeout, Audio: Confirmation, Situation: Confusion evident</div>
+                                    <span class="pointer-events-none absolute inset-0 rounded-xl ring-0 ring-emerald-400/60 transition-all group-[.selected]:ring-4"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="sequence-navigation">
-                <button class="seq-button previous" disabled>Previous</button>
-                <div class="step-indicators">
-                    <div class="step-dot active"></div>
-                    <div class="step-dot"></div>
-                    <div class="step-dot"></div>
-                    <div class="step-dot"></div>
+                <div class="sequence-navigation mt-6 flex items-center justify-between">
+                    <button class="seq-button previous inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-4 py-2 text-sm text-white/90 disabled:opacity-50" disabled>Previous</button>
+                    <div class="step-indicators flex items-center gap-2">
+                        <div class="step-dot h-2 w-2 rounded-full bg-white/30"></div>
+                        <div class="step-dot h-2 w-2 rounded-full bg-white/30"></div>
+                        <div class="step-dot h-2 w-2 rounded-full bg-white/30"></div>
+                        <div class="step-dot h-2 w-2 rounded-full bg-white/30"></div>
+                    </div>
+                    <button class="seq-button next inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-glow">Next</button>
                 </div>
-                <button class="seq-button next">Next</button>
             </div>
         </div>
 
         <!-- Challenge Type Selector -->
-        <div class="av-challenge-menu" style="display: none;">
-            <h2>Audio/Video Challenges</h2>
-            <div class="challenge-types">
-                <button class="av-challenge" data-mode="audio">
-                    <div class="challenge-icon">🎧</div>
-                    <div class="challenge-title">Audio Recognition</div>
-                    <div class="challenge-desc">Identify calls by sound alone</div>
+        <div class="av-challenge-menu mt-10 hidden">
+            <h2 class="text-center text-2xl font-bold tracking-tight text-white">Audio/Video Challenges</h2>
+            <div class="challenge-types mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
+                <button class="av-challenge group rounded-xl border border-white/10 bg-white/5 p-4 text-center text-white transition-all hover:translate-y-[-2px] hover:bg-white/10">
+                    <div class="challenge-icon text-2xl">🎧</div>
+                    <div class="challenge-title mt-1 font-semibold">Audio Recognition</div>
+                    <div class="challenge-desc text-sm text-white/70">Identify calls by sound alone</div>
                 </button>
-                
-                <button class="av-challenge" data-mode="video">
-                    <div class="challenge-icon">📹</div>
-                    <div class="challenge-title">Game Video Analysis</div>
-                    <div class="challenge-desc">Real game situation breakdown</div>
+                <button class="av-challenge group rounded-xl border border-white/10 bg-white/5 p-4 text-center text-white transition-all hover:translate-y-[-2px] hover:bg-white/10">
+                    <div class="challenge-icon text-2xl">📹</div>
+                    <div class="challenge-title mt-1 font-semibold">Game Video Analysis</div>
+                    <div class="challenge-desc text-sm text-white/70">Real game situation breakdown</div>
                 </button>
-                
-                <button class="av-challenge" data-mode="voice">
-                    <div class="challenge-icon">🎤</div>
-                    <div class="challenge-title">Voice Response</div>
-                    <div class="challenge-desc">Speak your answers aloud</div>
+                <button class="av-challenge group rounded-xl border border-white/10 bg-white/5 p-4 text-center text-white transition-all hover:translate-y-[-2px] hover:bg-white/10">
+                    <div class="challenge-icon text-2xl">🎤</div>
+                    <div class="challenge-title mt-1 font-semibold">Voice Response</div>
+                    <div class="challenge-desc text-sm text-white/70">Speak your answers aloud</div>
                 </button>
-                
-                <button class="av-challenge" data-mode="mixed">
-                    <div class="challenge-icon">🎭</div>
-                    <div class="challenge-title">Complete Communication</div>
-                    <div class="challenge-desc">Multi-step audio/video challenge</div>
+                <button class="av-challenge group rounded-xl border border-white/10 bg-white/5 p-4 text-center text-white transition-all hover:translate-y-[-2px] hover:bg-white/10">
+                    <div class="challenge-icon text-2xl">🎭</div>
+                    <div class="challenge-title mt-1 font-semibold">Complete Communication</div>
+                    <div class="challenge-desc text-sm text-white/70">Multi-step audio/video challenge</div>
                 </button>
             </div>
         </div>
     </div>
+
+    <script>
+        // Particles
+        (function() {
+            const root = document.getElementById('particles');
+            if (!root) return;
+            const dots = 40;
+            for (let i = 0; i < dots; i++) {
+                const s = document.createElement('span');
+                s.className = 'particle';
+                const size = Math.random() * 4 + 2;
+                s.style.width = size + 'px';
+                s.style.height = size + 'px';
+                s.style.left = Math.random() * 100 + '%';
+                s.style.top = Math.random() * 100 + '%';
+                s.style.background = 'rgba(16,185,129,' + (Math.random() * 0.4 + 0.1) + ')';
+                s.style.animation = `float ${10 + Math.random() * 20}s linear infinite`;
+                root.appendChild(s);
+            }
+            const style = document.createElement('style');
+            style.textContent = `@keyframes float { 0%{ transform: translateY(0) } 50%{ transform: translateY(-20px)} 100%{ transform: translateY(0)} }`;
+            document.head.appendChild(style);
+        })();
+
+        // Help toggle
+        document.querySelectorAll('.help-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const content = btn.parentElement.querySelector('.help-content');
+                if (!content) return;
+                content.classList.toggle('hidden');
+            });
+        });
+
+        // Answer selection with satisfying feedback
+        function attachAnswerHandlers() {
+            document.querySelectorAll('.answer').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // clear others in same grid
+                    const parent = btn.parentElement;
+                    parent.querySelectorAll('.answer').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    btn.classList.add('animate-pop');
+                    setTimeout(() => btn.classList.remove('animate-pop'), 160);
+                    // ripple
+                    const ripple = document.createElement('span');
+                    ripple.className = 'pointer-events-none absolute inset-0 rounded-xl border border-emerald-400/30 animate-ripple';
+                    btn.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 500);
+                });
+            });
+        }
+        attachAnswerHandlers();
+
+        // Back navigation
+        (function(){
+            const back = document.querySelector('.back-button');
+            if (back) back.addEventListener('click', () => history.back());
+        })();
+    </script>
 </body>
 </html>

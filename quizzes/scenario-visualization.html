@@ -4,81 +4,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FootballIQ - Scenario Visualization Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ["Inter", "ui-sans-serif", "system-ui"] },
+                    colors: {
+                        brand: { 500: "#10b981", 600: "#059669", 700: "#047857" },
+                        accent: { 500: "#22c55e", 600: "#16a34a" }
+                    },
+                    boxShadow: {
+                        card: "0 1px 2px rgba(0,0,0,0.08), 0 8px 30px rgba(2,6,23,0.08)",
+                        glow: "0 0 0 1px rgba(16,185,129,0.3), 0 8px 30px rgba(16,185,129,0.15)"
+                    },
+                    keyframes: {
+                        gradient: { '0%,100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } },
+                        shimmer: { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(100%)' } },
+                        pop: { '0%': { transform: 'scale(0.95)' }, '100%': { transform: 'scale(1)' } },
+                        ripple: { '0%': { transform: 'scale(0)', opacity: '0.4' }, '100%': { transform: 'scale(1)', opacity: '0' } },
+                        pulse: { '0%,100%': { opacity: '1' }, '50%': { opacity: '0.5' } }
+                    },
+                    animation: {
+                        gradient: 'gradient 12s ease infinite',
+                        shimmer: 'shimmer 1.5s linear infinite',
+                        pop: 'pop 120ms ease-out',
+                        ripple: 'ripple 500ms ease-out',
+                        pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html, body { height: 100%; }
+        body { font-family: Inter, ui-sans-serif, system-ui; }
+        .particle { position: absolute; border-radius: 9999px; opacity: .25; filter: blur(0.5px); }
+        .player { position: absolute; transform: translate(-50%, -50%); }
+        .click-zone { position: absolute; cursor: pointer; border: 2px dashed transparent; border-radius: 8px; transition: all 0.3s; }
+        .click-zone:hover { border-color: #10b981; background: rgba(16, 185, 129, 0.1); }
+        .you { border: 2px solid #10b981 !important; background: rgba(16, 185, 129, 0.1) !important; }
+    </style>
 </head>
-<body>
-    <div class="scenario-visualization-container">
-        <header class="quiz-header">
-            <div class="header-left">
-                <button class="back-button">← Back</button>
-                <h1>Scenario Visualization</h1>
-            </div>
-            <div class="header-right">
-                <div class="scenario-info">
-                    <span class="down-distance">3rd & 7</span>
-                    <span class="field-position">Own 35</span>
-                    <span class="formation">11 Personnel</span>
+<body class="min-h-screen bg-[radial-gradient(1250px_600px_at_50%_-200px,theme(colors.brand.500/.15),transparent_60%),radial-gradient(650px_300px_at_10%_10%,theme(colors.emerald.400/.12),transparent_50%),radial-gradient(650px_300px_at_90%_10%,theme(colors.green.500/.10),transparent_50%)] relative overflow-x-hidden text-white">
+    <div class="pointer-events-none absolute inset-0 -z-10" id="particles"></div>
+    
+    <div class="scenario-visualization-container mx-auto max-w-7xl px-6 py-8">
+        <header class="quiz-header sticky top-4 z-20">
+            <div class="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur shadow-card">
+                <div class="header-left flex items-center gap-3">
+                    <button class="back-button relative inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm font-medium text-white shadow-sm ring-1 ring-white/10 transition-all hover:translate-y-[-1px] hover:bg-white/20 hover:shadow-glow active:translate-y-0">
+                        ← Back
+                    </button>
+                    <h1 class="text-base font-semibold tracking-tight text-white">Scenario Visualization</h1>
+                </div>
+                <div class="header-right">
+                    <div class="scenario-info flex items-center gap-3">
+                        <span class="down-distance rounded-full bg-emerald-500/10 px-3 py-1 text-sm font-medium text-emerald-200">3rd & 7</span>
+                        <span class="field-position rounded-full bg-emerald-500/10 px-3 py-1 text-sm font-medium text-emerald-200">Own 35</span>
+                        <span class="formation rounded-full bg-emerald-500/10 px-3 py-1 text-sm font-medium text-emerald-200">11 Personnel</span>
+                    </div>
                 </div>
             </div>
         </header>
 
         <!-- Interactive Field Diagram Mode -->
-        <div class="field-interaction-mode active">
-            <div class="scenario-setup">
-                <h2>Where should you position yourself?</h2>
-                <p class="scenario-description">
+        <div class="field-interaction-mode active mt-8">
+            <div class="scenario-setup rounded-2xl border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur">
+                <h2 class="text-2xl font-bold tracking-tight text-white">Where should you position yourself?</h2>
+                <p class="scenario-description mt-2 text-white/80">
                     Cover 3 defense shown, safety rotating down late. You're the slot receiver running a comeback route. 
                     Click on the field where you should be when the ball arrives.
                 </p>
             </div>
 
-            <div class="field-container">
-                <div class="football-field">
-                    <!-- Field markings -->
-                    <div class="field-lines">
-                        <div class="yard-line" data-yard="20">20</div>
-                        <div class="yard-line" data-yard="25">25</div>
-                        <div class="yard-line" data-yard="30">30</div>
-                        <div class="yard-line" data-yard="35">35</div>
-                        <div class="yard-line" data-yard="40">40</div>
-                        <div class="yard-line" data-yard="45">45</div>
-                        <div class="yard-line" data-yard="50">50</div>
+            <div class="field-container mt-6">
+                <div class="football-field relative mx-auto h-96 max-w-4xl overflow-hidden rounded-xl border border-white/10 bg-gradient-to-b from-green-900/20 to-green-800/10 p-4">
+                    <!-- Field lines -->
+                    <div class="field-lines absolute inset-0 opacity-30">
+                        <div class="absolute left-0 top-1/6 h-px w-full bg-white/20"></div>
+                        <div class="absolute left-0 top-2/6 h-px w-full bg-white/40"></div>
+                        <div class="absolute left-0 top-3/6 h-px w-full bg-white/40"></div>
+                        <div class="absolute left-0 top-4/6 h-px w-full bg-white/40"></div>
+                        <div class="absolute left-0 top-5/6 h-px w-full bg-white/20"></div>
+                        <div class="absolute left-1/4 top-0 h-full w-px bg-white/20"></div>
+                        <div class="absolute left-2/4 top-0 h-full w-px bg-white/40"></div>
+                        <div class="absolute left-3/4 top-0 h-full w-px bg-white/20"></div>
                     </div>
 
-                    <!-- Hash marks -->
-                    <div class="hash-marks left-hash"></div>
-                    <div class="hash-marks right-hash"></div>
+                    <!-- Yard lines -->
+                    <div class="yard-lines absolute inset-x-0 bottom-4 flex justify-around text-xs font-medium text-white/60">
+                        <div class="yard-line">20</div>
+                        <div class="yard-line">25</div>
+                        <div class="yard-line">30</div>
+                        <div class="yard-line">35</div>
+                        <div class="yard-line">40</div>
+                        <div class="yard-line">45</div>
+                        <div class="yard-line">50</div>
+                    </div>
 
                     <!-- Ball position -->
-                    <div class="ball-position" style="left: 50%; top: 35%;">
+                    <div class="ball-position absolute text-2xl" style="left: 50%; top: 35%;">
                         <div class="ball">🏈</div>
                     </div>
 
                     <!-- Offensive formation -->
-                    <div class="offensive-formation">
-                        <div class="player qb" style="left: 50%; top: 40%;" data-position="QB">QB</div>
-                        <div class="player wr" style="left: 20%; top: 30%;" data-position="WR1">WR</div>
-                        <div class="player wr you" style="left: 40%; top: 30%;" data-position="WR2">YOU</div>
-                        <div class="player wr" style="left: 80%; top: 30%;" data-position="WR3">WR</div>
-                        <div class="player rb" style="left: 45%; top: 45%;" data-position="RB">RB</div>
-                        <div class="player ol" style="left: 42%; top: 35%;" data-position="LG">LG</div>
-                        <div class="player ol" style="left: 46%; top: 35%;" data-position="C">C</div>
-                        <div class="player ol" style="left: 50%; top: 35%;" data-position="RG">RG</div>
-                        <div class="player ol" style="left: 54%; top: 35%;" data-position="RT">RT</div>
-                        <div class="player ol" style="left: 58%; top: 35%;" data-position="LT">LT</div>
+                    <div class="offensive-formation absolute inset-0">
+                        <div class="player qb absolute rounded-md bg-emerald-600 px-2 py-1 text-xs font-bold text-white" style="left: 50%; top: 40%;" data-position="QB">QB</div>
+                        <div class="player wr absolute rounded-md bg-blue-600 px-2 py-1 text-xs font-bold text-white" style="left: 20%; top: 30%;" data-position="WR1">WR</div>
+                        <div class="player wr you absolute rounded-md border-2 border-emerald-400 bg-emerald-500/20 px-2 py-1 text-xs font-bold text-emerald-200" style="left: 40%; top: 30%;" data-position="WR2">YOU</div>
+                        <div class="player wr absolute rounded-md bg-blue-600 px-2 py-1 text-xs font-bold text-white" style="left: 80%; top: 30%;" data-position="WR3">WR</div>
+                        <div class="player rb absolute rounded-md bg-orange-600 px-2 py-1 text-xs font-bold text-white" style="left: 45%; top: 45%;" data-position="RB">RB</div>
+                        <div class="player ol absolute rounded-md bg-gray-600 px-1 py-1 text-xs font-bold text-white" style="left: 42%; top: 35%;" data-position="LG">LG</div>
+                        <div class="player ol absolute rounded-md bg-gray-600 px-1 py-1 text-xs font-bold text-white" style="left: 46%; top: 35%;" data-position="C">C</div>
+                        <div class="player ol absolute rounded-md bg-gray-600 px-1 py-1 text-xs font-bold text-white" style="left: 50%; top: 35%;" data-position="RG">RG</div>
+                        <div class="player ol absolute rounded-md bg-gray-600 px-1 py-1 text-xs font-bold text-white" style="left: 54%; top: 35%;" data-position="RT">RT</div>
+                        <div class="player ol absolute rounded-md bg-gray-600 px-1 py-1 text-xs font-bold text-white" style="left: 58%; top: 35%;" data-position="LT">LT</div>
                     </div>
 
                     <!-- Defensive formation -->
-                    <div class="defensive-formation">
-                        <div class="defender db" style="left: 25%; top: 15%;" data-position="CB1">CB</div>
-                        <div class="defender db" style="left: 75%; top: 15%;" data-position="CB2">CB</div>
-                        <div class="defender db rotating" style="left: 50%; top: 8%;" data-position="FS">S</div>
-                        <div class="defender db" style="left: 60%; top: 20%;" data-position="SS">SS</div>
-                        <div class="defender lb" style="left: 35%; top: 25%;" data-position="MLB">MLB</div>
-                        <div class="defender lb" style="left: 65%; top: 25%;" data-position="OLB">OLB</div>
+                    <div class="defensive-formation absolute inset-0 opacity-80">
+                        <div class="defender db absolute rounded-md bg-red-600 px-2 py-1 text-xs font-bold text-white" style="left: 25%; top: 15%;" data-position="CB1">CB</div>
+                        <div class="defender db absolute rounded-md bg-red-600 px-2 py-1 text-xs font-bold text-white" style="left: 75%; top: 15%;" data-position="CB2">CB</div>
+                        <div class="defender db rotating absolute animate-pulse rounded-md bg-red-600 px-2 py-1 text-xs font-bold text-white" style="left: 50%; top: 8%;" data-position="FS">S</div>
+                        <div class="defender db absolute rounded-md bg-red-600 px-2 py-1 text-xs font-bold text-white" style="left: 60%; top: 20%;" data-position="SS">SS</div>
+                        <div class="defender lb absolute rounded-md bg-red-700 px-2 py-1 text-xs font-bold text-white" style="left: 35%; top: 25%;" data-position="MLB">MLB</div>
+                        <div class="defender lb absolute rounded-md bg-red-700 px-2 py-1 text-xs font-bold text-white" style="left: 65%; top: 25%;" data-position="OLB">OLB</div>
                     </div>
 
                     <!-- Click zones for answer -->
-                    <div class="click-zones">
+                    <div class="click-zones absolute inset-0">
                         <div class="click-zone" data-zone="A" style="left: 35%; top: 25%; width: 10%; height: 8%;"></div>
                         <div class="click-zone" data-zone="B" style="left: 38%; top: 18%; width: 10%; height: 8%;"></div>
                         <div class="click-zone" data-zone="C" style="left: 42%; top: 22%; width: 10%; height: 8%;"></div>
@@ -86,236 +144,236 @@
                     </div>
 
                     <!-- User click marker -->
-                    <div class="user-click" style="display: none;">
-                        <div class="click-marker">📍</div>
+                    <div class="user-click absolute hidden" style="">
+                        <div class="click-marker text-2xl">📍</div>
                     </div>
                 </div>
 
-                <div class="field-controls">
-                    <button class="show-coverage">Show Coverage</button>
-                    <button class="show-routes">Show Routes</button>
-                    <button class="replay-scenario">Replay</button>
+                <div class="field-controls mt-4 flex justify-center gap-3">
+                    <button class="show-coverage inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm font-medium text-white transition-all hover:bg-white/20">
+                        Show Coverage
+                    </button>
+                    <button class="show-routes inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm font-medium text-white transition-all hover:bg-white/20">
+                        Show Routes
+                    </button>
+                    <button class="replay-scenario inline-flex items-center gap-2 rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                        Replay
+                    </button>
                 </div>
             </div>
 
-            <div class="answer-feedback" style="display: none;">
+            <div class="answer-feedback mt-6 hidden rounded-2xl border border-emerald-400/30 bg-emerald-500/10 p-6 backdrop-blur">
                 <div class="feedback-content">
                     <div class="feedback-result correct">
-                        <h3>Perfect Positioning!</h3>
-                        <p>You identified the soft spot in the coverage correctly. With the safety rotating down, this creates a window in the intermediate zone.</p>
+                        <h3 class="text-xl font-bold text-emerald-400">Perfect Positioning!</h3>
+                        <p class="mt-2 text-white/80">You identified the soft spot in the coverage correctly. With the safety rotating down, this creates a window in the intermediate zone.</p>
                     </div>
-                    <button class="next-scenario">Next Scenario</button>
+                    <button class="next-scenario mt-4 inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                        Next Scenario
+                    </button>
                 </div>
             </div>
         </div>
 
         <!-- Route Drawing Mode -->
-        <div class="route-drawing-mode" style="display: none;">
-            <div class="drawing-scenario">
-                <h2>Draw Your Route</h2>
-                <p class="scenario-description">
+        <div class="route-drawing-mode mt-8 hidden">
+            <div class="drawing-scenario rounded-2xl border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur">
+                <h2 class="text-2xl font-bold tracking-tight text-white">Draw Your Route</h2>
+                <p class="scenario-description mt-2 text-white/80">
                     You're the outside receiver. Draw the route you should run against this Cover 2 defense.
                     Start from your position and draw to where you'll catch the ball.
                 </p>
             </div>
 
-            <div class="drawing-field">
-                <canvas class="route-canvas" width="600" height="400"></canvas>
-                <div class="mini-field-overlay">
-                    <!-- Simplified field with players -->
-                    <div class="drawing-players">
-                        <div class="player-start you" style="left: 15%; top: 70%;">START</div>
-                        <div class="defender" style="left: 20%; top: 40%;">CB</div>
-                        <div class="defender" style="left: 30%; top: 20%;">S</div>
-                        <div class="defender" style="left: 50%; top: 30%;">LB</div>
+            <div class="drawing-field mt-6 rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                <div class="relative">
+                    <canvas class="route-canvas rounded-lg border border-white/10 bg-gradient-to-b from-green-900/20 to-green-800/10" width="600" height="400"></canvas>
+                    <div class="mini-field-overlay absolute inset-0">
+                        <!-- Simplified field with players -->
+                        <div class="drawing-players">
+                            <div class="player-start you absolute rounded-md border-2 border-emerald-400 bg-emerald-500/20 px-3 py-2 text-sm font-bold text-emerald-200" style="left: 15%; top: 70%;">START</div>
+                            <div class="defender absolute rounded-md bg-red-600 px-2 py-1 text-xs font-bold text-white" style="left: 20%; top: 40%;">CB</div>
+                            <div class="defender absolute rounded-md bg-red-600 px-2 py-1 text-xs font-bold text-white" style="left: 30%; top: 20%;">S</div>
+                            <div class="defender absolute rounded-md bg-red-700 px-2 py-1 text-xs font-bold text-white" style="left: 50%; top: 30%;">LB</div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="drawing-tools">
-                    <button class="tool-button active" data-tool="draw">✏️ Draw</button>
-                    <button class="tool-button" data-tool="erase">🗑️ Erase</button>
-                    <button class="clear-route">Clear All</button>
-                    <button class="submit-route" disabled>Submit Route</button>
+                <div class="drawing-tools mt-4 flex items-center justify-center gap-3">
+                    <button class="tool-button active rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-glow" data-tool="draw">✏️ Draw</button>
+                    <button class="tool-button rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm font-medium text-white transition-all hover:bg-white/20" data-tool="erase">🗑️ Erase</button>
+                    <button class="clear-route rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm font-medium text-white transition-all hover:bg-white/20">Clear All</button>
+                    <button class="submit-route rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50" disabled>Submit Route</button>
                 </div>
             </div>
 
-            <div class="route-feedback" style="display: none;">
+            <div class="route-feedback mt-6 hidden rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
                 <div class="route-analysis">
-                    <h3>Route Analysis</h3>
-                    <div class="analysis-points">
-                        <div class="point correct">✅ Good depth - hit the soft spot</div>
-                        <div class="point correct">✅ Proper break timing</div>
-                        <div class="point incorrect">❌ Route too wide - stay inside the safety</div>
+                    <h3 class="text-xl font-bold text-white">Route Analysis</h3>
+                    <div class="analysis-points mt-4 grid gap-3">
+                        <div class="point correct flex items-center gap-3 rounded-md border border-emerald-400/30 bg-emerald-500/10 p-3">
+                            <span class="text-emerald-400">✅</span>
+                            <span class="text-white">Good depth - hit the soft spot</span>
+                        </div>
+                        <div class="point correct flex items-center gap-3 rounded-md border border-emerald-400/30 bg-emerald-500/10 p-3">
+                            <span class="text-emerald-400">✅</span>
+                            <span class="text-white">Proper break timing</span>
+                        </div>
+                        <div class="point incorrect flex items-center gap-3 rounded-md border border-red-400/30 bg-red-500/10 p-3">
+                            <span class="text-red-400">❌</span>
+                            <span class="text-white">Route too wide - stay inside the safety</span>
+                        </div>
                     </div>
-                    <div class="suggested-route">
-                        <h4>Ideal Route:</h4>
-                        <canvas class="ideal-route-canvas" width="300" height="200"></canvas>
+                    <div class="suggested-route mt-6">
+                        <h4 class="text-lg font-semibold text-white">Ideal Route:</h4>
+                        <canvas class="ideal-route-canvas mt-2 rounded-lg border border-white/10 bg-gradient-to-b from-green-900/20 to-green-800/10" width="300" height="200"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Hotspot Identification Mode -->
-        <div class="hotspot-mode" style="display: none;">
-            <div class="hotspot-scenario">
-                <h2>Find the Weakness</h2>
-                <p class="scenario-description">
+        <div class="hotspot-mode mt-8 hidden">
+            <div class="hotspot-scenario rounded-2xl border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur">
+                <h2 class="text-2xl font-bold tracking-tight text-white">Find the Weakness</h2>
+                <p class="scenario-description mt-2 text-white/80">
                     Analyze this defensive coverage and click on the area where the offense has the best opportunity.
                     Look for mismatches, open zones, or weak coverage areas.
                 </p>
             </div>
 
-            <div class="coverage-analysis">
-                <div class="analysis-field">
-                    <!-- Defense setup -->
-                    <div class="coverage-display">
-                        <div class="coverage-zone zone-1" data-weakness="false"></div>
-                        <div class="coverage-zone zone-2" data-weakness="true"></div>
-                        <div class="coverage-zone zone-3" data-weakness="false"></div>
-                        <div class="coverage-zone zone-4" data-weakness="false"></div>
-                        <div class="coverage-zone zone-5" data-weakness="true"></div>
-                        <div class="coverage-zone zone-6" data-weakness="false"></div>
+            <div class="coverage-analysis mt-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
+                <div class="analysis-field relative rounded-xl border border-white/10 bg-gradient-to-b from-green-900/20 to-green-800/10 p-6">
+                    <!-- Clickable hotspots -->
+                    <div class="hotspot-markers absolute inset-0">
+                        <div class="hotspot group absolute cursor-pointer rounded-full border-2 border-white/40 bg-white/20 p-2 text-center text-sm font-bold text-white transition-all hover:border-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-200" data-hotspot="seam" style="left: 50%; top: 30%;">?</div>
+                        <div class="hotspot group absolute cursor-pointer rounded-full border-2 border-white/40 bg-white/20 p-2 text-center text-sm font-bold text-white transition-all hover:border-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-200" data-hotspot="slot-fade" style="left: 40%; top: 25%;">?</div>
+                        <div class="hotspot group absolute cursor-pointer rounded-full border-2 border-white/40 bg-white/20 p-2 text-center text-sm font-bold text-white transition-all hover:border-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-200" data-hotspot="comeback" style="left: 30%; top: 35%;">?</div>
+                        <div class="hotspot group absolute cursor-pointer rounded-full border-2 border-white/40 bg-white/20 p-2 text-center text-sm font-bold text-white transition-all hover:border-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-200" data-hotspot="crosser" style="left: 60%; top: 45%;">?</div>
                     </div>
 
                     <!-- Defenders with coverage assignments -->
-                    <div class="coverage-defenders">
-                        <div class="coverage-defender" style="left: 20%; top: 20%;" data-coverage="deep-third">
-                            <div class="defender-icon">CB</div>
-                            <div class="coverage-area deep-left"></div>
+                    <div class="coverage-defenders absolute inset-0 opacity-80">
+                        <div class="coverage-defender absolute" style="left: 20%; top: 20%;" data-coverage="deep-third">
+                            <div class="defender-icon rounded-md bg-red-600 px-2 py-1 text-xs font-bold text-white">CB</div>
                         </div>
-                        <div class="coverage-defender" style="left: 50%; top: 10%;" data-coverage="deep-middle">
-                            <div class="defender-icon">FS</div>
-                            <div class="coverage-area deep-middle"></div>
+                        <div class="coverage-defender absolute" style="left: 50%; top: 10%;" data-coverage="deep-middle">
+                            <div class="defender-icon rounded-md bg-red-600 px-2 py-1 text-xs font-bold text-white">FS</div>
                         </div>
-                        <div class="coverage-defender" style="left: 80%; top: 20%;" data-coverage="deep-third">
-                            <div class="defender-icon">CB</div>
-                            <div class="coverage-area deep-right"></div>
+                        <div class="coverage-defender absolute" style="left: 80%; top: 20%;" data-coverage="deep-third">
+                            <div class="defender-icon rounded-md bg-red-600 px-2 py-1 text-xs font-bold text-white">CB</div>
                         </div>
-                        <div class="coverage-defender" style="left: 35%; top: 40%;" data-coverage="underneath">
-                            <div class="defender-icon">LB</div>
-                            <div class="coverage-area underneath-left"></div>
+                        <div class="coverage-defender absolute" style="left: 35%; top: 40%;" data-coverage="underneath">
+                            <div class="defender-icon rounded-md bg-red-700 px-2 py-1 text-xs font-bold text-white">LB</div>
                         </div>
-                        <div class="coverage-defender" style="left: 65%; top: 40%;" data-coverage="underneath">
-                            <div class="defender-icon">LB</div>
-                            <div class="coverage-area underneath-right"></div>
+                        <div class="coverage-defender absolute" style="left: 65%; top: 40%;" data-coverage="underneath">
+                            <div class="defender-icon rounded-md bg-red-700 px-2 py-1 text-xs font-bold text-white">LB</div>
                         </div>
-                    </div>
-
-                    <!-- Clickable hotspots -->
-                    <div class="hotspot-markers">
-                        <div class="hotspot" data-hotspot="seam" style="left: 50%; top: 30%;">?</div>
-                        <div class="hotspot" data-hotspot="slot-fade" style="left: 40%; top: 25%;">?</div>
-                        <div class="hotspot" data-hotspot="comeback" style="left: 30%; top: 35%;">?</div>
-                        <div class="hotspot" data-hotspot="crosser" style="left: 60%; top: 45%;">?</div>
                     </div>
                 </div>
 
-                <div class="coverage-info">
-                    <h3>Coverage: Cover 3 Match</h3>
-                    <div class="coverage-details">
-                        <div class="coverage-assignment">
-                            <span class="position">Corners:</span>
-                            <span class="assignment">Deep thirds, pattern match</span>
+                <div class="coverage-info rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                    <h3 class="text-lg font-bold text-white">Coverage: Cover 3 Match</h3>
+                    <div class="coverage-details mt-4 grid gap-3">
+                        <div class="coverage-assignment rounded-md bg-white/5 p-3">
+                            <span class="position font-semibold text-emerald-400">Corners:</span>
+                            <span class="assignment ml-2 text-sm text-white/80">Deep thirds, pattern match</span>
                         </div>
-                        <div class="coverage-assignment">
-                            <span class="position">Free Safety:</span>
-                            <span class="assignment">Deep middle third</span>
+                        <div class="coverage-assignment rounded-md bg-white/5 p-3">
+                            <span class="position font-semibold text-emerald-400">Free Safety:</span>
+                            <span class="assignment ml-2 text-sm text-white/80">Deep middle third</span>
                         </div>
-                        <div class="coverage-assignment">
-                            <span class="position">Linebackers:</span>
-                            <span class="assignment">Underneath zones</span>
+                        <div class="coverage-assignment rounded-md bg-white/5 p-3">
+                            <span class="position font-semibold text-emerald-400">Linebackers:</span>
+                            <span class="assignment ml-2 text-sm text-white/80">Underneath zones</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="hotspot-feedback" style="display: none;">
+            <div class="hotspot-feedback mt-6 hidden rounded-2xl border border-emerald-400/30 bg-emerald-500/10 p-6 backdrop-blur">
                 <div class="weakness-explanation">
-                    <h3>Excellent Analysis!</h3>
-                    <p>You correctly identified the seam route opportunity. In Cover 3 Match, the linebackers have deep responsibility on #2 receivers, creating a gap in the seam for the tight end or slot receiver.</p>
-                    <div class="exploitation-tip">
-                        <strong>Coaching Point:</strong> Attack this with a tight end seam or slot receiver on a vertical route at 12-15 yard depth.
+                    <h3 class="text-xl font-bold text-emerald-400">Excellent Analysis!</h3>
+                    <p class="mt-2 text-white/80">You correctly identified the seam route opportunity. In Cover 3 Match, the linebackers have deep responsibility on #2 receivers, creating a gap in the seam for the tight end or slot receiver.</p>
+                    <div class="exploitation-tip mt-4 rounded-md border border-emerald-400/30 bg-emerald-500/10 p-4">
+                        <strong class="text-emerald-400">Coaching Point:</strong>
+                        <span class="ml-2 text-white/80">Attack this with a tight end seam or slot receiver on a vertical route at 12-15 yard depth.</span>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mode Selection -->
-        <div class="visualization-menu" style="display: none;">
-            <h2>Choose Visualization Challenge</h2>
-            <div class="challenge-grid">
-                <button class="viz-challenge" data-mode="field-click">
-                    <div class="challenge-icon">📍</div>
-                    <div class="challenge-title">Position Click</div>
-                    <div class="challenge-desc">Click where you should be on the field</div>
-                </button>
-                
-                <button class="viz-challenge" data-mode="route-draw">
-                    <div class="challenge-icon">✏️</div>
-                    <div class="challenge-title">Draw the Route</div>
-                    <div class="challenge-desc">Draw your route on the mini-field</div>
-                </button>
-                
-                <button class="viz-challenge" data-mode="hotspot">
-                    <div class="challenge-icon">🎯</div>
-                    <div class="challenge-title">Find the Weakness</div>
-                    <div class="challenge-desc">Identify coverage weaknesses</div>
-                </button>
-                
-                <button class="viz-challenge" data-mode="multiple">
-                    <div class="challenge-icon">🔄</div>
-                    <div class="challenge-title">Mixed Scenarios</div>
-                    <div class="challenge-desc">Random visualization challenges</div>
-                </button>
-            </div>
-        </div>
-
-        <!-- Results and Progress -->
-        <div class="visualization-results" style="display: none;">
-            <div class="results-header">
-                <h2>Scenario Analysis Complete</h2>
-                <div class="spatial-score">
-                    <div class="score-visual">85%</div>
-                    <div class="score-label">Spatial Intelligence</div>
-                </div>
-            </div>
-
-            <div class="skill-breakdown">
-                <div class="skill-stat">
-                    <div class="skill-name">Field Positioning</div>
-                    <div class="skill-bar">
-                        <div class="skill-fill" style="width: 90%;"></div>
-                    </div>
-                    <div class="skill-score">90%</div>
-                </div>
-                <div class="skill-stat">
-                    <div class="skill-name">Route Recognition</div>
-                    <div class="skill-bar">
-                        <div class="skill-fill" style="width: 80%;"></div>
-                    </div>
-                    <div class="skill-score">80%</div>
-                </div>
-                <div class="skill-stat">
-                    <div class="skill-name">Coverage Analysis</div>
-                    <div class="skill-bar">
-                        <div class="skill-fill" style="width: 85%;"></div>
-                    </div>
-                    <div class="skill-score">85%</div>
-                </div>
-            </div>
-
-            <div class="improvement-areas">
-                <h3>Areas to Practice</h3>
-                <div class="improvement-item">
-                    <div class="improvement-topic">Deep Third Recognition</div>
-                    <div class="improvement-action">Practice Cover 3 scenarios</div>
-                </div>
-                <div class="improvement-item">
-                    <div class="improvement-topic">Route Depth Precision</div>
-                    <div class="improvement-action">Work on timing patterns</div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // Particle system
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.width = Math.random() * 4 + 1 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.backgroundColor = '#10b981';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particle.style.animation = 'pulse 2s ease-in-out infinite';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Click zone interactions
+        document.querySelectorAll('.click-zone').forEach(zone => {
+            zone.addEventListener('click', (e) => {
+                const rect = zone.getBoundingClientRect();
+                const parentRect = zone.closest('.football-field').getBoundingClientRect();
+                const clickMarker = document.querySelector('.user-click');
+                
+                clickMarker.style.left = ((rect.left - parentRect.left + rect.width/2) / parentRect.width * 100) + '%';
+                clickMarker.style.top = ((rect.top - parentRect.top + rect.height/2) / parentRect.height * 100) + '%';
+                clickMarker.classList.remove('hidden');
+                
+                // Show feedback after a short delay
+                setTimeout(() => {
+                    document.querySelector('.answer-feedback').classList.remove('hidden');
+                }, 500);
+            });
+        });
+
+        // Hotspot interactions
+        document.querySelectorAll('.hotspot').forEach(spot => {
+            spot.addEventListener('click', () => {
+                spot.classList.add('animate-pop');
+                setTimeout(() => {
+                    document.querySelector('.hotspot-feedback').classList.remove('hidden');
+                }, 300);
+            });
+        });
+
+        // Tool switching for route drawing
+        document.querySelectorAll('.tool-button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tool-button').forEach(b => {
+                    b.classList.remove('active', 'bg-emerald-600', 'shadow-glow');
+                    b.classList.add('border', 'border-white/10', 'bg-white/10');
+                });
+                btn.classList.add('active', 'bg-emerald-600', 'shadow-glow');
+                btn.classList.remove('border', 'border-white/10', 'bg-white/10');
+            });
+        });
+
+        // Button interactions
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.classList.add('animate-pop');
+                setTimeout(() => btn.classList.remove('animate-pop'), 120);
+            });
+        });
+
+        // Back navigation
+        (function(){
+            const back = document.querySelector('.back-button');
+            if (back) back.addEventListener('click', () => history.back());
+        })();
+    </script>
 </body>
 </html>

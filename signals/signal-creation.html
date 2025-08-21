@@ -4,269 +4,511 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FootballIQ - Signal Creation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ["Inter", "ui-sans-serif", "system-ui"] },
+                    colors: {
+                        brand: {
+                            50: "#ecfdf5",
+                            100: "#d1fae5",
+                            200: "#a7f3d0",
+                            300: "#6ee7b7",
+                            400: "#34d399",
+                            500: "#10b981",
+                            600: "#059669",
+                            700: "#047857",
+                            800: "#065f46",
+                            900: "#064e3b"
+                        }
+                    },
+                    boxShadow: {
+                        card: "0 1px 2px rgba(0,0,0,0.08), 0 4px 24px rgba(0,0,0,0.06)"
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html, body { height: 100%; }
+        body { font-family: Inter, ui-sans-serif, system-ui; }
+        .drop-active { border-color: rgb(16 185 129); background: rgba(16,185,129,0.06); }
+    </style>
 </head>
-<body>
-    <div class="signal-creation-container">
-        <header class="creation-header">
-            <div class="header-left">
-                <button class="back-button">← Back to Dashboard</button>
-                <h1>Create New Signal</h1>
-            </div>
-            <div class="header-right">
-                <button class="save-draft-button">Save Draft</button>
-                <button class="publish-button" disabled>Publish Signal</button>
+<body class="bg-white text-slate-900">
+    <div class="mx-auto max-w-7xl px-6 py-8">
+        <header class="sticky top-4 z-20">
+            <div class="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-card">
+                <div class="flex items-center gap-3">
+                    <button class="back-button inline-flex items-center rounded-md border border-slate-200 bg-white px-3 py-2 text-sm hover:bg-slate-50">← Back to Dashboard</button>
+                    <h1 class="text-base font-semibold tracking-tight">Create New Signal</h1>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="save-draft-button inline-flex items-center rounded-md border border-slate-200 bg-white px-3 py-2 text-sm hover:bg-slate-50">Save Draft</button>
+                    <button class="publish-button inline-flex items-center rounded-md bg-brand-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 disabled:opacity-50" disabled>Publish Signal</button>
+                </div>
             </div>
         </header>
 
-        <div class="creation-content">
-            <div class="main-creation-area">
+        <div class="mt-8 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+            <div class="space-y-6">
                 <!-- Video Upload Section -->
-                <section class="video-upload-section">
-                    <h2>Signal Video</h2>
-                    <div class="upload-area">
-                        <div class="upload-zone">
-                            <div class="upload-icon">📹</div>
-                            <div class="upload-text">
-                                <h3>Drag & drop your signal video here</h3>
-                                <p>or click to browse files</p>
-                            </div>
-                            <div class="upload-specs">
-                                <span>Supports MP4, MOV, AVI • Max 50MB</span>
+                <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-card">
+                    <h2 class="text-lg font-semibold">Signal Video</h2>
+                    <div class="mt-4">
+                        <div class="upload-zone group grid place-items-center rounded-lg border border-dashed border-slate-300 p-6 text-center hover:bg-slate-50 cursor-pointer">
+                            <div class="flex flex-col items-center gap-2">
+                                <div class="text-2xl">📹</div>
+                                <div>
+                                    <h3 class="font-medium">Drag & drop your signal video here</h3>
+                                    <p class="text-sm text-slate-600">or click to browse files</p>
+                                </div>
+                                <div class="text-xs text-slate-500">Supports MP4, MOV, AVI • Max 50MB</div>
                             </div>
                             <input type="file" class="file-input" accept="video/*" hidden>
                         </div>
-                        
-                        <!-- File uploaded state (hidden by default) -->
-                        <div class="uploaded-file" style="display: none;">
-                            <div class="file-info">
-                                <div class="file-icon">🎬</div>
-                                <div class="file-details">
-                                    <div class="file-name">hot_route_signal.mp4</div>
-                                    <div class="file-size">2.3 MB • 15 seconds</div>
+
+                        <div class="uploaded-file mt-4 hidden">
+                            <div class="flex items-center justify-between rounded-md border border-slate-200 bg-slate-50 p-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="text-xl">🎬</div>
+                                    <div>
+                                        <div class="file-name text-sm font-medium"></div>
+                                        <div class="file-size text-xs text-slate-600"></div>
+                                    </div>
                                 </div>
-                                <button class="remove-file">×</button>
+                                <button class="remove-file inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-700 hover:bg-slate-50">×</button>
                             </div>
-                            <div class="upload-progress">
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 100%"></div>
+                            <div class="mt-3">
+                                <div class="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                                    <div class="progress-fill h-2 w-full bg-brand-600"></div>
                                 </div>
-                                <span class="progress-text">Upload complete</span>
+                                <div class="mt-1 text-xs text-slate-600">Upload complete</div>
                             </div>
                         </div>
                     </div>
                 </section>
 
                 <!-- Signal Details Form -->
-                <section class="signal-details-section">
-                    <h2>Signal Details</h2>
-                    <form class="signal-form">
-                        <div class="form-group">
-                            <label for="signal-name">Signal Name</label>
-                            <input type="text" id="signal-name" placeholder="e.g., Hot Route Alert">
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="signal-type">Signal Type</label>
-                                <select id="signal-type">
+                <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-card">
+                    <h2 class="text-lg font-semibold">Signal Details</h2>
+                    <form class="signal-form mt-4 space-y-4" onsubmit="return false;">
+                        <div class="grid gap-4 sm:grid-cols-2">
+                            <div class="space-y-1.5">
+                                <label for="signal-name" class="text-sm font-medium">Signal Name</label>
+                                <input id="signal-name" type="text" placeholder="e.g., Hot Route Alert" class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
+                            </div>
+                            <div class="space-y-1.5">
+                                <label for="signal-type" class="text-sm font-medium">Signal Type</label>
+                                <select id="signal-type" class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
                                     <option value="">Select type...</option>
                                     <option value="offensive">Offensive</option>
                                     <option value="defensive">Defensive</option>
                                     <option value="special-teams">Special Teams</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="difficulty">Difficulty Level</label>
-                                <select id="difficulty">
+                            <div class="space-y-1.5">
+                                <label for="difficulty" class="text-sm font-medium">Difficulty Level</label>
+                                <select id="difficulty" class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
                                     <option value="">Select difficulty...</option>
                                     <option value="beginner">Beginner</option>
                                     <option value="intermediate">Intermediate</option>
                                     <option value="advanced">Advanced</option>
                                 </select>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="signal-meaning">Signal Meaning</label>
-                            <textarea id="signal-meaning" placeholder="Describe what this signal means and when to use it..." rows="3"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="game-situations">Game Situations</label>
-                            <div class="checkbox-group">
-                                <label class="checkbox-item">
-                                    <input type="checkbox" value="red-zone">
-                                    <span>Red Zone</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" value="third-down">
-                                    <span>3rd Down</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" value="two-minute">
-                                    <span>Two Minute Drill</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" value="goal-line">
-                                    <span>Goal Line</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" value="fourth-down">
-                                    <span>4th Down</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" value="short-yardage">
-                                    <span>Short Yardage</span>
-                                </label>
+                            <div class="space-y-1.5 sm:col-span-2">
+                                <label for="signal-meaning" class="text-sm font-medium">Signal Meaning</label>
+                                <textarea id="signal-meaning" rows="3" placeholder="Describe what this signal means and when to use it..." class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"></textarea>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="personnel-groups">Personnel Groups</label>
-                            <div class="tag-input">
-                                <div class="selected-tags">
-                                    <span class="tag">11 Personnel <button class="remove-tag">×</button></span>
-                                    <span class="tag">Shotgun <button class="remove-tag">×</button></span>
-                                </div>
-                                <input type="text" placeholder="Add formation or personnel..." class="tag-input-field">
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium">Game Situations</label>
+                            <div class="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                                <label class="inline-flex items-center gap-2 text-sm"><input type="checkbox" value="Red Zone" class="accent-brand-600"> Red Zone</label>
+                                <label class="inline-flex items-center gap-2 text-sm"><input type="checkbox" value="3rd Down" class="accent-brand-600"> 3rd Down</label>
+                                <label class="inline-flex items-center gap-2 text-sm"><input type="checkbox" value="Two Minute Drill" class="accent-brand-600"> Two Minute Drill</label>
+                                <label class="inline-flex items-center gap-2 text-sm"><input type="checkbox" value="Goal Line" class="accent-brand-600"> Goal Line</label>
+                                <label class="inline-flex items-center gap-2 text-sm"><input type="checkbox" value="4th Down" class="accent-brand-600"> 4th Down</label>
+                                <label class="inline-flex items-center gap-2 text-sm"><input type="checkbox" value="Short Yardage" class="accent-brand-600"> Short Yardage</label>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="related-plays">Related Plays</label>
-                            <div class="related-plays-selector">
-                                <input type="text" placeholder="Search existing plays..." class="play-search">
-                                <div class="selected-plays">
-                                    <div class="play-item">
-                                        <span class="play-name">Smash Concept</span>
-                                        <button class="remove-play">×</button>
-                                    </div>
-                                    <div class="play-item">
-                                        <span class="play-name">Quick Slant RPO</span>
-                                        <button class="remove-play">×</button>
-                                    </div>
-                                </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium">Personnel / Formation Tags</label>
+                            <div class="rounded-md border border-slate-200 p-2">
+                                <div class="selected-tags flex flex-wrap gap-2"></div>
+                                <input type="text" class="tag-input-field mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" placeholder="Add formation or personnel and press Enter..." />
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium">Related Plays</label>
+                            <div class="rounded-md border border-slate-200 p-2">
+                                <input type="text" class="play-search w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" placeholder="Type a play and press Enter..." />
+                                <div class="selected-plays mt-2 flex flex-wrap gap-2"></div>
                             </div>
                         </div>
                     </form>
                 </section>
 
                 <!-- Preview Section -->
-                <section class="preview-section">
-                    <h2>Preview</h2>
-                    <div class="preview-card">
-                        <div class="preview-video">
-                            <div class="video-placeholder">
-                                <div class="play-icon">▶</div>
-                                <span>Video Preview</span>
-                            </div>
+                <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-card">
+                    <h2 class="text-lg font-semibold">Preview</h2>
+                    <div class="mt-4 grid gap-4 md:grid-cols-[1.2fr_0.8fr]">
+                        <div class="preview-video rounded-lg border border-slate-200 bg-slate-50 p-3 grid place-items-center min-h-[180px]">
+                            <div class="video-placeholder text-center text-slate-600"><div class="play-icon text-2xl">▶</div><span>Video Preview</span></div>
                         </div>
                         <div class="preview-info">
-                            <h3 class="preview-title">Hot Route Alert</h3>
-                            <div class="preview-meta">
-                                <span class="preview-type">Offensive</span>
-                                <span class="preview-difficulty">Intermediate</span>
-                            </div>
-                            <p class="preview-description">Used to alert receivers to change their route based on defensive coverage...</p>
-                            <div class="preview-tags">
-                                <span class="preview-tag">Red Zone</span>
-                                <span class="preview-tag">3rd Down</span>
-                                <span class="preview-tag">11 Personnel</span>
-                            </div>
+                            <h3 class="preview-title text-xl font-bold">—</h3>
+                            <div class="preview-meta mt-1 text-sm text-slate-600"><span class="preview-type">—</span> <span class="mx-1">•</span> <span class="preview-difficulty">—</span></div>
+                            <p class="preview-description mt-2 text-sm text-slate-700">—</p>
+                            <div class="preview-tags mt-2 flex flex-wrap gap-2"></div>
                         </div>
                     </div>
                 </section>
             </div>
 
             <!-- Signals Library Sidebar -->
-            <aside class="signals-library">
+            <aside class="rounded-xl border border-slate-200 bg-white p-6 shadow-card">
                 <div class="library-header">
-                    <h3>Existing Signals</h3>
-                    <div class="library-search">
-                        <input type="text" placeholder="Search signals..." class="search-input">
+                    <h3 class="text-lg font-semibold">Existing Signals</h3>
+                    <div class="library-search mt-2">
+                        <input type="text" placeholder="Search signals..." class="search-input w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
                     </div>
-                    <div class="library-filters">
-                        <button class="filter-btn active">All</button>
-                        <button class="filter-btn">Offensive</button>
-                        <button class="filter-btn">Defensive</button>
-                        <button class="filter-btn">Special Teams</button>
-                    </div>
-                </div>
-
-                <div class="library-content">
-                    <div class="signal-item">
-                        <div class="signal-thumbnail">
-                            <div class="thumbnail-placeholder">🎬</div>
-                        </div>
-                        <div class="signal-info">
-                            <div class="signal-name">Audible Call</div>
-                            <div class="signal-meta">Offensive • Advanced</div>
-                            <div class="signal-usage">Used 15 times</div>
-                        </div>
-                        <button class="signal-action">Edit</button>
-                    </div>
-
-                    <div class="signal-item">
-                        <div class="signal-thumbnail">
-                            <div class="thumbnail-placeholder">🎬</div>
-                        </div>
-                        <div class="signal-info">
-                            <div class="signal-name">Timeout</div>
-                            <div class="signal-meta">General • Beginner</div>
-                            <div class="signal-usage">Used 8 times</div>
-                        </div>
-                        <button class="signal-action">Edit</button>
-                    </div>
-
-                    <div class="signal-item">
-                        <div class="signal-thumbnail">
-                            <div class="thumbnail-placeholder">🎬</div>
-                        </div>
-                        <div class="signal-info">
-                            <div class="signal-name">Blitz Protection</div>
-                            <div class="signal-meta">Offensive • Intermediate</div>
-                            <div class="signal-usage">Used 23 times</div>
-                        </div>
-                        <button class="signal-action">Edit</button>
-                    </div>
-
-                    <div class="signal-item">
-                        <div class="signal-thumbnail">
-                            <div class="thumbnail-placeholder">🎬</div>
-                        </div>
-                        <div class="signal-info">
-                            <div class="signal-name">Coverage Change</div>
-                            <div class="signal-meta">Defensive • Advanced</div>
-                            <div class="signal-usage">Used 12 times</div>
-                        </div>
-                        <button class="signal-action">Edit</button>
-                    </div>
-
-                    <div class="signal-item">
-                        <div class="signal-thumbnail">
-                            <div class="thumbnail-placeholder">🎬</div>
-                        </div>
-                        <div class="signal-info">
-                            <div class="signal-name">Fake Punt</div>
-                            <div class="signal-meta">Special Teams • Advanced</div>
-                            <div class="signal-usage">Used 3 times</div>
-                        </div>
-                        <button class="signal-action">Edit</button>
+                    <div class="library-filters mt-2 flex flex-wrap items-center gap-2">
+                        <button class="filter-btn active rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs hover:bg-slate-50" data-filter="all">All</button>
+                        <button class="filter-btn rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs hover:bg-slate-50" data-filter="Offensive">Offensive</button>
+                        <button class="filter-btn rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs hover:bg-slate-50" data-filter="Defensive">Defensive</button>
+                        <button class="filter-btn rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs hover:bg-slate-50" data-filter="Special Teams">Special Teams</button>
                     </div>
                 </div>
 
-                <div class="library-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">27</div>
-                        <div class="stat-label">Total Signals</div>
+                <div class="library-content mt-4 grid gap-2">
+                    <div class="signal-item flex items-center justify-between rounded-md border border-slate-200 bg-white p-3" data-type="Offensive" data-name="Audible Call">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-9 w-9 items-center justify-center rounded-md bg-slate-100">🎬</div>
+                            <div>
+                                <div class="signal-name text-sm font-medium">Audible Call</div>
+                                <div class="signal-meta text-xs text-slate-600">Offensive • Advanced</div>
+                                <div class="signal-usage text-xs text-slate-500">Used 15 times</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="signal-action rounded-md border border-slate-200 bg-white px-2 py-1 text-xs hover:bg-slate-50">Edit</button>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number">94%</div>
-                        <div class="stat-label">Team Recognition Rate</div>
+
+                    <div class="signal-item flex items-center justify-between rounded-md border border-slate-200 bg-white p-3" data-type="General" data-name="Timeout">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-9 w-9 items-center justify-center rounded-md bg-slate-100">🎬</div>
+                            <div>
+                                <div class="signal-name text-sm font-medium">Timeout</div>
+                                <div class="signal-meta text-xs text-slate-600">General • Beginner</div>
+                                <div class="signal-usage text-xs text-slate-500">Used 8 times</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="signal-action rounded-md border border-slate-200 bg-white px-2 py-1 text-xs hover:bg-slate-50">Edit</button>
+                        </div>
+                    </div>
+
+                    <div class="signal-item flex items-center justify-between rounded-md border border-slate-200 bg-white p-3" data-type="Offensive" data-name="Blitz Protection">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-9 w-9 items-center justify-center rounded-md bg-slate-100">🎬</div>
+                            <div>
+                                <div class="signal-name text-sm font-medium">Blitz Protection</div>
+                                <div class="signal-meta text-xs text-slate-600">Offensive • Intermediate</div>
+                                <div class="signal-usage text-xs text-slate-500">Used 23 times</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="signal-action rounded-md border border-slate-200 bg-white px-2 py-1 text-xs hover:bg-slate-50">Edit</button>
+                        </div>
+                    </div>
+
+                    <div class="signal-item flex items-center justify-between rounded-md border border-slate-200 bg-white p-3" data-type="Defensive" data-name="Coverage Change">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-9 w-9 items-center justify-center rounded-md bg-slate-100">🎬</div>
+                            <div>
+                                <div class="signal-name text-sm font-medium">Coverage Change</div>
+                                <div class="signal-meta text-xs text-slate-600">Defensive • Advanced</div>
+                                <div class="signal-usage text-xs text-slate-500">Used 12 times</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="signal-action rounded-md border border-slate-200 bg-white px-2 py-1 text-xs hover:bg-slate-50">Edit</button>
+                        </div>
+                    </div>
+
+                    <div class="signal-item flex items-center justify-between rounded-md border border-slate-200 bg-white p-3" data-type="Special Teams" data-name="Fake Punt">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-9 w-9 items-center justify-center rounded-md bg-slate-100">🎬</div>
+                            <div>
+                                <div class="signal-name text-sm font-medium">Fake Punt</div>
+                                <div class="signal-meta text-xs text-slate-600">Special Teams • Advanced</div>
+                                <div class="signal-usage text-xs text-slate-500">Used 3 times</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="signal-action rounded-md border border-slate-200 bg-white px-2 py-1 text-xs hover:bg-slate-50">Edit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="library-stats mt-4 grid grid-cols-2 gap-3">
+                    <div class="rounded-md border border-slate-200 bg-slate-50 p-3 text-center">
+                        <div class="text-xl font-bold">27</div>
+                        <div class="text-xs text-slate-600">Total Signals</div>
+                    </div>
+                    <div class="rounded-md border border-slate-200 bg-slate-50 p-3 text-center">
+                        <div class="text-xl font-bold">94%</div>
+                        <div class="text-xs text-slate-600">Team Recognition</div>
                     </div>
                 </div>
             </aside>
         </div>
     </div>
+
+    <script>
+        // Back navigation
+        (function(){
+            const back = document.querySelector('.back-button');
+            if (back) back.addEventListener('click', () => history.back());
+        })();
+
+        // State
+        const state = {
+            file: null,
+            name: '',
+            type: '',
+            difficulty: '',
+            meaning: '',
+            situations: [],
+            tags: [],
+            plays: []
+        };
+
+        // Elements
+        const uploadZone = document.querySelector('.upload-zone');
+        const fileInput = document.querySelector('.file-input');
+        const uploadedFile = document.querySelector('.uploaded-file');
+        const fileNameEl = document.querySelector('.file-name');
+        const fileSizeEl = document.querySelector('.file-size');
+        const removeFileBtn = document.querySelector('.remove-file');
+        const publishBtn = document.querySelector('.publish-button');
+        const saveDraftBtn = document.querySelector('.save-draft-button');
+
+        const nameInput = document.getElementById('signal-name');
+        const typeSelect = document.getElementById('signal-type');
+        const diffSelect = document.getElementById('difficulty');
+        const meaningInput = document.getElementById('signal-meaning');
+
+        const tagInput = document.querySelector('.tag-input-field');
+        const tagContainer = document.querySelector('.selected-tags');
+        const playSearch = document.querySelector('.play-search');
+        const playsContainer = document.querySelector('.selected-plays');
+
+        const preview = {
+            root: document.querySelector('.preview-video'),
+            title: document.querySelector('.preview-title'),
+            type: document.querySelector('.preview-type'),
+            diff: document.querySelector('.preview-difficulty'),
+            desc: document.querySelector('.preview-description'),
+            tags: document.querySelector('.preview-tags')
+        };
+
+        function formatBytes(bytes){
+            if (!bytes) return '';
+            const units = ['B','KB','MB','GB'];
+            let i=0; while(bytes>=1024 && i<units.length-1){bytes/=1024;i++;}
+            return bytes.toFixed(1)+' '+units[i];
+        }
+
+        function updatePreview(){
+            preview.title.textContent = state.name || '—';
+            preview.type.textContent = state.type ? (state.type[0].toUpperCase()+state.type.slice(1).replace('-', ' ')) : '—';
+            preview.diff.textContent = state.difficulty ? (state.difficulty[0].toUpperCase()+state.difficulty.slice(1)) : '—';
+            preview.desc.textContent = state.meaning || '—';
+            preview.tags.innerHTML = '';
+            const allTags = [...state.situations, ...state.tags];
+            allTags.forEach(t => {
+                const span = document.createElement('span');
+                span.className = 'inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-700';
+                span.textContent = t;
+                preview.tags.appendChild(span);
+            });
+        }
+
+        function validate(){
+            const ok = !!(state.file && state.name && state.type && state.difficulty && state.meaning.trim().length>0);
+            publishBtn.disabled = !ok;
+        }
+
+        // Upload zone
+        if (uploadZone){
+            uploadZone.addEventListener('click', () => fileInput && fileInput.click());
+            uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('drop-active'); });
+            uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drop-active'));
+            uploadZone.addEventListener('drop', (e) => {
+                e.preventDefault(); uploadZone.classList.remove('drop-active');
+                const f = e.dataTransfer?.files?.[0]; if (f) handleFile(f);
+            });
+        }
+        if (fileInput){
+            fileInput.addEventListener('change', () => {
+                const f = fileInput.files?.[0]; if (f) handleFile(f);
+            });
+        }
+        function handleFile(f){
+            state.file = f;
+            if (fileNameEl) fileNameEl.textContent = f.name;
+            if (fileSizeEl) fileSizeEl.textContent = formatBytes(f.size);
+            uploadedFile?.classList.remove('hidden');
+            document.querySelector('.video-placeholder')?.remove();
+            const video = document.createElement('video');
+            video.controls = true;
+            video.className = 'w-full rounded-md border border-slate-200 bg-black/5';
+            video.src = URL.createObjectURL(f);
+            preview.root.innerHTML = '';
+            preview.root.appendChild(video);
+            validate();
+        }
+        removeFileBtn?.addEventListener('click', () => {
+            state.file = null;
+            fileInput.value = '';
+            uploadedFile?.classList.add('hidden');
+            preview.root.innerHTML = '<div class="video-placeholder text-center text-slate-600"><div class="play-icon text-2xl">▶</div><span>Video Preview</span></div>';
+            validate();
+        });
+
+        // Form bindings
+        nameInput?.addEventListener('input', (e)=>{ state.name = e.target.value.trim(); updatePreview(); validate(); });
+        typeSelect?.addEventListener('change', (e)=>{ state.type = e.target.value; updatePreview(); validate(); });
+        diffSelect?.addEventListener('change', (e)=>{ state.difficulty = e.target.value; updatePreview(); validate(); });
+        meaningInput?.addEventListener('input', (e)=>{ state.meaning = e.target.value; updatePreview(); validate(); });
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', () => {
+                const vals = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(i=>i.value);
+                state.situations = vals; updatePreview(); validate();
+            });
+        });
+
+        // Tags
+        function renderTags(){
+            tagContainer.innerHTML = '';
+            state.tags.forEach((t, idx) => {
+                const chip = document.createElement('span');
+                chip.className = 'inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2 py-1 text-xs';
+                chip.innerHTML = `<span>${t}</span>`;
+                const btn = document.createElement('button');
+                btn.className = 'ml-1 rounded border border-slate-200 bg-white px-1 text-slate-700 hover:bg-slate-50';
+                btn.textContent = '×';
+                btn.addEventListener('click', () => { state.tags.splice(idx,1); renderTags(); updatePreview(); });
+                chip.appendChild(btn);
+                tagContainer.appendChild(chip);
+            });
+        }
+        tagInput?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ','){
+                e.preventDefault();
+                const v = tagInput.value.trim();
+                if (v && !state.tags.includes(v)){
+                    state.tags.push(v); tagInput.value = ''; renderTags(); updatePreview();
+                }
+            }
+        });
+
+        // Related plays
+        function renderPlays(){
+            playsContainer.innerHTML = '';
+            state.plays.forEach((p, idx) => {
+                const chip = document.createElement('div');
+                chip.className = 'inline-flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2 py-1 text-xs';
+                chip.innerHTML = `<span class="font-medium">${p}</span>`;
+                const btn = document.createElement('button');
+                btn.className = 'rounded border border-slate-200 bg-white px-1 text-slate-700 hover:bg-slate-50';
+                btn.textContent = '×';
+                btn.addEventListener('click', () => { state.plays.splice(idx,1); renderPlays(); });
+                playsContainer.appendChild(chip);
+            });
+        }
+        playSearch?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter'){
+                e.preventDefault();
+                const v = playSearch.value.trim();
+                if (v && !state.plays.includes(v)){
+                    state.plays.push(v); playSearch.value=''; renderPlays();
+                }
+            }
+        });
+
+        // Library search/filter
+        const searchInput = document.querySelector('.search-input');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const items = document.querySelectorAll('.signal-item');
+        function applyLibraryFilters(){
+            const q = (searchInput?.value || '').toLowerCase();
+            const active = document.querySelector('.filter-btn.active')?.getAttribute('data-filter') || 'all';
+            items.forEach(it => {
+                const name = it.getAttribute('data-name')?.toLowerCase() || '';
+                const type = it.getAttribute('data-type') || '';
+                const matchesText = !q || name.includes(q);
+                const matchesType = (active==='all') || (type===active);
+                it.classList.toggle('hidden', !(matchesText && matchesType));
+            });
+        }
+        searchInput?.addEventListener('input', applyLibraryFilters);
+        filterBtns.forEach(btn => btn.addEventListener('click', ()=>{
+            filterBtns.forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            applyLibraryFilters();
+        }));
+
+        // Library edit -> load name/type/difficulty as quick fill
+        document.querySelectorAll('.signal-action').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const card = e.currentTarget.closest('.signal-item');
+                const nm = card?.getAttribute('data-name') || '';
+                const tp = card?.getAttribute('data-type') || '';
+                nameInput.value = nm; state.name = nm;
+                if (tp){
+                    const lower = tp.toLowerCase().replace(' ', '-');
+                    typeSelect.value = lower.includes('offensive')? 'offensive' : lower.includes('defensive')? 'defensive' : lower.includes('special')? 'special-teams' : '';
+                    state.type = typeSelect.value;
+                }
+                updatePreview(); validate();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Save/Publish
+        saveDraftBtn?.addEventListener('click', () => {
+            const payload = { ...state, ts: Date.now() };
+            try {
+                localStorage.setItem('fiq_signal_draft', JSON.stringify(payload));
+                toast('Draft saved');
+            } catch { toast('Unable to save draft'); }
+        });
+        publishBtn?.addEventListener('click', () => {
+            toast('Signal published (local only)');
+        });
+
+        // Tiny toast
+        function toast(msg){
+            const el = document.createElement('div');
+            el.className = 'fixed bottom-6 right-6 z-50 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm shadow-card';
+            el.textContent = msg; document.body.appendChild(el);
+            setTimeout(()=>{ el.remove(); }, 1800);
+        }
+
+        // Initialize
+        updatePreview(); renderTags(); renderPlays(); applyLibraryFilters();
+    </script>
 </body>
 </html>

@@ -4,277 +4,489 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FootballIQ - Signal Recognition Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ["Inter", "ui-sans-serif", "system-ui"] },
+                    colors: {
+                        brand: { 500: "#10b981", 600: "#059669", 700: "#047857" },
+                        accent: { 500: "#22c55e", 600: "#16a34a" }
+                    },
+                    boxShadow: {
+                        card: "0 1px 2px rgba(0,0,0,0.08), 0 8px 30px rgba(2,6,23,0.08)",
+                        glow: "0 0 0 1px rgba(16,185,129,0.3), 0 8px 30px rgba(16,185,129,0.15)"
+                    },
+                    keyframes: {
+                        gradient: { '0%,100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } },
+                        shimmer: { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(100%)' } },
+                        pop: { '0%': { transform: 'scale(0.95)' }, '100%': { transform: 'scale(1)' } },
+                        ripple: { '0%': { transform: 'scale(0)', opacity: '0.4' }, '100%': { transform: 'scale(1)', opacity: '0' } },
+                        pulse: { '0%,100%': { opacity: '1' }, '50%': { opacity: '0.5' } }
+                    },
+                    animation: {
+                        gradient: 'gradient 12s ease infinite',
+                        shimmer: 'shimmer 1.5s linear infinite',
+                        pop: 'pop 120ms ease-out',
+                        ripple: 'ripple 500ms ease-out',
+                        pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html, body { height: 100%; }
+        body { font-family: Inter, ui-sans-serif, system-ui; }
+        .particle { position: absolute; border-radius: 9999px; opacity: .25; filter: blur(0.5px); }
+        .signal-component { cursor: grab; }
+        .signal-component:active { cursor: grabbing; }
+        .drop-area { min-height: 60px; border: 2px dashed rgba(255,255,255,0.3); border-radius: 8px; transition: all 0.3s; }
+        .drop-area.drag-over { border-color: #10b981; background: rgba(16, 185, 129, 0.1); }
+    </style>
 </head>
-<body>
-    <div class="signal-recognition-container">
-        <header class="quiz-header">
-            <div class="header-left">
-                <button class="back-button">← Back</button>
-                <h1>Signal Recognition Challenge</h1>
-            </div>
-            <div class="header-right">
-                <div class="score-display">Score: 850</div>
-                <div class="streak-counter">Streak: 7</div>
+<body class="min-h-screen bg-[radial-gradient(1250px_600px_at_50%_-200px,theme(colors.brand.500/.15),transparent_60%),radial-gradient(650px_300px_at_10%_10%,theme(colors.emerald.400/.12),transparent_50%),radial-gradient(650px_300px_at_90%_10%,theme(colors.green.500/.10),transparent_50%)] relative overflow-x-hidden text-white">
+    <div class="pointer-events-none absolute inset-0 -z-10" id="particles"></div>
+    
+    <div class="signal-recognition-container mx-auto max-w-6xl px-6 py-8">
+        <header class="quiz-header sticky top-4 z-20">
+            <div class="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur shadow-card">
+                <div class="header-left flex items-center gap-3">
+                    <button class="back-button relative inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm font-medium text-white shadow-sm ring-1 ring-white/10 transition-all hover:translate-y-[-1px] hover:bg-white/20 hover:shadow-glow active:translate-y-0">
+                        ← Back
+                    </button>
+                    <h1 class="text-base font-semibold tracking-tight text-white">Signal Recognition Challenge</h1>
+                </div>
+                <div class="header-right flex items-center gap-4">
+                    <div class="score-display rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+                        <span class="text-sm text-white/70">Score:</span>
+                        <span class="ml-1 font-bold text-emerald-400">850</span>
+                    </div>
+                    <div class="streak-counter rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+                        <span class="text-sm text-white/70">Streak:</span>
+                        <span class="ml-1 font-bold text-emerald-400">7</span>
+                    </div>
+                </div>
             </div>
         </header>
 
         <!-- Main Quiz Mode -->
-        <div class="quiz-mode active">
-            <div class="quiz-progress">
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 60%"></div>
+        <div class="quiz-mode active mt-8">
+            <div class="quiz-progress rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="progress-bar relative h-3 w-64 overflow-hidden rounded-full bg-white/10">
+                            <div class="progress-fill absolute inset-y-0 left-0 w-[60%] bg-gradient-to-r from-emerald-400 via-emerald-500 to-lime-400 animate-[gradient_8s_ease_infinite] bg-[length:200%_100%]"></div>
+                        </div>
+                        <span class="progress-text text-sm font-medium text-white/80">Signal 6 of 10</span>
+                    </div>
+                    <div class="timer rounded-md bg-black/30 px-3 py-2 text-xl font-bold text-emerald-400">00:15</div>
                 </div>
-                <span class="progress-text">Signal 6 of 10</span>
-                <div class="timer">00:15</div>
             </div>
 
-            <div class="video-section">
-                <div class="video-container">
-                    <video class="signal-video" controls poster="coach-signal-thumbnail.jpg">
+            <div class="video-section mt-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
+                <div class="video-container rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                    <video class="signal-video w-full rounded-lg border border-white/10 bg-black/50" controls poster="coach-signal-thumbnail.jpg">
                         <source src="signals/hot-route-signal.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
-                    <div class="video-controls">
-                        <button class="replay-button">↻ Replay</button>
-                        <button class="slow-motion">½× Speed</button>
+                    <div class="video-controls mt-4 flex justify-center gap-3">
+                        <button class="replay-button inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm font-medium text-white transition-all hover:bg-white/20">
+                            ↻ Replay
+                        </button>
+                        <button class="slow-motion inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm font-medium text-white transition-all hover:bg-white/20">
+                            ½× Speed
+                        </button>
                     </div>
                 </div>
-                <div class="signal-prompt">
-                    <h2>What signal is Coach Rodriguez showing?</h2>
-                    <p class="context">3rd down, Red Zone, 11 Personnel</p>
+                <div class="signal-prompt rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                    <h2 class="text-2xl font-bold tracking-tight text-white">What signal is Coach Rodriguez showing?</h2>
+                    <p class="context mt-2 text-white/80">3rd down, Red Zone, 11 Personnel</p>
                 </div>
             </div>
 
-            <div class="answer-options">
-                <div class="option-grid">
-                    <button class="signal-option">
-                        <div class="option-icon">👉</div>
-                        <div class="option-text">Hot Route Alert</div>
+            <div class="answer-options mt-6">
+                <div class="option-grid grid gap-4 sm:grid-cols-2">
+                    <button class="signal-option group flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow">
+                        <div class="option-icon text-3xl">👉</div>
+                        <div class="option-text font-semibold text-white">Hot Route Alert</div>
                     </button>
-                    <button class="signal-option">
-                        <div class="option-icon">✋</div>
-                        <div class="option-text">Timeout</div>
+                    <button class="signal-option group flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow">
+                        <div class="option-icon text-3xl">✋</div>
+                        <div class="option-text font-semibold text-white">Timeout</div>
                     </button>
-                    <button class="signal-option">
-                        <div class="option-icon">👆</div>
-                        <div class="option-text">Audible Change</div>
+                    <button class="signal-option group flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow">
+                        <div class="option-icon text-3xl">👆</div>
+                        <div class="option-text font-semibold text-white">Audible Change</div>
                     </button>
-                    <button class="signal-option">
-                        <div class="option-icon">👊</div>
-                        <div class="option-text">Run Protection</div>
+                    <button class="signal-option group flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4 text-left transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow">
+                        <div class="option-icon text-3xl">👊</div>
+                        <div class="option-text font-semibold text-white">Run Protection</div>
                     </button>
                 </div>
             </div>
 
-            <div class="feedback-section" style="display: none;">
-                <div class="feedback correct">
-                    <div class="feedback-icon">✅</div>
-                    <div class="feedback-content">
-                        <h3>Correct! Hot Route Alert</h3>
-                        <p>This signal tells receivers to adjust their routes based on defensive coverage. Used in 3rd down situations when a quick read is needed.</p>
+            <div class="feedback-section mt-6 hidden rounded-2xl border border-emerald-400/30 bg-emerald-500/10 p-6 backdrop-blur">
+                <div class="feedback correct flex items-start gap-4">
+                    <div class="feedback-icon text-3xl text-emerald-400">✅</div>
+                    <div class="feedback-content flex-1">
+                        <h3 class="text-xl font-bold text-emerald-400">Correct! Hot Route Alert</h3>
+                        <p class="mt-2 text-white/80">This signal tells receivers to adjust their routes based on defensive coverage. Used in 3rd down situations when a quick read is needed.</p>
                     </div>
-                    <button class="next-signal">Next Signal →</button>
+                    <button class="next-signal rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                        Next Signal →
+                    </button>
                 </div>
             </div>
         </div>
 
         <!-- Drag and Drop Challenge -->
-        <div class="drag-drop-mode" style="display: none;">
-            <div class="challenge-header">
-                <h2>Build the Complete Signal</h2>
-                <p>Drag the signal components in the correct order</p>
+        <div class="drag-drop-mode mt-8 hidden">
+            <div class="challenge-header rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                <h2 class="text-2xl font-bold tracking-tight text-white">Build the Complete Signal</h2>
+                <p class="mt-2 text-white/80">Drag the signal components in the correct order</p>
             </div>
 
-            <div class="signal-components">
-                <div class="component-bank">
-                    <h3>Available Components</h3>
-                    <div class="draggable-components">
-                        <div class="signal-component" draggable="true">
-                            <div class="component-icon">👉</div>
-                            <span>Point Right</span>
+            <div class="signal-components mt-6 grid gap-6 lg:grid-cols-2">
+                <div class="component-bank rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                    <h3 class="text-lg font-semibold text-white">Available Components</h3>
+                    <div class="draggable-components mt-4 grid gap-3">
+                        <div class="signal-component flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:bg-white/10" draggable="true">
+                            <div class="component-icon text-2xl">👉</div>
+                            <span class="font-medium text-white">Point Right</span>
                         </div>
-                        <div class="signal-component" draggable="true">
-                            <div class="component-icon">👏</div>
-                            <span>Two Claps</span>
+                        <div class="signal-component flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:bg-white/10" draggable="true">
+                            <div class="component-icon text-2xl">👏</div>
+                            <span class="font-medium text-white">Two Claps</span>
                         </div>
-                        <div class="signal-component" draggable="true">
-                            <div class="component-icon">✊</div>
-                            <span>Fist Pump</span>
+                        <div class="signal-component flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:bg-white/10" draggable="true">
+                            <div class="component-icon text-2xl">✊</div>
+                            <span class="font-medium text-white">Fist Pump</span>
                         </div>
-                        <div class="signal-component" draggable="true">
-                            <div class="component-icon">👋</div>
-                            <span>Wave Motion</span>
+                        <div class="signal-component flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:bg-white/10" draggable="true">
+                            <div class="component-icon text-2xl">👋</div>
+                            <span class="font-medium text-white">Wave Motion</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="drop-zone">
-                    <h3>Signal Sequence</h3>
-                    <div class="signal-builder">
+                <div class="drop-zone rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                    <h3 class="text-lg font-semibold text-white">Signal Sequence</h3>
+                    <div class="signal-builder mt-4 grid gap-4">
                         <div class="drop-slot">
-                            <span class="slot-number">1</span>
-                            <div class="drop-area">Drop first action</div>
+                            <span class="slot-number mb-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white">1</span>
+                            <div class="drop-area flex items-center justify-center rounded-lg bg-white/5 p-4 text-center text-sm text-white/60">Drop first action</div>
                         </div>
                         <div class="drop-slot">
-                            <span class="slot-number">2</span>
-                            <div class="drop-area">Drop second action</div>
+                            <span class="slot-number mb-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white">2</span>
+                            <div class="drop-area flex items-center justify-center rounded-lg bg-white/5 p-4 text-center text-sm text-white/60">Drop second action</div>
                         </div>
                         <div class="drop-slot">
-                            <span class="slot-number">3</span>
-                            <div class="drop-area">Drop third action</div>
+                            <span class="slot-number mb-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white">3</span>
+                            <div class="drop-area flex items-center justify-center rounded-lg bg-white/5 p-4 text-center text-sm text-white/60">Drop third action</div>
                         </div>
                     </div>
-                    <button class="check-sequence" disabled>Check Sequence</button>
+                    <button class="check-sequence mt-6 w-full rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50" disabled>
+                        Check Sequence
+                    </button>
                 </div>
             </div>
         </div>
 
         <!-- Speed Challenge Mode -->
-        <div class="speed-challenge-mode" style="display: none;">
-            <div class="challenge-header">
-                <h2>Speed Challenge: Rapid Fire</h2>
-                <div class="challenge-stats">
-                    <div class="stat">
-                        <span class="stat-number">30</span>
-                        <span class="stat-label">Seconds Left</span>
+        <div class="speed-challenge-mode mt-8 hidden">
+            <div class="challenge-header rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                <h2 class="text-2xl font-bold tracking-tight text-white">Speed Challenge: Rapid Fire</h2>
+                <div class="challenge-stats mt-4 grid gap-4 sm:grid-cols-3">
+                    <div class="stat rounded-lg border border-white/10 bg-white/5 p-4 text-center">
+                        <span class="stat-number block text-2xl font-bold text-emerald-400">30</span>
+                        <span class="stat-label text-sm text-white/70">Seconds Left</span>
                     </div>
-                    <div class="stat">
-                        <span class="stat-number">7</span>
-                        <span class="stat-label">Correct</span>
+                    <div class="stat rounded-lg border border-white/10 bg-white/5 p-4 text-center">
+                        <span class="stat-number block text-2xl font-bold text-emerald-400">7</span>
+                        <span class="stat-label text-sm text-white/70">Correct</span>
                     </div>
-                    <div class="stat">
-                        <span class="stat-number">2</span>
-                        <span class="stat-label">Wrong</span>
+                    <div class="stat rounded-lg border border-white/10 bg-white/5 p-4 text-center">
+                        <span class="stat-number block text-2xl font-bold text-red-400">2</span>
+                        <span class="stat-label text-sm text-white/70">Wrong</span>
                     </div>
                 </div>
             </div>
 
-            <div class="rapid-fire-content">
-                <div class="signal-flash">
+            <div class="rapid-fire-content mt-6">
+                <div class="signal-flash rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
                     <div class="flash-video">
-                        <div class="signal-preview">
-                            <div class="signal-demonstration">👉 → 👏 → ✊</div>
+                        <div class="signal-preview text-center">
+                            <div class="signal-demonstration text-6xl">👉 → 👏 → ✊</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="quick-answers">
-                    <button class="quick-option">Hot Route</button>
-                    <button class="quick-option">Audible</button>
-                    <button class="quick-option">Timeout</button>
-                    <button class="quick-option">Protection</button>
+                <div class="quick-answers mt-6 grid gap-3 sm:grid-cols-4">
+                    <button class="quick-option rounded-lg bg-emerald-600 px-4 py-3 font-semibold text-white shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                        Hot Route
+                    </button>
+                    <button class="quick-option rounded-lg border border-white/10 bg-white/10 px-4 py-3 font-semibold text-white transition-all hover:bg-white/20">
+                        Audible
+                    </button>
+                    <button class="quick-option rounded-lg border border-white/10 bg-white/10 px-4 py-3 font-semibold text-white transition-all hover:bg-white/20">
+                        Timeout
+                    </button>
+                    <button class="quick-option rounded-lg border border-white/10 bg-white/10 px-4 py-3 font-semibold text-white transition-all hover:bg-white/20">
+                        Protection
+                    </button>
                 </div>
 
-                <div class="rapid-progress">
-                    <div class="signal-queue">
-                        <div class="queued-signal completed">✅</div>
-                        <div class="queued-signal completed">✅</div>
-                        <div class="queued-signal incorrect">❌</div>
-                        <div class="queued-signal completed">✅</div>
-                        <div class="queued-signal current">?</div>
-                        <div class="queued-signal pending">○</div>
-                        <div class="queued-signal pending">○</div>
+                <div class="rapid-progress mt-6 rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                    <div class="signal-queue flex items-center justify-center gap-3">
+                        <div class="queued-signal flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white">✅</div>
+                        <div class="queued-signal flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white">✅</div>
+                        <div class="queued-signal flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-sm font-bold text-white">❌</div>
+                        <div class="queued-signal flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white">✅</div>
+                        <div class="queued-signal current flex h-8 w-8 items-center justify-center rounded-full border-2 border-emerald-400 bg-emerald-500/20 text-sm font-bold text-emerald-200">?</div>
+                        <div class="queued-signal pending flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/10 text-sm text-white/60">○</div>
+                        <div class="queued-signal pending flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/10 text-sm text-white/60">○</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Challenge Selection Menu -->
-        <div class="challenge-menu" style="display: none;">
-            <h2>Choose Your Challenge</h2>
-            <div class="challenge-options">
-                <button class="challenge-card" data-mode="standard">
-                    <div class="challenge-icon">🎯</div>
+        <div class="challenge-menu mt-8 hidden">
+            <h2 class="text-center text-2xl font-bold tracking-tight text-white">Choose Your Challenge</h2>
+            <div class="challenge-options mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <button class="challenge-card group rounded-xl border border-white/10 bg-white/5 p-6 text-left transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" data-mode="standard">
+                    <div class="challenge-icon mb-4 text-4xl">🎯</div>
                     <div class="challenge-info">
-                        <h3>Standard Recognition</h3>
-                        <p>Watch signals and identify meanings</p>
-                        <div class="difficulty">Difficulty: Medium</div>
+                        <h3 class="text-lg font-semibold text-white">Standard Recognition</h3>
+                        <p class="mt-2 text-sm text-white/80">Watch signals and identify meanings</p>
+                        <div class="difficulty mt-3 inline-block rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-200">Difficulty: Medium</div>
                     </div>
                 </button>
 
-                <button class="challenge-card" data-mode="drag-drop">
-                    <div class="challenge-icon">🔄</div>
+                <button class="challenge-card group rounded-xl border border-white/10 bg-white/5 p-6 text-left transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" data-mode="drag-drop">
+                    <div class="challenge-icon mb-4 text-4xl">🔄</div>
                     <div class="challenge-info">
-                        <h3>Build the Signal</h3>
-                        <p>Drag components to create complete signals</p>
-                        <div class="difficulty">Difficulty: Hard</div>
+                        <h3 class="text-lg font-semibold text-white">Build the Signal</h3>
+                        <p class="mt-2 text-sm text-white/80">Drag components to create complete signals</p>
+                        <div class="difficulty mt-3 inline-block rounded-full bg-orange-500/10 px-3 py-1 text-xs font-medium text-orange-200">Difficulty: Hard</div>
                     </div>
                 </button>
 
-                <button class="challenge-card" data-mode="speed">
-                    <div class="challenge-icon">⚡</div>
+                <button class="challenge-card group rounded-xl border border-white/10 bg-white/5 p-6 text-left transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" data-mode="speed">
+                    <div class="challenge-icon mb-4 text-4xl">⚡</div>
                     <div class="challenge-info">
-                        <h3>Speed Challenge</h3>
-                        <p>How fast can you identify 10 signals?</p>
-                        <div class="difficulty">Difficulty: Expert</div>
+                        <h3 class="text-lg font-semibold text-white">Speed Challenge</h3>
+                        <p class="mt-2 text-sm text-white/80">How fast can you identify 10 signals?</p>
+                        <div class="difficulty mt-3 inline-block rounded-full bg-red-500/10 px-3 py-1 text-xs font-medium text-red-200">Difficulty: Expert</div>
                     </div>
                 </button>
 
-                <button class="challenge-card" data-mode="memory">
-                    <div class="challenge-icon">🧠</div>
+                <button class="challenge-card group rounded-xl border border-white/10 bg-white/5 p-6 text-left transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" data-mode="memory">
+                    <div class="challenge-icon mb-4 text-4xl">🧠</div>
                     <div class="challenge-info">
-                        <h3>Memory Test</h3>
-                        <p>Remember signal sequences</p>
-                        <div class="difficulty">Difficulty: Hard</div>
+                        <h3 class="text-lg font-semibold text-white">Memory Test</h3>
+                        <p class="mt-2 text-sm text-white/80">Remember signal sequences</p>
+                        <div class="difficulty mt-3 inline-block rounded-full bg-orange-500/10 px-3 py-1 text-xs font-medium text-orange-200">Difficulty: Hard</div>
                     </div>
                 </button>
             </div>
         </div>
 
         <!-- Results Summary -->
-        <div class="results-summary" style="display: none;">
-            <div class="results-header">
-                <h2>Challenge Complete!</h2>
-                <div class="final-score">
-                    <div class="score-circle">
-                        <span class="score-number">8/10</span>
-                        <span class="score-label">Correct</span>
+        <div class="results-summary mt-8 hidden">
+            <div class="results-header text-center">
+                <h2 class="text-3xl font-bold text-white">Challenge Complete!</h2>
+                <div class="final-score mt-6">
+                    <div class="score-circle mx-auto flex h-32 w-32 flex-col items-center justify-center rounded-full border-4 border-emerald-400/50 bg-emerald-500/10">
+                        <span class="score-number text-2xl font-bold text-emerald-400">8/10</span>
+                        <span class="score-label text-sm text-white/70">Correct</span>
                     </div>
                 </div>
             </div>
 
-            <div class="performance-breakdown">
-                <div class="performance-stat">
-                    <div class="stat-icon">⏱️</div>
-                    <div class="stat-info">
-                        <div class="stat-title">Average Response Time</div>
-                        <div class="stat-value">3.2 seconds</div>
+            <div class="performance-breakdown mt-8 grid gap-4 sm:grid-cols-3">
+                <div class="performance-stat rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur">
+                    <div class="flex items-center gap-3">
+                        <div class="stat-icon text-2xl">⏱️</div>
+                        <div class="stat-info">
+                            <div class="stat-title text-sm text-white/70">Average Response Time</div>
+                            <div class="stat-value text-lg font-bold text-emerald-400">3.2 seconds</div>
+                        </div>
                     </div>
                 </div>
-                <div class="performance-stat">
-                    <div class="stat-icon">🎯</div>
-                    <div class="stat-info">
-                        <div class="stat-title">Accuracy Rate</div>
-                        <div class="stat-value">80%</div>
+                <div class="performance-stat rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur">
+                    <div class="flex items-center gap-3">
+                        <div class="stat-icon text-2xl">🎯</div>
+                        <div class="stat-info">
+                            <div class="stat-title text-sm text-white/70">Accuracy Rate</div>
+                            <div class="stat-value text-lg font-bold text-emerald-400">80%</div>
+                        </div>
                     </div>
                 </div>
-                <div class="performance-stat">
-                    <div class="stat-icon">📈</div>
-                    <div class="stat-info">
-                        <div class="stat-title">Improvement</div>
-                        <div class="stat-value">+15% vs last time</div>
+                <div class="performance-stat rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur">
+                    <div class="flex items-center gap-3">
+                        <div class="stat-icon text-2xl">📈</div>
+                        <div class="stat-info">
+                            <div class="stat-title text-sm text-white/70">Improvement</div>
+                            <div class="stat-value text-lg font-bold text-emerald-400">+15% vs last time</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="missed-signals">
-                <h3>Review Missed Signals</h3>
-                <div class="missed-item">
-                    <div class="missed-signal">👊 → 👋 → 👆</div>
-                    <div class="missed-info">
-                        <div class="correct-answer">Correct: Blitz Protection</div>
-                        <div class="your-answer">Your answer: Hot Route</div>
+            <div class="missed-signals mt-8 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                <h3 class="text-xl font-bold text-white">Review Missed Signals</h3>
+                <div class="missed-item mt-4 flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-4">
+                    <div class="flex items-center gap-4">
+                        <div class="missed-signal text-2xl">👊 → 👋 → 👆</div>
+                        <div class="missed-info">
+                            <div class="correct-answer text-sm font-medium text-emerald-400">Correct: Blitz Protection</div>
+                            <div class="your-answer text-sm text-red-400">Your answer: Hot Route</div>
+                        </div>
                     </div>
-                    <button class="review-button">Review</button>
+                    <button class="review-button rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                        Review
+                    </button>
                 </div>
             </div>
 
-            <div class="results-actions">
-                <button class="action-button secondary">Try Again</button>
-                <button class="action-button primary">Next Challenge</button>
-                <button class="action-button secondary">Back to Menu</button>
+            <div class="results-actions mt-8 flex flex-wrap items-center justify-center gap-4">
+                <button class="action-button secondary rounded-md border border-white/10 bg-white/10 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-white/20">
+                    Try Again
+                </button>
+                <button class="action-button primary rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                    Next Challenge
+                </button>
+                <button class="action-button secondary rounded-md border border-white/10 bg-white/10 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-white/20">
+                    Back to Menu
+                </button>
             </div>
         </div>
     </div>
+
+    <script>
+        // Particle system
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.width = Math.random() * 4 + 1 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.backgroundColor = '#10b981';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particle.style.animation = 'pulse 2s ease-in-out infinite';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Signal option interactions
+        document.querySelectorAll('.signal-option').forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove selection from other options
+                document.querySelectorAll('.signal-option').forEach(o => o.classList.remove('animate-pop'));
+                
+                // Add selection animation
+                option.classList.add('animate-pop');
+                setTimeout(() => {
+                    document.querySelector('.feedback-section').classList.remove('hidden');
+                }, 300);
+            });
+        });
+
+        // Drag and drop functionality
+        let draggedElement = null;
+
+        document.querySelectorAll('.signal-component').forEach(component => {
+            component.addEventListener('dragstart', (e) => {
+                draggedElement = e.target;
+                e.target.style.opacity = '0.5';
+            });
+
+            component.addEventListener('dragend', (e) => {
+                e.target.style.opacity = '';
+                draggedElement = null;
+            });
+        });
+
+        document.querySelectorAll('.drop-area').forEach(dropArea => {
+            dropArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropArea.classList.add('drag-over');
+            });
+
+            dropArea.addEventListener('dragleave', () => {
+                dropArea.classList.remove('drag-over');
+            });
+
+            dropArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropArea.classList.remove('drag-over');
+                
+                if (draggedElement) {
+                    dropArea.innerHTML = draggedElement.innerHTML;
+                    dropArea.classList.add('filled');
+                    
+                    // Check if all slots are filled
+                    const filledSlots = document.querySelectorAll('.drop-area.filled').length;
+                    if (filledSlots === 3) {
+                        document.querySelector('.check-sequence').disabled = false;
+                    }
+                }
+            });
+        });
+
+        // Quick option selection
+        document.querySelectorAll('.quick-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.quick-option').forEach(o => {
+                    o.classList.remove('bg-emerald-600', 'shadow-glow');
+                    o.classList.add('border', 'border-white/10', 'bg-white/10');
+                });
+                
+                option.classList.add('bg-emerald-600', 'shadow-glow');
+                option.classList.remove('border', 'border-white/10', 'bg-white/10');
+            });
+        });
+
+        // Challenge card selection
+        document.querySelectorAll('.challenge-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.add('animate-pop');
+                
+                // Hide menu and show selected mode
+                const mode = card.dataset.mode;
+                document.querySelector('.challenge-menu').classList.add('hidden');
+                
+                if (mode === 'standard') {
+                    document.querySelector('.quiz-mode').classList.remove('hidden');
+                } else if (mode === 'drag-drop') {
+                    document.querySelector('.drag-drop-mode').classList.remove('hidden');
+                } else if (mode === 'speed') {
+                    document.querySelector('.speed-challenge-mode').classList.remove('hidden');
+                }
+            });
+        });
+
+        // Button interactions
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.classList.add('animate-pop');
+                setTimeout(() => btn.classList.remove('animate-pop'), 120);
+            });
+        });
+
+        // Back navigation
+        (function(){
+            const back = document.querySelector('.back-button');
+            if (back) back.addEventListener('click', () => history.back());
+        })();
+    </script>
 </body>
 </html>

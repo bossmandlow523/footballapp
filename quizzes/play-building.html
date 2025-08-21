@@ -4,523 +4,444 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FootballIQ - Interactive Play Building</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ["Inter", "ui-sans-serif", "system-ui"] },
+                    colors: {
+                        brand: { 500: "#10b981", 600: "#059669", 700: "#047857" },
+                        accent: { 500: "#22c55e", 600: "#16a34a" }
+                    },
+                    boxShadow: {
+                        card: "0 1px 2px rgba(0,0,0,0.08), 0 8px 30px rgba(2,6,23,0.08)",
+                        glow: "0 0 0 1px rgba(16,185,129,0.3), 0 8px 30px rgba(16,185,129,0.15)"
+                    },
+                    keyframes: {
+                        gradient: { '0%,100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } },
+                        shimmer: { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(100%)' } },
+                        pop: { '0%': { transform: 'scale(0.95)' }, '100%': { transform: 'scale(1)' } },
+                        ripple: { '0%': { transform: 'scale(0)', opacity: '0.4' }, '100%': { transform: 'scale(1)', opacity: '0' } },
+                        pulse: { '0%,100%': { opacity: '1' }, '50%': { opacity: '0.5' } }
+                    },
+                    animation: {
+                        gradient: 'gradient 12s ease infinite',
+                        shimmer: 'shimmer 1.5s linear infinite',
+                        pop: 'pop 120ms ease-out',
+                        ripple: 'ripple 500ms ease-out',
+                        pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html, body { height: 100%; }
+        body { font-family: Inter, ui-sans-serif, system-ui; }
+        .particle { position: absolute; border-radius: 9999px; opacity: .25; filter: blur(0.5px); }
+        .player { position: absolute; transform: translate(-50%, -50%); }
+        .route-path { stroke: #10b981; stroke-width: 2; fill: none; opacity: 0.8; }
+        .canvas-overlay { position: absolute; top: 0; left: 0; pointer-events: none; }
+    </style>
 </head>
-<body>
-    <div class="play-building-container">
-        <header class="building-header">
-            <div class="header-left">
-                <button class="back-button">← Back</button>
-                <h1>Play Builder Challenge</h1>
-            </div>
-            <div class="header-right">
-                <div class="building-tools">
-                    <button class="tool-button undo">↶ Undo</button>
-                    <button class="tool-button redo">↷ Redo</button>
-                    <button class="tool-button save">💾 Save</button>
+<body class="min-h-screen bg-[radial-gradient(1250px_600px_at_50%_-200px,theme(colors.brand.500/.15),transparent_60%),radial-gradient(650px_300px_at_10%_10%,theme(colors.emerald.400/.12),transparent_50%),radial-gradient(650px_300px_at_90%_10%,theme(colors.green.500/.10),transparent_50%)] relative overflow-x-hidden text-white">
+    <div class="pointer-events-none absolute inset-0 -z-10" id="particles"></div>
+    
+    <div class="mx-auto max-w-7xl px-6 py-8">
+        <header class="play-building-header sticky top-4 z-20">
+            <div class="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur shadow-card">
+                <div class="header-left flex items-center gap-3">
+                    <button class="back-button relative inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm font-medium text-white shadow-sm ring-1 ring-white/10 transition-all hover:translate-y-[-1px] hover:bg-white/20 hover:shadow-glow active:translate-y-0">
+                        ← Back
+                    </button>
+                    <h1 class="text-base font-semibold tracking-tight text-white">Play Builder Challenge</h1>
+                </div>
+                <div class="header-right">
+                    <div class="building-tools flex items-center gap-2">
+                        <button class="tool-button relative inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm font-medium text-white transition-all hover:bg-white/20">
+                            ↶ Undo
+                        </button>
+                        <button class="tool-button relative inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm font-medium text-white transition-all hover:bg-white/20">
+                            ↷ Redo
+                        </button>
+                        <button class="tool-button relative inline-flex items-center gap-2 rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                            💾 Save
+                        </button>
+                    </div>
                 </div>
             </div>
         </header>
 
-        <!-- Drag Routes onto Formation Mode -->
-        <div class="route-building-mode active">
-            <div class="building-scenario">
-                <h2>Build the Perfect Play</h2>
-                <div class="scenario-details">
-                    <div class="situation">
-                        <span class="down">3rd & 8</span>
-                        <span class="field-pos">Own 35</span>
-                        <span class="formation">11 Personnel</span>
-                    </div>
-                    <div class="objective">
-                        <p>Design a play to beat Cover 3 defense. Drag routes onto each receiver position.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="play-workspace">
-                <div class="formation-field">
-                    <!-- Football field with formation -->
-                    <div class="field-background">
-                        <div class="field-lines">
-                            <div class="yard-line">30</div>
-                            <div class="yard-line">35</div>
-                            <div class="yard-line">40</div>
+        <!-- Route Building Mode -->
+        <div class="route-building-mode active mt-8">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur">
+                <div class="building-scenario">
+                    <h2 class="text-2xl font-bold tracking-tight text-white">Build the Perfect Play</h2>
+                    <div class="scenario-details mt-4">
+                        <div class="situation flex flex-wrap items-center gap-3">
+                            <span class="down rounded-full bg-emerald-500/10 px-3 py-1 text-sm font-medium text-emerald-200">3rd & 8</span>
+                            <span class="field-pos rounded-full bg-emerald-500/10 px-3 py-1 text-sm font-medium text-emerald-200">Own 35</span>
+                            <span class="formation rounded-full bg-emerald-500/10 px-3 py-1 text-sm font-medium text-emerald-200">11 Personnel</span>
                         </div>
-                        <div class="hash-marks"></div>
-                    </div>
-
-                    <!-- Offensive formation positions -->
-                    <div class="offensive-positions">
-                        <div class="position qb" style="left: 50%; top: 60%;" data-position="QB">
-                            <div class="position-icon">QB</div>
-                            <div class="position-label">Quarterback</div>
-                        </div>
-                        <div class="position wr drop-zone" style="left: 15%; top: 45%;" data-position="X">
-                            <div class="position-icon">X</div>
-                            <div class="position-label">Split End</div>
-                            <div class="route-slot empty">Drop route here</div>
-                        </div>
-                        <div class="position wr drop-zone" style="left: 35%; top: 50%;" data-position="Z">
-                            <div class="position-icon">Z</div>
-                            <div class="position-label">Flanker</div>
-                            <div class="route-slot empty">Drop route here</div>
-                        </div>
-                        <div class="position wr drop-zone" style="left: 85%; top: 45%;" data-position="Y">
-                            <div class="position-icon">Y</div>
-                            <div class="position-label">Tight End</div>
-                            <div class="route-slot empty">Drop route here</div>
-                        </div>
-                        <div class="position rb drop-zone" style="left: 45%; top: 65%;" data-position="RB">
-                            <div class="position-icon">RB</div>
-                            <div class="position-label">Running Back</div>
-                            <div class="route-slot empty">Drop route here</div>
-                        </div>
-                    </div>
-
-                    <!-- Defensive formation (for reference) -->
-                    <div class="defensive-positions">
-                        <div class="defender" style="left: 20%; top: 25%;" data-coverage="deep-third">
-                            <div class="defender-icon">CB</div>
-                            <div class="coverage-indicator">Deep 1/3</div>
-                        </div>
-                        <div class="defender" style="left: 50%; top: 15%;" data-coverage="deep-middle">
-                            <div class="defender-icon">FS</div>
-                            <div class="coverage-indicator">Deep Middle</div>
-                        </div>
-                        <div class="defender" style="left: 80%; top: 25%;" data-coverage="deep-third">
-                            <div class="defender-icon">CB</div>
-                            <div class="coverage-indicator">Deep 1/3</div>
-                        </div>
-                        <div class="defender" style="left: 35%; top: 35%;" data-coverage="underneath">
-                            <div class="defender-icon">LB</div>
-                            <div class="coverage-indicator">Underneath</div>
-                        </div>
-                        <div class="defender" style="left: 65%; top: 35%;" data-coverage="underneath">
-                            <div class="defender-icon">LB</div>
-                            <div class="coverage-indicator">Underneath</div>
-                        </div>
-                    </div>
-
-                    <!-- Visual route paths (drawn after assignment) -->
-                    <canvas class="route-canvas" width="800" height="400"></canvas>
-                </div>
-
-                <div class="route-library">
-                    <h3>Available Routes</h3>
-                    <div class="route-categories">
-                        <button class="category-tab active" data-category="short">Short Routes</button>
-                        <button class="category-tab" data-category="intermediate">Intermediate</button>
-                        <button class="category-tab" data-category="deep">Deep Routes</button>
-                        <button class="category-tab" data-category="special">Special</button>
-                    </div>
-
-                    <div class="route-options">
-                        <div class="route-category active" data-category="short">
-                            <div class="route-card" draggable="true" data-route="slant">
-                                <div class="route-diagram">📐</div>
-                                <div class="route-info">
-                                    <div class="route-name">Slant</div>
-                                    <div class="route-timing">3-step timing</div>
-                                </div>
-                            </div>
-                            <div class="route-card" draggable="true" data-route="hitch">
-                                <div class="route-diagram">🔄</div>
-                                <div class="route-info">
-                                    <div class="route-name">Hitch</div>
-                                    <div class="route-timing">5-step timing</div>
-                                </div>
-                            </div>
-                            <div class="route-card" draggable="true" data-route="curl">
-                                <div class="route-diagram">↩️</div>
-                                <div class="route-info">
-                                    <div class="route-name">Curl</div>
-                                    <div class="route-timing">5-step timing</div>
-                                </div>
-                            </div>
-                            <div class="route-card" draggable="true" data-route="out">
-                                <div class="route-diagram">↗️</div>
-                                <div class="route-info">
-                                    <div class="route-name">Out</div>
-                                    <div class="route-timing">5-step timing</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="route-category" data-category="intermediate" style="display: none;">
-                            <div class="route-card" draggable="true" data-route="dig">
-                                <div class="route-diagram">⬅️</div>
-                                <div class="route-info">
-                                    <div class="route-name">Dig</div>
-                                    <div class="route-timing">7-step timing</div>
-                                </div>
-                            </div>
-                            <div class="route-card" draggable="true" data-route="comeback">
-                                <div class="route-diagram">⤴️</div>
-                                <div class="route-info">
-                                    <div class="route-name">Comeback</div>
-                                    <div class="route-timing">7-step timing</div>
-                                </div>
-                            </div>
-                            <div class="route-card" draggable="true" data-route="seam">
-                                <div class="route-diagram">⬆️</div>
-                                <div class="route-info">
-                                    <div class="route-name">Seam</div>
-                                    <div class="route-timing">7-step timing</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="route-category" data-category="deep" style="display: none;">
-                            <div class="route-card" draggable="true" data-route="go">
-                                <div class="route-diagram">⬆️</div>
-                                <div class="route-info">
-                                    <div class="route-name">Go Route</div>
-                                    <div class="route-timing">Deep timing</div>
-                                </div>
-                            </div>
-                            <div class="route-card" draggable="true" data-route="post">
-                                <div class="route-diagram">⤴️</div>
-                                <div class="route-info">
-                                    <div class="route-name">Post</div>
-                                    <div class="route-timing">Deep timing</div>
-                                </div>
-                            </div>
-                            <div class="route-card" draggable="true" data-route="corner">
-                                <div class="route-diagram">⤷</div>
-                                <div class="route-info">
-                                    <div class="route-name">Corner</div>
-                                    <div class="route-timing">Deep timing</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="route-category" data-category="special" style="display: none;">
-                            <div class="route-card" draggable="true" data-route="drag">
-                                <div class="route-diagram">↔️</div>
-                                <div class="route-info">
-                                    <div class="route-name">Drag</div>
-                                    <div class="route-timing">Crossing route</div>
-                                </div>
-                            </div>
-                            <div class="route-card" draggable="true" data-route="screen">
-                                <div class="route-diagram">🛡️</div>
-                                <div class="route-info">
-                                    <div class="route-name">Screen</div>
-                                    <div class="route-timing">Quick screen</div>
-                                </div>
-                            </div>
-                            <div class="route-card" draggable="true" data-route="wheel">
-                                <div class="route-diagram">🔄</div>
-                                <div class="route-info">
-                                    <div class="route-name">Wheel</div>
-                                    <div class="route-timing">RB special</div>
-                                </div>
-                            </div>
+                        <div class="objective mt-3">
+                            <p class="text-sm text-white/80">Design a play to beat Cover 3 defense. Drag routes onto each receiver position.</p>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="play-analysis">
-                <h3>Play Analysis</h3>
-                <div class="analysis-feedback">
-                    <div class="analysis-item incomplete">
-                        <div class="analysis-icon">⚠️</div>
-                        <div class="analysis-text">Need to assign routes to all receivers</div>
+                <div class="play-workspace mt-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
+                    <div class="formation-field">
+                        <!-- Football field with formation -->
+                        <div class="field-background relative h-96 overflow-hidden rounded-xl border border-white/10 bg-gradient-to-b from-green-900/20 to-green-800/10 p-4">
+                            <div class="field-lines absolute inset-0 opacity-30">
+                                <div class="absolute left-0 top-1/4 h-px w-full bg-white/20"></div>
+                                <div class="absolute left-0 top-2/4 h-px w-full bg-white/40"></div>
+                                <div class="absolute left-0 top-3/4 h-px w-full bg-white/20"></div>
+                                <div class="absolute left-1/4 top-0 h-full w-px bg-white/20"></div>
+                                <div class="absolute left-2/4 top-0 h-full w-px bg-white/40"></div>
+                                <div class="absolute left-3/4 top-0 h-full w-px bg-white/20"></div>
+                            </div>
+                            <div class="yard-lines absolute inset-x-0 bottom-4 flex justify-around text-xs font-medium text-white/60">
+                                <div class="yard-line">30</div>
+                                <div class="yard-line">35</div>
+                                <div class="yard-line">40</div>
+                            </div>
+
+                            <!-- Offensive formation positions -->
+                            <div class="offensive-positions absolute inset-0">
+                                <div class="position qb absolute" style="left: 50%; top: 60%;" data-position="QB">
+                                    <div class="position-icon rounded-full bg-emerald-600 px-2 py-1 text-xs font-bold text-white">QB</div>
+                                    <div class="position-label mt-1 text-xs text-white/70">Quarterback</div>
+                                </div>
+                                <div class="position wr drop-zone group relative cursor-pointer rounded-lg border-2 border-dashed border-white/20 p-3 transition-all hover:border-emerald-400/50 hover:bg-emerald-500/10" style="left: 15%; top: 45%;" data-position="X">
+                                    <div class="position-icon rounded-full bg-blue-600 px-2 py-1 text-xs font-bold text-white">X</div>
+                                    <div class="position-label mt-1 text-xs text-white/70">Split End</div>
+                                    <div class="route-slot empty mt-2 rounded-md border border-white/10 bg-white/5 p-2 text-center text-xs text-white/60 opacity-0 group-hover:opacity-100">Drop route here</div>
+                                </div>
+                                <div class="position wr drop-zone group relative cursor-pointer rounded-lg border-2 border-dashed border-white/20 p-3 transition-all hover:border-emerald-400/50 hover:bg-emerald-500/10" style="left: 35%; top: 50%;" data-position="Z">
+                                    <div class="position-icon rounded-full bg-blue-600 px-2 py-1 text-xs font-bold text-white">Z</div>
+                                    <div class="position-label mt-1 text-xs text-white/70">Flanker</div>
+                                    <div class="route-slot empty mt-2 rounded-md border border-white/10 bg-white/5 p-2 text-center text-xs text-white/60 opacity-0 group-hover:opacity-100">Drop route here</div>
+                                </div>
+                                <div class="position wr drop-zone group relative cursor-pointer rounded-lg border-2 border-dashed border-white/20 p-3 transition-all hover:border-emerald-400/50 hover:bg-emerald-500/10" style="left: 85%; top: 45%;" data-position="Y">
+                                    <div class="position-icon rounded-full bg-purple-600 px-2 py-1 text-xs font-bold text-white">Y</div>
+                                    <div class="position-label mt-1 text-xs text-white/70">Tight End</div>
+                                    <div class="route-slot empty mt-2 rounded-md border border-white/10 bg-white/5 p-2 text-center text-xs text-white/60 opacity-0 group-hover:opacity-100">Drop route here</div>
+                                </div>
+                                <div class="position rb drop-zone group relative cursor-pointer rounded-lg border-2 border-dashed border-white/20 p-3 transition-all hover:border-emerald-400/50 hover:bg-emerald-500/10" style="left: 45%; top: 65%;" data-position="RB">
+                                    <div class="position-icon rounded-full bg-orange-600 px-2 py-1 text-xs font-bold text-white">RB</div>
+                                    <div class="position-label mt-1 text-xs text-white/70">Running Back</div>
+                                    <div class="route-slot empty mt-2 rounded-md border border-white/10 bg-white/5 p-2 text-center text-xs text-white/60 opacity-0 group-hover:opacity-100">Drop route here</div>
+                                </div>
+                            </div>
+
+                            <!-- Defensive formation (for reference) -->
+                            <div class="defensive-positions absolute inset-0 opacity-60">
+                                <div class="defender absolute rounded-md bg-red-600/80 px-2 py-1 text-xs font-bold text-white" style="left: 20%; top: 25%;" data-coverage="deep-third">
+                                    <div class="defender-icon">CB</div>
+                                    <div class="coverage-indicator text-xs opacity-75">Deep 1/3</div>
+                                </div>
+                                <div class="defender absolute rounded-md bg-red-600/80 px-2 py-1 text-xs font-bold text-white" style="left: 50%; top: 15%;" data-coverage="deep-middle">
+                                    <div class="defender-icon">FS</div>
+                                    <div class="coverage-indicator text-xs opacity-75">Deep Middle</div>
+                                </div>
+                                <div class="defender absolute rounded-md bg-red-600/80 px-2 py-1 text-xs font-bold text-white" style="left: 80%; top: 25%;" data-coverage="deep-third">
+                                    <div class="defender-icon">CB</div>
+                                    <div class="coverage-indicator text-xs opacity-75">Deep 1/3</div>
+                                </div>
+                                <div class="defender absolute rounded-md bg-red-600/80 px-2 py-1 text-xs font-bold text-white" style="left: 35%; top: 35%;" data-coverage="underneath">
+                                    <div class="defender-icon">LB</div>
+                                    <div class="coverage-indicator text-xs opacity-75">Underneath</div>
+                                </div>
+                                <div class="defender absolute rounded-md bg-red-600/80 px-2 py-1 text-xs font-bold text-white" style="left: 65%; top: 35%;" data-coverage="underneath">
+                                    <div class="defender-icon">LB</div>
+                                    <div class="coverage-indicator text-xs opacity-75">Underneath</div>
+                                </div>
+                            </div>
+
+                            <!-- Visual route paths (drawn after assignment) -->
+                            <canvas class="canvas-overlay route-canvas" width="800" height="400"></canvas>
+                        </div>
                     </div>
-                    <div class="analysis-item pending">
-                        <div class="analysis-icon">⏳</div>
-                        <div class="analysis-text">Coverage analysis pending...</div>
-                    </div>
-                </div>
-                <button class="analyze-play" disabled>Analyze Play Effectiveness</button>
-            </div>
-        </div>
 
-        <!-- Step-by-Step Building Mode -->
-        <div class="step-building-mode" style="display: none;">
-            <div class="step-progress">
-                <div class="step-indicator">
-                    <div class="step completed" data-step="1">1</div>
-                    <div class="step active" data-step="2">2</div>
-                    <div class="step" data-step="3">3</div>
-                    <div class="step" data-step="4">4</div>
-                    <div class="step" data-step="5">5</div>
-                </div>
-                <div class="step-description">
-                    <h3>Step 2: Choose Primary Route</h3>
-                    <p>Select the route that will be the primary option against Cover 3</p>
-                </div>
-            </div>
+                    <div class="route-library rounded-xl border border-white/10 bg-white/5 p-5">
+                        <h3 class="text-lg font-semibold text-white">Available Routes</h3>
+                        <div class="route-categories mt-3 flex flex-wrap gap-2">
+                            <button class="category-tab active rounded-md bg-emerald-600 px-3 py-1 text-sm font-semibold text-white shadow-glow" data-category="short">Short Routes</button>
+                            <button class="category-tab rounded-md border border-white/10 bg-white/10 px-3 py-1 text-sm text-white transition-all hover:bg-white/20" data-category="intermediate">Intermediate</button>
+                            <button class="category-tab rounded-md border border-white/10 bg-white/10 px-3 py-1 text-sm text-white transition-all hover:bg-white/20" data-category="deep">Deep Routes</button>
+                            <button class="category-tab rounded-md border border-white/10 bg-white/10 px-3 py-1 text-sm text-white transition-all hover:bg-white/20" data-category="special">Special</button>
+                        </div>
 
-            <div class="step-content">
-                <div class="step-question">
-                    <h4>What's the best route to attack the deep middle hole in Cover 3?</h4>
-                    <div class="coverage-hint">
-                        <div class="hint-diagram">
-                            <!-- Simple coverage diagram -->
-                            <div class="coverage-zones">
-                                <div class="zone left-third">CB</div>
-                                <div class="zone middle-third weak">Weak Spot</div>
-                                <div class="zone right-third">CB</div>
+                        <div class="route-options mt-4">
+                            <div class="route-category active" data-category="short">
+                                <div class="grid gap-3">
+                                    <div class="route-card group cursor-pointer rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" draggable="true" data-route="slant">
+                                        <div class="flex items-center gap-3">
+                                            <div class="route-diagram text-2xl">📐</div>
+                                            <div class="route-info">
+                                                <div class="route-name font-semibold text-white">Slant</div>
+                                                <div class="route-timing text-xs text-white/70">3-step timing</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="route-card group cursor-pointer rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" draggable="true" data-route="hitch">
+                                        <div class="flex items-center gap-3">
+                                            <div class="route-diagram text-2xl">🔄</div>
+                                            <div class="route-info">
+                                                <div class="route-name font-semibold text-white">Hitch</div>
+                                                <div class="route-timing text-xs text-white/70">5-step timing</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="route-card group cursor-pointer rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" draggable="true" data-route="curl">
+                                        <div class="flex items-center gap-3">
+                                            <div class="route-diagram text-2xl">↩️</div>
+                                            <div class="route-info">
+                                                <div class="route-name font-semibold text-white">Curl</div>
+                                                <div class="route-timing text-xs text-white/70">5-step timing</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="route-card group cursor-pointer rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" draggable="true" data-route="out">
+                                        <div class="flex items-center gap-3">
+                                            <div class="route-diagram text-2xl">↗️</div>
+                                            <div class="route-info">
+                                                <div class="route-name font-semibold text-white">Out</div>
+                                                <div class="route-timing text-xs text-white/70">5-step timing</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="route-category hidden" data-category="intermediate">
+                                <div class="grid gap-3">
+                                    <div class="route-card group cursor-pointer rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" draggable="true" data-route="dig">
+                                        <div class="flex items-center gap-3">
+                                            <div class="route-diagram text-2xl">⬅️</div>
+                                            <div class="route-info">
+                                                <div class="route-name font-semibold text-white">Dig</div>
+                                                <div class="route-timing text-xs text-white/70">7-step timing</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="route-card group cursor-pointer rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" draggable="true" data-route="comeback">
+                                        <div class="flex items-center gap-3">
+                                            <div class="route-diagram text-2xl">⤴️</div>
+                                            <div class="route-info">
+                                                <div class="route-name font-semibold text-white">Comeback</div>
+                                                <div class="route-timing text-xs text-white/70">7-step timing</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="route-card group cursor-pointer rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" draggable="true" data-route="seam">
+                                        <div class="flex items-center gap-3">
+                                            <div class="route-diagram text-2xl">⬆️</div>
+                                            <div class="route-info">
+                                                <div class="route-name font-semibold text-white">Seam</div>
+                                                <div class="route-timing text-xs text-white/70">7-step timing</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="route-category hidden" data-category="deep">
+                                <div class="grid gap-3">
+                                    <div class="route-card group cursor-pointer rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" draggable="true" data-route="go">
+                                        <div class="flex items-center gap-3">
+                                            <div class="route-diagram text-2xl">⬆️</div>
+                                            <div class="route-info">
+                                                <div class="route-name font-semibold text-white">Go Route</div>
+                                                <div class="route-timing text-xs text-white/70">Deep timing</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="route-card group cursor-pointer rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" draggable="true" data-route="post">
+                                        <div class="flex items-center gap-3">
+                                            <div class="route-diagram text-2xl">⤴️</div>
+                                            <div class="route-info">
+                                                <div class="route-name font-semibold text-white">Post</div>
+                                                <div class="route-timing text-xs text-white/70">Deep timing</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="route-card group cursor-pointer rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" draggable="true" data-route="corner">
+                                        <div class="flex items-center gap-3">
+                                            <div class="route-diagram text-2xl">⤷</div>
+                                            <div class="route-info">
+                                                <div class="route-name font-semibold text-white">Corner</div>
+                                                <div class="route-timing text-xs text-white/70">Deep timing</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="route-category hidden" data-category="special">
+                                <div class="grid gap-3">
+                                    <div class="route-card group cursor-pointer rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" draggable="true" data-route="drag">
+                                        <div class="flex items-center gap-3">
+                                            <div class="route-diagram text-2xl">↔️</div>
+                                            <div class="route-info">
+                                                <div class="route-name font-semibold text-white">Drag</div>
+                                                <div class="route-timing text-xs text-white/70">Crossing route</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="route-card group cursor-pointer rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" draggable="true" data-route="screen">
+                                        <div class="flex items-center gap-3">
+                                            <div class="route-diagram text-2xl">🛡️</div>
+                                            <div class="route-info">
+                                                <div class="route-name font-semibold text-white">Screen</div>
+                                                <div class="route-timing text-xs text-white/70">Quick screen</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="route-card group cursor-pointer rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow" draggable="true" data-route="wheel">
+                                        <div class="flex items-center gap-3">
+                                            <div class="route-diagram text-2xl">🔄</div>
+                                            <div class="route-info">
+                                                <div class="route-name font-semibold text-white">Wheel</div>
+                                                <div class="route-timing text-xs text-white/70">RB special</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="step-options">
-                    <button class="step-option">
-                        <div class="option-route">Seam Route</div>
-                        <div class="option-explanation">Attacks the gap between safeties</div>
-                    </button>
-                    <button class="step-option">
-                        <div class="option-route">Deep Dig</div>
-                        <div class="option-explanation">Crosses behind linebackers</div>
-                    </button>
-                    <button class="step-option">
-                        <div class="option-route">Post Route</div>
-                        <div class="option-explanation">Breaks to the middle</div>
+                <div class="play-analysis mt-6 rounded-xl border border-white/10 bg-white/5 p-5">
+                    <h3 class="text-lg font-semibold text-white">Play Analysis</h3>
+                    <div class="analysis-feedback mt-3 grid gap-3">
+                        <div class="analysis-item incomplete flex items-center gap-3 rounded-md bg-yellow-500/10 p-3">
+                            <div class="analysis-icon text-yellow-400">⚠️</div>
+                            <div class="analysis-text text-sm text-white/80">Need to assign routes to all receivers</div>
+                        </div>
+                        <div class="analysis-item pending flex items-center gap-3 rounded-md bg-white/10 p-3">
+                            <div class="analysis-icon text-white/60">⏳</div>
+                            <div class="analysis-text text-sm text-white/80">Coverage analysis pending...</div>
+                        </div>
+                    </div>
+                    <button class="analyze-play mt-4 inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50" disabled>
+                        Analyze Play Effectiveness
                     </button>
                 </div>
-
-                <div class="step-feedback" style="display: none;">
-                    <div class="feedback-content correct">
-                        <h4>Excellent Choice!</h4>
-                        <p>The seam route is perfect for attacking Cover 3. It hits the natural gap between the deep thirds coverage.</p>
-                        <div class="coaching-point">
-                            <strong>Coaching Point:</strong> Time this route to arrive at 12-15 yard depth where the hole appears.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="step-navigation">
-                    <button class="step-button previous">← Previous</button>
-                    <button class="step-button next" disabled>Next →</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Concept Completion Mode -->
-        <div class="concept-completion-mode" style="display: none;">
-            <div class="concept-header">
-                <h2>Complete the Concept</h2>
-                <div class="concept-type">
-                    <span class="concept-name">Smash Concept</span>
-                    <span class="concept-formation">Trips Formation</span>
-                </div>
-            </div>
-
-            <div class="concept-workspace">
-                <div class="partial-concept">
-                    <h3>Partial Play Design</h3>
-                    <div class="existing-routes">
-                        <div class="route-assignment">
-                            <span class="position">X Receiver:</span>
-                            <span class="assigned-route">Speed Out (8 yards)</span>
-                            <span class="route-status complete">✓</span>
-                        </div>
-                        <div class="route-assignment">
-                            <span class="position">#1 in Trips:</span>
-                            <span class="assigned-route">Fade Route</span>
-                            <span class="route-status complete">✓</span>
-                        </div>
-                        <div class="route-assignment incomplete">
-                            <span class="position">#2 in Trips:</span>
-                            <span class="assigned-route">??? Route</span>
-                            <span class="route-status incomplete">?</span>
-                        </div>
-                        <div class="route-assignment incomplete">
-                            <span class="position">#3 in Trips:</span>
-                            <span class="assigned-route">??? Route</span>
-                            <span class="route-status incomplete">?</span>
-                        </div>
-                        <div class="route-assignment incomplete">
-                            <span class="position">Running Back:</span>
-                            <span class="assigned-route">??? Assignment</span>
-                            <span class="route-status incomplete">?</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="completion-challenge">
-                    <h4>What route should #2 in trips run to complete the Smash concept?</h4>
-                    <div class="concept-explanation">
-                        <p>Smash concept combines a speed out with a corner route to create a high-low stretch on the outside defender.</p>
-                    </div>
-
-                    <div class="completion-options">
-                        <button class="completion-option">
-                            <div class="option-route">Slant Route</div>
-                            <div class="option-logic">Quick inside route</div>
-                        </button>
-                        <button class="completion-option correct">
-                            <div class="option-route">Corner Route</div>
-                            <div class="option-logic">High route in smash concept</div>
-                        </button>
-                        <button class="completion-option">
-                            <div class="option-route">Curl Route</div>
-                            <div class="option-logic">Comeback route</div>
-                        </button>
-                        <button class="completion-option">
-                            <div class="option-route">Hitch Route</div>
-                            <div class="option-logic">Quick stop route</div>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="concept-visual">
-                    <div class="concept-diagram">
-                        <!-- Visual representation of smash concept -->
-                        <div class="route-tree">
-                            <div class="route completed">Speed Out ↗️</div>
-                            <div class="route question">? Route</div>
-                            <div class="route question">? Route</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mix and Match Mode -->
-        <div class="mix-match-mode" style="display: none;">
-            <div class="mix-match-header">
-                <h2>Mix & Match Challenge</h2>
-                <p>Combine formations with route concepts to create effective plays</p>
-            </div>
-
-            <div class="combination-workspace">
-                <div class="formation-selector">
-                    <h3>Choose Formation</h3>
-                    <div class="formation-options">
-                        <button class="formation-card" data-formation="11-personnel">
-                            <div class="formation-diagram">
-                                <div class="formation-name">11 Personnel</div>
-                                <div class="formation-layout">1 RB, 1 TE, 3 WR</div>
-                            </div>
-                        </button>
-                        <button class="formation-card" data-formation="12-personnel">
-                            <div class="formation-diagram">
-                                <div class="formation-name">12 Personnel</div>
-                                <div class="formation-layout">1 RB, 2 TE, 2 WR</div>
-                            </div>
-                        </button>
-                        <button class="formation-card" data-formation="trips">
-                            <div class="formation-diagram">
-                                <div class="formation-name">Trips</div>
-                                <div class="formation-layout">3 WR to one side</div>
-                            </div>
-                        </button>
-                        <button class="formation-card" data-formation="empty">
-                            <div class="formation-diagram">
-                                <div class="formation-name">Empty</div>
-                                <div class="formation-layout">5 WR, No RB</div>
-                            </div>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="concept-selector">
-                    <h3>Choose Route Concept</h3>
-                    <div class="concept-options">
-                        <button class="concept-card" data-concept="mesh">
-                            <div class="concept-info">
-                                <div class="concept-name">Mesh Concept</div>
-                                <div class="concept-description">Crossing routes with picks</div>
-                            </div>
-                        </button>
-                        <button class="concept-card" data-concept="flood">
-                            <div class="concept-info">
-                                <div class="concept-name">Flood Concept</div>
-                                <div class="concept-description">Multiple routes to one level</div>
-                            </div>
-                        </button>
-                        <button class="concept-card" data-concept="smash">
-                            <div class="concept-info">
-                                <div class="concept-name">Smash Concept</div>
-                                <div class="concept-description">High-low combination</div>
-                            </div>
-                        </button>
-                        <button class="concept-card" data-concept="four-verts">
-                            <div class="concept-info">
-                                <div class="concept-name">Four Verticals</div>
-                                <div class="concept-description">Stress deep coverage</div>
-                            </div>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="combination-result">
-                    <h3>Your Combination</h3>
-                    <div class="selected-combo">
-                        <div class="combo-formation">
-                            <span class="combo-label">Formation:</span>
-                            <span class="combo-value">Not Selected</span>
-                        </div>
-                        <div class="combo-concept">
-                            <span class="combo-label">Concept:</span>
-                            <span class="combo-value">Not Selected</span>
-                        </div>
-                    </div>
-                    
-                    <div class="effectiveness-rating" style="display: none;">
-                        <h4>Effectiveness vs Coverage</h4>
-                        <div class="coverage-ratings">
-                            <div class="rating-item">
-                                <span class="coverage">vs Cover 2</span>
-                                <div class="rating-bar">
-                                    <div class="rating-fill excellent" style="width: 90%;"></div>
-                                </div>
-                                <span class="rating-score">90%</span>
-                            </div>
-                            <div class="rating-item">
-                                <span class="coverage">vs Cover 3</span>
-                                <div class="rating-bar">
-                                    <div class="rating-fill good" style="width: 75%;"></div>
-                                </div>
-                                <span class="rating-score">75%</span>
-                            </div>
-                            <div class="rating-item">
-                                <span class="coverage">vs Man</span>
-                                <div class="rating-bar">
-                                    <div class="rating-fill poor" style="width: 45%;"></div>
-                                </div>
-                                <span class="rating-score">45%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Building Mode Selector -->
-        <div class="building-menu" style="display: none;">
-            <h2>Choose Building Challenge</h2>
-            <div class="building-modes">
-                <button class="building-card" data-mode="route-building">
-                    <div class="mode-icon">🏗️</div>
-                    <div class="mode-title">Route Builder</div>
-                    <div class="mode-desc">Drag routes onto formation positions</div>
-                </button>
-                
-                <button class="building-card" data-mode="step-building">
-                    <div class="mode-icon">📝</div>
-                    <div class="mode-title">Step-by-Step Design</div>
-                    <div class="mode-desc">Build plays with guided steps</div>
-                </button>
-                
-                <button class="building-card" data-mode="concept-completion">
-                    <div class="mode-icon">🧩</div>
-                    <div class="mode-title">Complete the Concept</div>
-                    <div class="mode-desc">Finish partial play designs</div>
-                </button>
-                
-                <button class="building-card" data-mode="mix-match">
-                    <div class="mode-icon">🔀</div>
-                    <div class="mode-title">Mix & Match</div>
-                    <div class="mode-desc">Combine formations with concepts</div>
-                </button>
             </div>
         </div>
     </div>
+
+    <script>
+        // Particle system
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.width = Math.random() * 4 + 1 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.backgroundColor = '#10b981';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particle.style.animation = 'pulse 2s ease-in-out infinite';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Route category switching
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const category = tab.dataset.category;
+                
+                // Update active tab
+                document.querySelectorAll('.category-tab').forEach(t => {
+                    t.classList.remove('active', 'bg-emerald-600', 'shadow-glow');
+                    t.classList.add('border', 'border-white/10', 'bg-white/10');
+                });
+                tab.classList.add('active', 'bg-emerald-600', 'shadow-glow');
+                tab.classList.remove('border', 'border-white/10', 'bg-white/10');
+                
+                // Show corresponding category
+                document.querySelectorAll('.route-category').forEach(cat => {
+                    cat.classList.add('hidden');
+                    cat.classList.remove('active');
+                });
+                const targetCategory = document.querySelector(`[data-category="${category}"].route-category`);
+                if (targetCategory) {
+                    targetCategory.classList.remove('hidden');
+                    targetCategory.classList.add('active');
+                }
+            });
+        });
+
+        // Route card interactions
+        document.querySelectorAll('.route-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.add('animate-pop');
+                setTimeout(() => card.classList.remove('animate-pop'), 200);
+            });
+        });
+
+        // Button interactions
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.classList.add('animate-pop');
+                setTimeout(() => btn.classList.remove('animate-pop'), 120);
+            });
+        });
+    </script>
+    <script>
+        // Back navigation
+        (function(){
+            const back = document.querySelector('.back-button');
+            if (back) back.addEventListener('click', () => history.back());
+        })();
+
+        // Simple drag and assign routes to positions
+        (function(){
+            const cards = document.querySelectorAll('.route-card[draggable="true"]');
+            const slots = document.querySelectorAll('.route-slot');
+            const analyzeBtn = document.querySelector('.analyze-play');
+            let draggedRoute = null;
+
+            cards.forEach(card => {
+                card.addEventListener('dragstart', () => {
+                    draggedRoute = card.getAttribute('data-route') || '';
+                });
+                card.addEventListener('dragend', () => {
+                    draggedRoute = null;
+                });
+            });
+
+            slots.forEach(slot => {
+                const parent = slot.closest('.drop-zone');
+                if (!parent) return;
+                parent.addEventListener('dragover', e => { e.preventDefault(); parent.classList.add('border-emerald-400/50','bg-emerald-500/10'); });
+                parent.addEventListener('dragleave', () => { parent.classList.remove('border-emerald-400/50','bg-emerald-500/10'); });
+                parent.addEventListener('drop', e => {
+                    e.preventDefault();
+                    parent.classList.remove('border-emerald-400/50','bg-emerald-500/10');
+                    if (!draggedRoute) return;
+                    slot.textContent = draggedRoute.toUpperCase();
+                    slot.classList.remove('empty');
+                    slot.classList.add('bg-white/10');
+                    checkReady();
+                });
+            });
+
+            function checkReady(){
+                const remaining = document.querySelectorAll('.route-slot.empty').length;
+                if (analyzeBtn) analyzeBtn.disabled = remaining > 0;
+            }
+            checkReady();
+        })();
+    </script>
 </body>
 </html>

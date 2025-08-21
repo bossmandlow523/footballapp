@@ -4,163 +4,167 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FootballIQ - Gamified Challenges</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ["Inter", "ui-sans-serif", "system-ui"] },
+                    colors: { brand: { 500: "#10b981", 600: "#059669", 700: "#047857" } },
+                    boxShadow: { card: "0 1px 2px rgba(0,0,0,0.08), 0 8px 30px rgba(2,6,23,0.08)", glow: "0 0 0 1px rgba(16,185,129,0.3), 0 8px 30px rgba(16,185,129,0.15)" },
+                    keyframes: { gradient: { '0%,100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } }, pulseSoft: { '0%,100%': { opacity: .7 }, '50%': { opacity: 1 } } },
+                    animation: { gradient: 'gradient 12s ease infinite', pulseSoft: 'pulseSoft 2s ease-in-out infinite' }
+                }
+            }
+        }
+    </script>
+    <style>
+        html, body { height: 100%; }
+        body { font-family: Inter, ui-sans-serif, system-ui; }
+    </style>
 </head>
-<body>
-    <div class="gamified-container">
-        <header class="game-header">
-            <div class="header-left">
-                <button class="back-button">← Back</button>
-                <h1>Football IQ Challenges</h1>
-            </div>
-            <div class="header-right">
-                <div class="player-stats">
-                    <div class="xp-display">XP: 2,840</div>
-                    <div class="level-display">Level 12</div>
-                    <div class="streak-display">🔥 5 Day Streak</div>
+<body class="min-h-screen bg-[radial-gradient(1200px_500px_at_50%_-200px,theme(colors.brand.500/.15),transparent_60%),radial-gradient(700px_300px_at_10%_10%,theme(colors.emerald.400/.12),transparent_50%),radial-gradient(700px_300px_at_90%_10%,theme(colors.green.500/.10),transparent_50%)] text-white">
+    <div class="mx-auto max-w-6xl px-6 py-8">
+        <header class="game-header sticky top-4 z-20">
+            <div class="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur shadow-card">
+                <div class="header-left flex items-center gap-3">
+                    <button class="back-button inline-flex items-center rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm">← Back</button>
+                    <h1 class="text-base font-semibold tracking-tight">Football IQ Challenges</h1>
+                </div>
+                <div class="header-right">
+                    <div class="player-stats flex items-center gap-4 text-xs">
+                        <div class="xp-display inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1">XP: 2,840</div>
+                        <div class="level-display inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1">Level 12</div>
+                        <div class="streak-display inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1">🔥 5 Day Streak</div>
+                    </div>
                 </div>
             </div>
         </header>
 
         <!-- Rapid Fire Mode -->
-        <div class="rapid-fire-mode active">
-            <div class="rapid-fire-header">
-                <h2>⚡ Rapid Fire Challenge</h2>
-                <div class="rapid-stats">
-                    <div class="countdown-timer">30</div>
-                    <div class="rapid-score">Score: 750</div>
-                    <div class="combo-counter">Combo: x3</div>
+        <div class="rapid-fire-mode active mt-8">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur">
+                <div class="rapid-fire-header">
+                    <h2 class="text-2xl font-bold tracking-tight">⚡ Rapid Fire Challenge</h2>
+                    <div class="rapid-stats mt-2 flex items-center gap-6 text-sm">
+                        <div class="countdown-timer rounded-md bg-black/30 px-3 py-1 font-bold">30</div>
+                        <div class="rapid-score text-white/80">Score: 750</div>
+                        <div class="combo-counter inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-emerald-200">Combo: x3</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="rapid-fire-arena">
-                <div class="signal-flash-zone">
-                    <div class="flash-card">
-                        <div class="signal-display">
-                            <div class="signal-icon">👉 → 👏 → ✊</div>
+                <div class="rapid-fire-arena mt-6 grid gap-6 md:grid-cols-2">
+                    <div class="signal-flash-zone rounded-xl border border-white/10 bg-black/30 p-5">
+                        <div class="flash-card rounded-lg border border-white/10 bg-white/5 p-4">
+                            <div class="signal-display text-center text-xl">👉 → 👏 → ✊</div>
+                            <div class="flash-timer mt-4">
+                                <div class="timer-bar relative h-2 w-full overflow-hidden rounded-full bg-white/10">
+                                    <div class="timer-fill absolute inset-y-0 left-0 w-[60%] bg-gradient-to-r from-emerald-400 via-emerald-500 to-lime-400 animate-[gradient_8s_ease_infinite] bg-[length:200%_100%]"></div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flash-timer">
-                            <div class="timer-bar">
-                                <div class="timer-fill" style="width: 60%;"></div>
+
+                        <div class="rapid-answers mt-4 grid grid-cols-2 gap-3">
+                            <button class="rapid-btn hot rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-glow transition hover:translate-y-[-1px]">Hot Route</button>
+                            <button class="rapid-btn audible rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm text-white hover:bg-white/20">Audible</button>
+                            <button class="rapid-btn timeout rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm text-white hover:bg-white/20">Timeout</button>
+                            <button class="rapid-btn protection rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm text-white hover:bg-white/20">Protection</button>
+                        </div>
+
+                        <div class="rapid-feedback relative mt-4 h-10">
+                            <div class="feedback-flash correct absolute inset-0 hidden items-center justify-center rounded-md bg-emerald-500/10 text-emerald-200">✅ <span class="ml-2">+150 XP</span></div>
+                            <div class="feedback-flash incorrect absolute inset-0 hidden items-center justify-center rounded-md bg-red-500/10 text-red-200">❌ <span class="ml-2">Combo Broken!</span></div>
+                        </div>
+
+                        <div class="rapid-progress mt-4 grid gap-3 sm:grid-cols-2">
+                            <div class="signal-counter rounded-md border border-white/10 bg-white/5 p-3 text-center text-sm">Signal 8/20</div>
+                            <div class="accuracy-meter rounded-md border border-white/10 bg-white/5 p-3 text-center text-sm">
+                                <span>Accuracy: 87%</span>
+                                <div class="accuracy-bar relative mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+                                    <div class="accuracy-fill absolute inset-y-0 left-0 w-[87%] bg-gradient-to-r from-emerald-400 via-emerald-500 to-lime-400 animate-[gradient_8s_ease_infinite] bg-[length:200%_100%]"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="rapid-answers">
-                    <button class="rapid-btn hot">Hot Route</button>
-                    <button class="rapid-btn audible">Audible</button>
-                    <button class="rapid-btn timeout">Timeout</button>
-                    <button class="rapid-btn protection">Protection</button>
-                </div>
-
-                <div class="rapid-feedback">
-                    <div class="feedback-flash correct" style="display: none;">
-                        <div class="feedback-icon">✅</div>
-                        <div class="points-earned">+150 XP</div>
-                    </div>
-                    <div class="feedback-flash incorrect" style="display: none;">
-                        <div class="feedback-icon">❌</div>
-                        <div class="combo-broken">Combo Broken!</div>
-                    </div>
-                </div>
-
-                <div class="rapid-progress">
-                    <div class="signal-counter">Signal 8/20</div>
-                    <div class="accuracy-meter">
-                        <span>Accuracy: 87%</span>
-                        <div class="accuracy-bar">
-                            <div class="accuracy-fill" style="width: 87%;"></div>
+                    <div class="power-ups rounded-xl border border-white/10 bg-white/5 p-5">
+                        <h4 class="text-sm font-semibold">Power-ups Available</h4>
+                        <div class="power-up-slots mt-3 grid gap-3 sm:grid-cols-3">
+                            <button class="power-up available group rounded-md border border-white/10 bg-white/10 p-3 text-left transition hover:bg-white/20" data-power="slow-time">
+                                <div class="power-icon">⏰</div>
+                                <div class="power-name font-semibold">Slow Time</div>
+                                <div class="power-count text-xs text-white/70">2</div>
+                            </button>
+                            <button class="power-up available group rounded-md border border-white/10 bg-white/10 p-3 text-left transition hover:bg-white/20" data-power="skip">
+                                <div class="power-icon">⏭️</div>
+                                <div class="power-name font-semibold">Skip</div>
+                                <div class="power-count text-xs text-white/70">1</div>
+                            </button>
+                            <button class="power-up used group rounded-md border border-white/10 bg-white/10 p-3 text-left opacity-60" data-power="double-points">
+                                <div class="power-icon">💎</div>
+                                <div class="power-name font-semibold">2x Points</div>
+                                <div class="power-count text-xs text-white/70">0</div>
+                            </button>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="power-ups">
-                <h4>Power-ups Available</h4>
-                <div class="power-up-slots">
-                    <button class="power-up available" data-power="slow-time">
-                        <div class="power-icon">⏰</div>
-                        <div class="power-name">Slow Time</div>
-                        <div class="power-count">2</div>
-                    </button>
-                    <button class="power-up available" data-power="skip">
-                        <div class="power-icon">⏭️</div>
-                        <div class="power-name">Skip</div>
-                        <div class="power-count">1</div>
-                    </button>
-                    <button class="power-up used" data-power="double-points">
-                        <div class="power-icon">💎</div>
-                        <div class="power-name">2x Points</div>
-                        <div class="power-count">0</div>
-                    </button>
                 </div>
             </div>
         </div>
 
         <!-- Pressure Situations Mode -->
-        <div class="pressure-mode" style="display: none;">
-            <div class="pressure-header">
-                <h2>🏟️ Pressure Cooker</h2>
-                <p class="pressure-scenario">4th Quarter, 2 minutes left, down by 3. Crowd is deafening!</p>
-            </div>
+        <div class="pressure-mode mt-8 hidden">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur">
+                <div class="pressure-header">
+                    <h2 class="text-2xl font-bold tracking-tight">🏟️ Pressure Cooker</h2>
+                    <p class="pressure-scenario mt-1 text-sm text-white/80">4th Quarter, 2 minutes left, down by 3. Crowd is deafening!</p>
+                </div>
 
-            <div class="pressure-environment">
-                <!-- Audio controls for crowd noise -->
-                <div class="crowd-simulator">
-                    <div class="crowd-level">
-                        <span>Crowd Intensity</span>
-                        <div class="intensity-meter">
-                            <div class="intensity-fill" style="width: 95%;"></div>
+                <div class="pressure-environment mt-6 grid gap-6 md:grid-cols-2">
+                    <div class="crowd-simulator rounded-xl border border-white/10 bg-white/5 p-4">
+                        <div class="crowd-level">
+                            <span class="text-sm">Crowd Intensity</span>
+                            <div class="intensity-meter relative mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+                                <div class="intensity-fill absolute inset-y-0 left-0 w-[95%] bg-gradient-to-r from-emerald-400 via-emerald-500 to-lime-400 animate-[gradient_8s_ease_infinite] bg-[length:200%_100%]"></div>
+                            </div>
+                            <button class="mute-crowd mt-3 inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm hover:bg-white/20">🔇 Mute</button>
                         </div>
-                        <button class="mute-crowd">🔇 Mute</button>
+                        <audio class="crowd-noise mt-3" loop>
+                            <source src="audio/crowd-noise-high.mp3" type="audio/mpeg">
+                        </audio>
                     </div>
-                    <audio class="crowd-noise" loop>
-                        <source src="audio/crowd-noise-high.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
 
-                <div class="pressure-timer">
-                    <div class="game-clock">2:07</div>
-                    <div class="play-clock">15</div>
-                </div>
-
-                <div class="pressure-situation">
-                    <div class="situation-card">
-                        <div class="situation-info">
-                            <span class="down-distance">4th & 3</span>
-                            <span class="field-pos">Opponent 45</span>
-                            <span class="score">Trail by 3</span>
+                    <div class="pressure-situation rounded-xl border border-white/10 bg-white/5 p-4">
+                        <div class="situation-card">
+                            <div class="situation-info flex flex-wrap items-center gap-2 text-xs text-white/80">
+                                <span class="down-distance rounded-full bg-white/10 px-2.5 py-1">4th & 3</span>
+                                <span class="field-pos rounded-full bg-white/10 px-2.5 py-1">Opponent 45</span>
+                                <span class="score rounded-full bg-white/10 px-2.5 py-1">Trail by 3</span>
+                            </div>
+                            <div class="pressure-question mt-3">
+                                <h3 class="text-lg font-semibold">Coach signals timeout, then gives hot route signal. What do you do?</h3>
+                            </div>
                         </div>
-                        <div class="pressure-question">
-                            <h3>Coach signals timeout, then gives hot route signal. What do you do?</h3>
+
+                        <div class="pressure-options mt-4 grid gap-3">
+                            <button class="pressure-option high-stress rounded-md bg-emerald-600 px-3 py-2 text-left text-sm font-semibold text-white shadow-glow">Call hot route immediately in huddle <span class="ml-2 text-xs font-normal opacity-75">High Pressure ⚡</span></button>
+                            <button class="pressure-option medium-stress rounded-md border border-white/10 bg-white/10 px-3 py-2 text-left text-sm hover:bg-white/20">Wait for coach confirmation <span class="ml-2 text-xs opacity-75">Medium Pressure ⚡</span></button>
+                            <button class="pressure-option low-stress rounded-md border border-white/10 bg-white/10 px-3 py-2 text-left text-sm hover:bg-white/20">Signal teammates first <span class="ml-2 text-xs opacity-75">Low Pressure ⚡</span></button>
                         </div>
-                    </div>
-                </div>
 
-                <div class="pressure-options">
-                    <button class="pressure-option high-stress">
-                        <div class="option-text">Call hot route immediately in huddle</div>
-                        <div class="stress-indicator">High Pressure ⚡</div>
-                    </button>
-                    <button class="pressure-option medium-stress">
-                        <div class="option-text">Wait for coach confirmation</div>
-                        <div class="stress-indicator">Medium Pressure ⚡</div>
-                    </button>
-                    <button class="pressure-option low-stress">
-                        <div class="option-text">Signal teammates first</div>
-                        <div class="stress-indicator">Low Pressure ⚡</div>
-                    </button>
-                </div>
-
-                <div class="pressure-effects">
-                    <div class="effect heart-rate">
-                        <span class="effect-label">Heart Rate</span>
-                        <div class="heart-monitor">❤️ 145 BPM</div>
-                    </div>
-                    <div class="effect focus">
-                        <span class="effect-label">Focus Level</span>
-                        <div class="focus-meter">
-                            <div class="focus-fill" style="width: 78%;"></div>
+                        <div class="pressure-effects mt-4 grid grid-cols-2 gap-3">
+                            <div class="effect heart-rate rounded-md border border-white/10 bg-white/5 p-3 text-sm">
+                                <span class="effect-label text-white/70">Heart Rate</span>
+                                <div class="heart-monitor mt-1">❤️ 145 BPM</div>
+                            </div>
+                            <div class="effect focus rounded-md border border-white/10 bg-white/5 p-3 text-sm">
+                                <span class="effect-label text-white/70">Focus Level</span>
+                                <div class="focus-meter relative mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+                                    <div class="focus-fill absolute inset-y-0 left-0 w-[78%] bg-gradient-to-r from-emerald-400 via-emerald-500 to-lime-400 animate-[gradient_8s_ease_infinite] bg-[length:200%_100%]"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -168,275 +172,335 @@
         </div>
 
         <!-- Team Battle Mode -->
-        <div class="team-battle-mode" style="display: none;">
-            <div class="battle-header">
-                <h2>⚔️ Team Battle Royale</h2>
-                <div class="battle-status">
-                    <span class="players-online">8 players online</span>
-                    <span class="battle-time">Battle ends in 5:23</span>
-                </div>
-            </div>
-
-            <div class="battle-arena">
-                <div class="leaderboard">
-                    <h3>Live Leaderboard</h3>
-                    <div class="player-rankings">
-                        <div class="rank-item you">
-                            <div class="rank-pos">3rd</div>
-                            <div class="rank-player">YOU</div>
-                            <div class="rank-score">1,240</div>
-                            <div class="rank-streak">🔥 7</div>
-                        </div>
-                        <div class="rank-item">
-                            <div class="rank-pos">1st</div>
-                            <div class="rank-player">Tommy J.</div>
-                            <div class="rank-score">1,560</div>
-                            <div class="rank-streak">🔥 12</div>
-                        </div>
-                        <div class="rank-item">
-                            <div class="rank-pos">2nd</div>
-                            <div class="rank-player">Marcus M.</div>
-                            <div class="rank-score">1,380</div>
-                            <div class="rank-streak">🔥 9</div>
-                        </div>
-                        <div class="rank-item">
-                            <div class="rank-pos">4th</div>
-                            <div class="rank-player">Jake S.</div>
-                            <div class="rank-score">1,120</div>
-                            <div class="rank-streak">🔥 4</div>
-                        </div>
-                        <div class="rank-item">
-                            <div class="rank-pos">5th</div>
-                            <div class="rank-player">David W.</div>
-                            <div class="rank-score">980</div>
-                            <div class="rank-streak">🔥 2</div>
-                        </div>
+        <div class="team-battle-mode mt-8 hidden">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur">
+                <div class="battle-header">
+                    <h2 class="text-2xl font-bold tracking-tight">⚔️ Team Battle Royale</h2>
+                    <div class="battle-status mt-1 text-sm text-white/80">
+                        <span class="players-online">8 players online</span>
+                        <span class="battle-time ml-4">Battle ends in 5:23</span>
                     </div>
                 </div>
 
-                <div class="battle-challenge">
-                    <div class="current-challenge">
-                        <h4>Challenge #12</h4>
-                        <div class="challenge-type">Formation Recognition</div>
-                        <div class="challenge-question">
-                            <p>What formation is this defense showing?</p>
-                            <div class="formation-diagram">
-                                <!-- Simplified defense diagram -->
-                                <div class="def-players">
-                                    <div class="def-player" style="left: 20%; top: 20%;">CB</div>
-                                    <div class="def-player" style="left: 50%; top: 10%;">FS</div>
-                                    <div class="def-player" style="left: 80%; top: 20%;">CB</div>
-                                    <div class="def-player" style="left: 35%; top: 40%;">LB</div>
-                                    <div class="def-player" style="left: 65%; top: 40%;">LB</div>
-                                </div>
+                <div class="battle-arena mt-6 grid gap-6 md:grid-cols-[0.8fr_1.2fr_0.6fr]">
+                    <div class="leaderboard rounded-xl border border-white/10 bg-white/5 p-4">
+                        <h3 class="font-semibold">Live Leaderboard</h3>
+                        <div class="player-rankings mt-3 grid gap-2">
+                            <div class="rank-item you grid grid-cols-[1fr_2fr_1fr_1fr] items-center gap-2 rounded-md border border-emerald-400/30 bg-emerald-500/10 p-2">
+                                <div class="rank-pos font-bold">3rd</div>
+                                <div class="rank-player">YOU</div>
+                                <div class="rank-score">1,240</div>
+                                <div class="rank-streak">🔥 7</div>
+                            </div>
+                            <div class="rank-item grid grid-cols-[1fr_2fr_1fr_1fr] items-center gap-2 rounded-md bg-white/10 p-2">
+                                <div class="rank-pos">1st</div>
+                                <div class="rank-player">Tommy J.</div>
+                                <div class="rank-score">1,560</div>
+                                <div class="rank-streak">🔥 12</div>
+                            </div>
+                            <div class="rank-item grid grid-cols-[1fr_2fr_1fr_1fr] items-center gap-2 rounded-md bg-white/10 p-2">
+                                <div class="rank-pos">2nd</div>
+                                <div class="rank-player">Marcus M.</div>
+                                <div class="rank-score">1,380</div>
+                                <div class="rank-streak">🔥 9</div>
+                            </div>
+                            <div class="rank-item grid grid-cols-[1fr_2fr_1fr_1fr] items-center gap-2 rounded-md bg-white/10 p-2">
+                                <div class="rank-pos">4th</div>
+                                <div class="rank-player">Jake S.</div>
+                                <div class="rank-score">1,120</div>
+                                <div class="rank-streak">🔥 4</div>
+                            </div>
+                            <div class="rank-item grid grid-cols-[1fr_2fr_1fr_1fr] items-center gap-2 rounded-md bg-white/10 p-2">
+                                <div class="rank-pos">5th</div>
+                                <div class="rank-player">David W.</div>
+                                <div class="rank-score">980</div>
+                                <div class="rank-streak">🔥 2</div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="battle-answers">
-                        <button class="battle-option">Cover 2</button>
-                        <button class="battle-option">Cover 3</button>
-                        <button class="battle-option">Cover 4</button>
-                        <button class="battle-option">Man Coverage</button>
+                    <div class="battle-challenge rounded-xl border border-white/10 bg-white/5 p-4">
+                        <div class="current-challenge">
+                            <h4 class="font-semibold">Challenge #12</h4>
+                            <div class="challenge-type text-sm text-white/80">Formation Recognition</div>
+                            <div class="challenge-question mt-3">
+                                <p class="text-sm text-white/80">What formation is this defense showing?</p>
+                                <div class="formation-diagram mt-3 rounded-md border border-white/10 bg-black/30 p-3">
+                                    <div class="def-players relative h-40 w-full">
+                                        <div class="def-player absolute left-[20%] top-[20%] rounded bg-white/10 px-2 py-1 text-xs">CB</div>
+                                        <div class="def-player absolute left-[50%] top-[10%] rounded bg-white/10 px-2 py-1 text-xs">FS</div>
+                                        <div class="def-player absolute left-[80%] top-[20%] rounded bg-white/10 px-2 py-1 text-xs">CB</div>
+                                        <div class="def-player absolute left-[35%] top-[40%] rounded bg-white/10 px-2 py-1 text-xs">LB</div>
+                                        <div class="def-player absolute left-[65%] top-[40%] rounded bg-white/10 px-2 py-1 text-xs">LB</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="battle-answers mt-4 grid grid-cols-2 gap-3">
+                            <button class="battle-option rounded-md bg-emerald-600 px-3 py-2 text-left text-sm font-semibold text-white shadow-glow">Cover 2</button>
+                            <button class="battle-option rounded-md border border-white/10 bg-white/10 px-3 py-2 text-left text-sm hover:bg-white/20">Cover 3</button>
+                            <button class="battle-option rounded-md border border-white/10 bg-white/10 px-3 py-2 text-left text-sm hover:bg-white/20">Cover 4</button>
+                            <button class="battle-option rounded-md border border-white/10 bg-white/10 px-3 py-2 text-left text-sm hover:bg-white/20">Man Coverage</button>
+                        </div>
+
+                        <div class="battle-timer mt-4 flex items-center justify-center">
+                            <div class="timer-circle relative h-16 w-16 rounded-full border-4 border-white/10">
+                                <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-emerald-400 animate-[spin_2s_linear_infinite]"></div>
+                                <div class="timer-number absolute inset-0 flex items-center justify-center font-semibold">8</div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="battle-timer">
-                        <div class="timer-circle">
-                            <div class="timer-number">8</div>
+                    <div class="battle-events rounded-xl border border-white/10 bg-white/5 p-4">
+                        <div class="event-feed grid gap-2 text-sm">
+                            <div class="event-item rounded-md bg-white/10 p-2"><span class="event-player font-medium">Tommy J.</span> <span class="event-action">just got a 5-streak!</span> <span class="event-time text-white/60">2s ago</span></div>
+                            <div class="event-item rounded-md bg-white/10 p-2"><span class="event-player font-medium">YOU</span> <span class="event-action">moved to 3rd place!</span> <span class="event-time text-white/60">15s ago</span></div>
+                            <div class="event-item rounded-md bg-white/10 p-2"><span class="event-player font-medium">Marcus M.</span> <span class="event-action">answered correctly</span> <span class="event-time text-white/60">23s ago</span></div>
                         </div>
                     </div>
                 </div>
 
-                <div class="battle-events">
-                    <div class="event-feed">
-                        <div class="event-item">
-                            <span class="event-player">Tommy J.</span>
-                            <span class="event-action">just got a 5-streak!</span>
-                            <span class="event-time">2s ago</span>
+                <div class="battle-rewards mt-6">
+                    <h4 class="text-sm font-semibold">Battle Rewards</h4>
+                    <div class="reward-tiers mt-3 grid gap-3 sm:grid-cols-3">
+                        <div class="reward-tier rounded-md border border-white/10 bg-white/10 p-3">
+                            <div class="tier-rank text-sm font-semibold">1st Place</div>
+                            <div class="tier-reward text-sm text-white/80">500 XP + Power-up Pack</div>
                         </div>
-                        <div class="event-item">
-                            <span class="event-player">YOU</span>
-                            <span class="event-action">moved to 3rd place!</span>
-                            <span class="event-time">15s ago</span>
+                        <div class="reward-tier rounded-md border border-white/10 bg-white/10 p-3">
+                            <div class="tier-rank text-sm font-semibold">2nd-3rd</div>
+                            <div class="tier-reward text-sm text-white/80">300 XP + Badge</div>
                         </div>
-                        <div class="event-item">
-                            <span class="event-player">Marcus M.</span>
-                            <span class="event-action">answered correctly</span>
-                            <span class="event-time">23s ago</span>
+                        <div class="reward-tier rounded-md border border-white/10 bg-white/10 p-3">
+                            <div class="tier-rank text-sm font-semibold">Top 5</div>
+                            <div class="tier-reward text-sm text-white/80">150 XP</div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="battle-rewards">
-                <h4>Battle Rewards</h4>
-                <div class="reward-tiers">
-                    <div class="reward-tier">
-                        <div class="tier-rank">1st Place</div>
-                        <div class="tier-reward">500 XP + Power-up Pack</div>
-                    </div>
-                    <div class="reward-tier">
-                        <div class="tier-rank">2nd-3rd</div>
-                        <div class="tier-reward">300 XP + Badge</div>
-                    </div>
-                    <div class="reward-tier">
-                        <div class="tier-rank">Top 5</div>
-                        <div class="tier-reward">150 XP</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Streak Mode -->
-        <div class="streak-mode" style="display: none;">
-            <div class="streak-header">
-                <h2>🔥 Streak Challenge</h2>
-                <div class="streak-info">
-                    <div class="current-streak">Current Streak: 12</div>
-                    <div class="best-streak">Best: 18</div>
-                    <div class="streak-goal">Goal: 20</div>
-                </div>
-            </div>
-
-            <div class="streak-arena">
-                <div class="streak-visual">
-                    <div class="streak-flames">
-                        <div class="flame active"></div>
-                        <div class="flame active"></div>
-                        <div class="flame active"></div>
-                        <div class="flame current"></div>
-                        <div class="flame"></div>
+        <div class="streak-mode mt-8 hidden">
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur">
+                <div class="streak-header">
+                    <h2 class="text-2xl font-bold tracking-tight">🔥 Streak Challenge</h2>
+                    <div class="streak-info mt-1 flex items-center gap-4 text-sm text-white/80">
+                        <div class="current-streak">Current Streak: 12</div>
+                        <div class="best-streak">Best: 18</div>
+                        <div class="streak-goal">Goal: 20</div>
                     </div>
-                    <div class="streak-counter">12</div>
                 </div>
 
-                <div class="streak-challenge">
-                    <div class="challenge-difficulty">
-                        <span class="difficulty-label">Difficulty increases with streak!</span>
-                        <div class="difficulty-indicator">
-                            <div class="diff-level expert">Expert Level</div>
+                <div class="streak-arena mt-6 grid gap-6 md:grid-cols-[1.2fr_0.8fr]">
+                    <div class="streak-visual rounded-xl border border-white/10 bg-black/30 p-5">
+                        <div class="streak-flames mb-3 flex items-end gap-2">
+                            <div class="flame h-6 w-2 rounded bg-emerald-500/50"></div>
+                            <div class="flame h-8 w-2 rounded bg-emerald-500/60"></div>
+                            <div class="flame h-10 w-2 rounded bg-emerald-500/70"></div>
+                            <div class="flame current h-16 w-2 rounded bg-emerald-400 animate-pulse"></div>
+                            <div class="flame h-4 w-2 rounded bg-emerald-500/40"></div>
                         </div>
+                        <div class="streak-counter text-3xl font-extrabold">12</div>
                     </div>
 
-                    <div class="streak-question">
-                        <h3>Signal Sequence Challenge</h3>
-                        <p>Memorize this 4-signal sequence, then repeat it:</p>
-                        <div class="sequence-display">
-                            <div class="sequence-item">👉</div>
-                            <div class="sequence-item">👏</div>
-                            <div class="sequence-item">✊</div>
-                            <div class="sequence-item">👋</div>
+                    <div class="streak-challenge rounded-xl border border-white/10 bg-white/5 p-5">
+                        <div class="challenge-difficulty text-xs text-white/70">Difficulty increases with streak!</div>
+                        <div class="difficulty-indicator mt-2">
+                            <div class="diff-level expert inline-flex rounded-full bg-emerald-500/10 px-2.5 py-1 text-emerald-200">Expert Level</div>
                         </div>
-                        <button class="replay-sequence">🔄 Replay Sequence</button>
-                    </div>
 
-                    <div class="sequence-input">
-                        <h4>Tap the signals in order:</h4>
-                        <div class="input-signals">
-                            <button class="input-signal" data-signal="point">👉</button>
-                            <button class="input-signal" data-signal="clap">👏</button>
-                            <button class="input-signal" data-signal="fist">✊</button>
-                            <button class="input-signal" data-signal="wave">👋</button>
+                        <div class="streak-question mt-5">
+                            <h3 class="text-lg font-semibold">Signal Sequence Challenge</h3>
+                            <p class="text-sm text-white/80">Memorize this 4-signal sequence, then repeat it:</p>
+                            <div class="sequence-display mt-3 flex items-center gap-3 text-2xl">
+                                <div class="sequence-item">👉</div>
+                                <div class="sequence-item">👏</div>
+                                <div class="sequence-item">✊</div>
+                                <div class="sequence-item">👋</div>
+                            </div>
+                            <button class="replay-sequence mt-3 inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm hover:bg-white/20">🔄 Replay Sequence</button>
                         </div>
-                        <div class="user-sequence">
-                            <div class="sequence-slots">
-                                <div class="slot empty">?</div>
-                                <div class="slot empty">?</div>
-                                <div class="slot empty">?</div>
-                                <div class="slot empty">?</div>
+
+                        <div class="sequence-input mt-6">
+                            <h4 class="text-sm font-semibold">Tap the signals in order:</h4>
+                            <div class="input-signals mt-2 grid grid-cols-4 gap-2">
+                                <button class="input-signal rounded-md bg-emerald-600 px-3 py-2 text-lg shadow-glow" data-signal="point">👉</button>
+                                <button class="input-signal rounded-md border border-white/10 bg-white/10 px-3 py-2 text-lg hover:bg-white/20" data-signal="clap">👏</button>
+                                <button class="input-signal rounded-md border border-white/10 bg-white/10 px-3 py-2 text-lg hover:bg-white/20" data-signal="fist">✊</button>
+                                <button class="input-signal rounded-md border border-white/10 bg-white/10 px-3 py-2 text-lg hover:bg-white/20" data-signal="wave">👋</button>
+                            </div>
+                            <div class="user-sequence mt-3">
+                                <div class="sequence-slots grid grid-cols-5 gap-2">
+                                    <div class="slot empty rounded-md border border-white/10 bg-white/5 p-2 text-center">?</div>
+                                    <div class="slot empty rounded-md border border-white/10 bg-white/5 p-2 text-center">?</div>
+                                    <div class="slot empty rounded-md border border-white/10 bg-white/5 p-2 text-center">?</div>
+                                    <div class="slot empty rounded-md border border-white/10 bg-white/5 p-2 text-center">?</div>
+                                    <div class="slot empty rounded-md border border-white/10 bg-white/5 p-2 text-center">?</div>
+                                </div>
+                            </div>
+                            <div class="mt-3 flex items-center gap-2">
+                                <button class="clear-sequence inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm hover:bg-white/20">Clear</button>
+                                <button class="submit-sequence inline-flex items-center gap-2 rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-glow disabled:opacity-50" disabled>Submit</button>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="streak-bonuses">
-                    <h4>Streak Bonuses Active</h4>
-                    <div class="bonus-item active">
-                        <span class="bonus-name">2x XP</span>
-                        <span class="bonus-req">10+ streak</span>
-                    </div>
-                    <div class="bonus-item locked">
-                        <span class="bonus-name">3x XP</span>
-                        <span class="bonus-req">15+ streak</span>
-                    </div>
-                    <div class="bonus-item locked">
-                        <span class="bonus-name">Legendary Badge</span>
-                        <span class="bonus-req">20+ streak</span>
+                    <div class="streak-bonuses rounded-xl border border-white/10 bg-white/5 p-5">
+                        <h4 class="text-sm font-semibold">Streak Bonuses Active</h4>
+                        <div class="bonus-item mt-3 inline-flex w-full items-center justify-between rounded-md bg-emerald-500/10 px-3 py-2">
+                            <span class="bonus-name">2x XP</span>
+                            <span class="bonus-req text-xs text-emerald-200">10+ streak</span>
+                        </div>
+                        <div class="bonus-item mt-2 inline-flex w-full items-center justify-between rounded-md bg-white/10 px-3 py-2 opacity-70">
+                            <span class="bonus-name">3x XP</span>
+                            <span class="bonus-req text-xs text-white/70">15+ streak</span>
+                        </div>
+                        <div class="bonus-item mt-2 inline-flex w-full items-center justify-between rounded-md bg-white/10 px-3 py-2 opacity-70">
+                            <span class="bonus-name">Legendary Badge</span>
+                            <span class="bonus-req text-xs text-white/70">20+ streak</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Challenge Selection Menu -->
-        <div class="challenge-selection" style="display: none;">
-            <h2>Choose Your Challenge</h2>
-            <div class="challenge-modes">
-                <button class="mode-card" data-mode="rapid-fire">
+        <div class="challenge-selection mt-8 hidden">
+            <h2 class="text-center text-2xl font-bold tracking-tight">Choose Your Challenge</h2>
+            <div class="challenge-modes mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
+                <button class="mode-card group rounded-xl border border-white/10 bg-white/5 p-4 text-left transition hover:translate-y-[-2px] hover:bg-white/10" data-mode="rapid-fire">
                     <div class="mode-icon">⚡</div>
-                    <div class="mode-info">
-                        <h3>Rapid Fire</h3>
-                        <p>30 seconds, maximum signals</p>
-                        <div class="mode-stats">
+                    <div class="mode-info mt-2">
+                        <h3 class="font-semibold">Rapid Fire</h3>
+                        <p class="text-sm text-white/80">30 seconds, maximum signals</p>
+                        <div class="mode-stats mt-2 text-xs text-white/70">
                             <span>Best: 23 signals</span>
-                            <span>Avg: 18 signals</span>
+                            <span class="ml-3">Avg: 18 signals</span>
                         </div>
                     </div>
-                    <div class="mode-difficulty">Medium</div>
+                    <div class="mode-difficulty mt-2 inline-flex rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs text-emerald-200">Medium</div>
                 </button>
 
-                <button class="mode-card" data-mode="pressure">
+                <button class="mode-card group rounded-xl border border-white/10 bg-white/5 p-4 text-left transition hover:translate-y-[-2px] hover:bg-white/10" data-mode="pressure">
                     <div class="mode-icon">🏟️</div>
-                    <div class="mode-info">
-                        <h3>Pressure Cooker</h3>
-                        <p>High-stress game situations</p>
-                        <div class="mode-stats">
+                    <div class="mode-info mt-2">
+                        <h3 class="font-semibold">Pressure Cooker</h3>
+                        <p class="text-sm text-white/80">High-stress game situations</p>
+                        <div class="mode-stats mt-2 text-xs text-white/70">
                             <span>Best: 87% accuracy</span>
-                            <span>Completed: 24 scenarios</span>
+                            <span class="ml-3">Completed: 24 scenarios</span>
                         </div>
                     </div>
-                    <div class="mode-difficulty">Hard</div>
+                    <div class="mode-difficulty mt-2 inline-flex rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs text-emerald-200">Hard</div>
                 </button>
 
-                <button class="mode-card" data-mode="team-battle">
+                <button class="mode-card group rounded-xl border border-white/10 bg-white/5 p-4 text-left transition hover:translate-y-[-2px] hover:bg-white/10" data-mode="team-battle">
                     <div class="mode-icon">⚔️</div>
-                    <div class="mode-info">
-                        <h3>Team Battle</h3>
-                        <p>Real-time vs teammates</p>
-                        <div class="mode-stats">
+                    <div class="mode-info mt-2">
+                        <h3 class="font-semibold">Team Battle</h3>
+                        <p class="text-sm text-white/80">Real-time vs teammates</p>
+                        <div class="mode-stats mt-2 text-xs text-white/70">
                             <span>Rank: #3 this week</span>
-                            <span>Battles won: 12</span>
+                            <span class="ml-3">Battles won: 12</span>
                         </div>
                     </div>
-                    <div class="mode-difficulty">Competitive</div>
+                    <div class="mode-difficulty mt-2 inline-flex rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs text-emerald-200">Competitive</div>
                 </button>
 
-                <button class="mode-card" data-mode="streak">
+                <button class="mode-card group rounded-xl border border-white/10 bg-white/5 p-4 text-left transition hover:translate-y-[-2px] hover:bg-white/10" data-mode="streak">
                     <div class="mode-icon">🔥</div>
-                    <div class="mode-info">
-                        <h3>Streak Mode</h3>
-                        <p>Keep going until you miss</p>
-                        <div class="mode-stats">
+                    <div class="mode-info mt-2">
+                        <h3 class="font-semibold">Streak Mode</h3>
+                        <p class="text-sm text-white/80">Keep going until you miss</p>
+                        <div class="mode-stats mt-2 text-xs text-white/70">
                             <span>Best streak: 18</span>
-                            <span>Total streaks: 47</span>
+                            <span class="ml-3">Total streaks: 47</span>
                         </div>
                     </div>
-                    <div class="mode-difficulty">Expert</div>
+                    <div class="mode-difficulty mt-2 inline-flex rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs text-emerald-200">Expert</div>
                 </button>
             </div>
         </div>
 
         <!-- Achievement Notification -->
-        <div class="achievement-popup" style="display: none;">
-            <div class="achievement-content">
-                <div class="achievement-badge">🏆</div>
+        <div class="achievement-popup fixed bottom-6 right-6 hidden">
+            <div class="achievement-content inline-flex items-center gap-3 rounded-xl border border-white/10 bg-white/10 p-4 backdrop-blur">
+                <div class="achievement-badge text-2xl">🏆</div>
                 <div class="achievement-info">
-                    <h3>Achievement Unlocked!</h3>
-                    <div class="achievement-name">Speed Demon</div>
-                    <div class="achievement-desc">Complete 20 signals in 30 seconds</div>
+                    <h3 class="text-sm font-semibold">Achievement Unlocked!</h3>
+                    <div class="achievement-name text-sm">Speed Demon</div>
+                    <div class="achievement-desc text-xs text-white/80">Complete 20 signals in 30 seconds</div>
                 </div>
-                <div class="achievement-reward">+250 XP</div>
+                <div class="achievement-reward ml-4 rounded-md bg-emerald-600 px-2.5 py-1 text-sm font-semibold">+250 XP</div>
             </div>
         </div>
     </div>
+    <script>
+        // Back navigation
+        (function(){
+            const back = document.querySelector('.back-button');
+            if (back) back.addEventListener('click', () => history.back());
+        })();
+
+        // Mode switching
+        (function(){
+            const modeCards = document.querySelectorAll('.mode-card');
+            const sections = {
+                'rapid-fire': document.querySelector('.rapid-fire-mode'),
+                'pressure': document.querySelector('.pressure-mode'),
+                'team-battle': document.querySelector('.team-battle-mode'),
+                'streak': document.querySelector('.streak-mode')
+            };
+            function show(mode){
+                Object.values(sections).forEach(el => el && el.classList.add('hidden'));
+                const target = sections[mode];
+                if (target){
+                    target.classList.remove('hidden');
+                }
+            }
+            modeCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const mode = card.getAttribute('data-mode');
+                    if (mode) show(mode);
+                });
+            });
+        })();
+
+        // Rapid-fire feedback (lightweight)
+        (function(){
+            const zone = document.querySelector('.rapid-fire-mode');
+            if (!zone) return;
+            const correctBtn = zone.querySelector('.rapid-btn.hot');
+            const answers = zone.querySelectorAll('.rapid-btn');
+            const flashCorrect = zone.querySelector('.feedback-flash.correct');
+            const flashIncorrect = zone.querySelector('.feedback-flash.incorrect');
+            function flash(result){
+                if (result === 'correct' && flashCorrect){
+                    flashIncorrect && flashIncorrect.classList.add('hidden');
+                    flashCorrect.classList.remove('hidden');
+                    setTimeout(()=>flashCorrect.classList.add('hidden'), 700);
+                } else if (flashIncorrect){
+                    flashCorrect && flashCorrect.classList.add('hidden');
+                    flashIncorrect.classList.remove('hidden');
+                    setTimeout(()=>flashIncorrect.classList.add('hidden'), 700);
+                }
+            }
+            answers.forEach(btn => {
+                btn.addEventListener('click', () => flash(btn === correctBtn ? 'correct' : 'incorrect'));
+            });
+        })();
+
+        // Simple achievement popup after some time playing
+        (function(){
+            const popup = document.querySelector('.achievement-popup');
+            if (!popup) return;
+            setTimeout(()=>{
+                popup.classList.remove('hidden');
+                setTimeout(()=>popup.classList.add('hidden'), 3000);
+            }, 4000);
+        })();
+    </script>
 </body>
 </html>

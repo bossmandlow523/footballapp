@@ -4,305 +4,306 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FootballIQ - Coach Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ["Inter", "ui-sans-serif", "system-ui"] },
+                    colors: {
+                        brand: { 50: "#ecfdf5", 100: "#d1fae5", 200: "#a7f3d0", 300: "#6ee7b7", 400: "#34d399", 500: "#10b981", 600: "#059669", 700: "#047857", 800: "#065f46", 900: "#064e3b" }
+                    },
+                    boxShadow: { card: "0 1px 2px rgba(0,0,0,0.08), 0 4px 24px rgba(0,0,0,0.06)" }
+                }
+            }
+        }
+    </script>
+    <style>
+        html, body { height: 100%; }
+        body { font-family: Inter, ui-sans-serif, system-ui; }
+    </style>
 </head>
-<body>
-    <div class="dashboard-container">
-        <header class="dashboard-header">
-            <div class="header-left">
-                <h1>Valley High Eagles</h1>
-                <span class="season-info">2024 Season • Week 8</span>
-            </div>
-            <div class="header-right">
-                <div class="coach-info">
-                    <span class="coach-name">Coach Rodriguez</span>
-                    <div class="coach-avatar">CR</div>
+<body class="bg-white text-slate-900">
+    <div class="mx-auto max-w-7xl px-6 py-8">
+        <!-- Header -->
+        <header class="sticky top-4 z-10">
+            <div class="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-card">
+                <div>
+                    <div class="text-lg font-semibold tracking-tight">Valley High Eagles</div>
+                    <div class="text-xs text-slate-600">2024 Season • Week 8</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="text-sm text-slate-700">Coach Rodriguez</div>
+                    <div class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-xs font-semibold text-white">CR</div>
                 </div>
             </div>
         </header>
 
-        <div class="dashboard-content">
-            <!-- Team Overview Stats -->
-            <section class="team-overview">
-                <h2>Team Overview</h2>
-                <div class="stats-grid">
-                    <div class="stat-card primary">
-                        <div class="stat-icon">📊</div>
-                        <div class="stat-content">
-                            <div class="stat-number">87%</div>
-                            <div class="stat-label">Team Football IQ</div>
-                            <div class="stat-change positive">+12% this month</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">🎯</div>
-                        <div class="stat-content">
-                            <div class="stat-number">94%</div>
-                            <div class="stat-label">Signal Accuracy</div>
-                            <div class="stat-change positive">+8% this week</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">📱</div>
-                        <div class="stat-content">
-                            <div class="stat-number">23/28</div>
-                            <div class="stat-label">Active Players</div>
-                            <div class="stat-change neutral">82% engagement</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">⏱️</div>
-                        <div class="stat-content">
-                            <div class="stat-number">18 min</div>
-                            <div class="stat-label">Avg Study Time</div>
-                            <div class="stat-change positive">+3 min today</div>
-                        </div>
+        <!-- Team Overview -->
+        <section class="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-card">
+            <h2 class="text-lg font-semibold">Team Overview</h2>
+            <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <div class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-4">
+                    <div class="text-2xl">📊</div>
+                    <div>
+                        <div class="text-2xl font-extrabold">87%</div>
+                        <div class="text-sm text-slate-600">Team Football IQ</div>
+                        <div class="text-xs text-emerald-700">+12% this month</div>
                     </div>
                 </div>
-            </section>
-
-            <!-- Quick Actions -->
-            <section class="quick-actions">
-                <h2>Quick Actions</h2>
-                <div class="actions-grid">
-                    <button class="action-card primary">
-                        <div class="action-icon">📹</div>
-                        <div class="action-content">
-                            <div class="action-title">Upload New Play</div>
-                            <div class="action-subtitle">Add play diagrams and video</div>
-                        </div>
-                    </button>
-                    <button class="action-card">
-                        <div class="action-icon">🤝</div>
-                        <div class="action-content">
-                            <div class="action-title">Create Signal</div>
-                            <div class="action-subtitle">Record and tag new signals</div>
-                        </div>
-                    </button>
-                    <button class="action-card">
-                        <div class="action-icon">❓</div>
-                        <div class="action-content">
-                            <div class="action-title">Generate Quiz</div>
-                            <div class="action-subtitle">AI-powered practice questions</div>
-                        </div>
-                    </button>
-                    <button class="action-card">
-                        <div class="action-icon">👥</div>
-                        <div class="action-content">
-                            <div class="action-title">Invite Players</div>
-                            <div class="action-subtitle">Add new team members</div>
-                        </div>
-                    </button>
+                <div class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-4">
+                    <div class="text-2xl">🎯</div>
+                    <div>
+                        <div class="text-2xl font-extrabold">94%</div>
+                        <div class="text-sm text-slate-600">Signal Accuracy</div>
+                        <div class="text-xs text-emerald-700">+8% this week</div>
+                    </div>
                 </div>
-            </section>
-
-            <div class="dashboard-main">
-                <!-- Recent Activity Feed -->
-                <section class="activity-feed">
-                    <h2>Recent Activity</h2>
-                    <div class="activity-list">
-                        <div class="activity-item">
-                            <div class="activity-avatar">MM</div>
-                            <div class="activity-content">
-                                <div class="activity-text">
-                                    <strong>Marcus Miller</strong> completed "Red Zone Signals" quiz
-                                </div>
-                                <div class="activity-meta">
-                                    <span class="activity-score">Score: 89%</span>
-                                    <span class="activity-time">5 minutes ago</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-avatar">TJ</div>
-                            <div class="activity-content">
-                                <div class="activity-text">
-                                    <strong>Tommy Johnson</strong> practiced signal recognition
-                                </div>
-                                <div class="activity-meta">
-                                    <span class="activity-score">98% accuracy</span>
-                                    <span class="activity-time">12 minutes ago</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-avatar">JS</div>
-                            <div class="activity-content">
-                                <div class="activity-text">
-                                    <strong>Jake Smith</strong> needs help with Cover 3 adjustments
-                                </div>
-                                <div class="activity-meta">
-                                    <span class="activity-score">Need Review</span>
-                                    <span class="activity-time">20 minutes ago</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-avatar">AI</div>
-                            <div class="activity-content">
-                                <div class="activity-text">
-                                    <strong>FootballIQ AI</strong> generated 5 new quiz questions from "RPO Concepts"
-                                </div>
-                                <div class="activity-meta">
-                                    <span class="activity-score">Auto-generated</span>
-                                    <span class="activity-time">1 hour ago</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-avatar">DW</div>
-                            <div class="activity-content">
-                                <div class="activity-text">
-                                    <strong>David Wilson</strong> achieved 95% on "Shotgun Formation" module
-                                </div>
-                                <div class="activity-meta">
-                                    <span class="activity-score">Excellent!</span>
-                                    <span class="activity-time">2 hours ago</span>
-                                </div>
-                            </div>
-                        </div>
+                <div class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-4">
+                    <div class="text-2xl">📱</div>
+                    <div>
+                        <div class="text-2xl font-extrabold">23/28</div>
+                        <div class="text-sm text-slate-600">Active Players</div>
+                        <div class="text-xs text-slate-700">82% engagement</div>
                     </div>
-                    <button class="view-all-button">View All Activity</button>
-                </section>
-
-                <!-- Player Progress Cards -->
-                <section class="player-progress">
-                    <div class="section-header">
-                        <h2>Player Progress</h2>
-                        <div class="progress-filters">
-                            <button class="filter-button active">All Players</button>
-                            <button class="filter-button">Needs Attention</button>
-                            <button class="filter-button">Top Performers</button>
-                        </div>
+                </div>
+                <div class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-4">
+                    <div class="text-2xl">⏱️</div>
+                    <div>
+                        <div class="text-2xl font-extrabold">18 min</div>
+                        <div class="text-sm text-slate-600">Avg Study Time</div>
+                        <div class="text-xs text-emerald-700">+3 min today</div>
                     </div>
-                    <div class="players-grid">
-                        <div class="player-card">
-                            <div class="player-header">
-                                <div class="player-avatar">TJ</div>
-                                <div class="player-info">
-                                    <div class="player-name">Tommy Johnson</div>
-                                    <div class="player-position">QB • Senior</div>
-                                </div>
-                                <div class="player-score excellent">94%</div>
-                            </div>
-                            <div class="player-stats">
-                                <div class="stat-row">
-                                    <span class="stat-label">Signal Recognition</span>
-                                    <div class="stat-bar">
-                                        <div class="stat-fill" style="width: 96%"></div>
-                                    </div>
-                                    <span class="stat-value">96%</span>
-                                </div>
-                                <div class="stat-row">
-                                    <span class="stat-label">Game Situations</span>
-                                    <div class="stat-bar">
-                                        <div class="stat-fill" style="width: 92%"></div>
-                                    </div>
-                                    <span class="stat-value">92%</span>
-                                </div>
-                            </div>
-                            <div class="player-status">
-                                <span class="status-badge ready">Game Ready</span>
-                                <span class="last-active">Active 30 min ago</span>
-                            </div>
-                        </div>
-
-                        <div class="player-card">
-                            <div class="player-header">
-                                <div class="player-avatar">MM</div>
-                                <div class="player-info">
-                                    <div class="player-name">Marcus Miller</div>
-                                    <div class="player-position">WR • Junior</div>
-                                </div>
-                                <div class="player-score good">78%</div>
-                            </div>
-                            <div class="player-stats">
-                                <div class="stat-row">
-                                    <span class="stat-label">Signal Recognition</span>
-                                    <div class="stat-bar">
-                                        <div class="stat-fill" style="width: 85%"></div>
-                                    </div>
-                                    <span class="stat-value">85%</span>
-                                </div>
-                                <div class="stat-row">
-                                    <span class="stat-label">Route Concepts</span>
-                                    <div class="stat-bar">
-                                        <div class="stat-fill" style="width: 71%"></div>
-                                    </div>
-                                    <span class="stat-value">71%</span>
-                                </div>
-                            </div>
-                            <div class="player-status">
-                                <span class="status-badge improving">Improving</span>
-                                <span class="last-active">Active 5 min ago</span>
-                            </div>
-                        </div>
-
-                        <div class="player-card">
-                            <div class="player-header">
-                                <div class="player-avatar">JS</div>
-                                <div class="player-info">
-                                    <div class="player-name">Jake Smith</div>
-                                    <div class="player-position">RB • Sophomore</div>
-                                </div>
-                                <div class="player-score needs-work">67%</div>
-                            </div>
-                            <div class="player-stats">
-                                <div class="stat-row">
-                                    <span class="stat-label">Signal Recognition</span>
-                                    <div class="stat-bar">
-                                        <div class="stat-fill" style="width: 75%"></div>
-                                    </div>
-                                    <span class="stat-value">75%</span>
-                                </div>
-                                <div class="stat-row">
-                                    <span class="stat-label">Pass Protection</span>
-                                    <div class="stat-bar">
-                                        <div class="stat-fill" style="width: 59%"></div>
-                                    </div>
-                                    <span class="stat-value">59%</span>
-                                </div>
-                            </div>
-                            <div class="player-status">
-                                <span class="status-badge attention">Needs Attention</span>
-                                <span class="last-active">Active 2 hours ago</span>
-                            </div>
-                        </div>
-
-                        <div class="player-card">
-                            <div class="player-header">
-                                <div class="player-avatar">DW</div>
-                                <div class="player-info">
-                                    <div class="player-name">David Wilson</div>
-                                    <div class="player-position">LB • Senior</div>
-                                </div>
-                                <div class="player-score excellent">91%</div>
-                            </div>
-                            <div class="player-stats">
-                                <div class="stat-row">
-                                    <span class="stat-label">Defensive Signals</span>
-                                    <div class="stat-bar">
-                                        <div class="stat-fill" style="width: 94%"></div>
-                                    </div>
-                                    <span class="stat-value">94%</span>
-                                </div>
-                                <div class="stat-row">
-                                    <span class="stat-label">Coverage Recognition</span>
-                                    <div class="stat-bar">
-                                        <div class="stat-fill" style="width: 88%"></div>
-                                    </div>
-                                    <span class="stat-value">88%</span>
-                                </div>
-                            </div>
-                            <div class="player-status">
-                                <span class="status-badge ready">Game Ready</span>
-                                <span class="last-active">Active 1 hour ago</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="view-all-button">View All Players (28)</button>
-                </section>
+                </div>
             </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-card">
+            <h2 class="text-lg font-semibold">Quick Actions</h2>
+            <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <button class="group flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-4 text-left hover:bg-slate-50">
+                    <div class="text-2xl">📹</div>
+                    <div>
+                        <div class="font-semibold">Upload New Play</div>
+                        <div class="text-sm text-slate-600">Add play diagrams and video</div>
+                    </div>
+                </button>
+                <button class="group flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-4 text-left hover:bg-slate-50">
+                    <div class="text-2xl">🤝</div>
+                    <div>
+                        <div class="font-semibold">Create Signal</div>
+                        <div class="text-sm text-slate-600">Record and tag new signals</div>
+                    </div>
+                </button>
+                <button class="group flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-4 text-left hover:bg-slate-50">
+                    <div class="text-2xl">❓</div>
+                    <div>
+                        <div class="font-semibold">Generate Quiz</div>
+                        <div class="text-sm text-slate-600">AI-powered practice questions</div>
+                    </div>
+                </button>
+                <button class="group flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-4 text-left hover:bg-slate-50">
+                    <div class="text-2xl">👥</div>
+                    <div>
+                        <div class="font-semibold">Invite Players</div>
+                        <div class="text-sm text-slate-600">Add new team members</div>
+                    </div>
+                </button>
+            </div>
+        </section>
+
+        <div class="mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+            <!-- Recent Activity -->
+            <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-card">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-semibold">Recent Activity</h2>
+                    <button class="view-all-activity rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs hover:bg-slate-50">View All</button>
+                </div>
+                <div class="activity-list mt-4 space-y-3">
+                    <div class="flex items-start gap-3 rounded-md border border-slate-200 bg-white p-3">
+                        <div class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold">MM</div>
+                        <div class="flex-1 text-sm">
+                            <div><span class="font-medium">Marcus Miller</span> completed "Red Zone Signals" quiz</div>
+                            <div class="text-xs text-slate-600">Score: 89% • 5 minutes ago</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 rounded-md border border-slate-200 bg-white p-3">
+                        <div class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold">TJ</div>
+                        <div class="flex-1 text-sm">
+                            <div><span class="font-medium">Tommy Johnson</span> practiced signal recognition</div>
+                            <div class="text-xs text-slate-600">98% accuracy • 12 minutes ago</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 rounded-md border border-slate-200 bg-white p-3">
+                        <div class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold">JS</div>
+                        <div class="flex-1 text-sm">
+                            <div><span class="font-medium">Jake Smith</span> needs help with Cover 3 adjustments</div>
+                            <div class="text-xs text-slate-600">Need Review • 20 minutes ago</div>
+                        </div>
+                    </div>
+                    <div class="more-activity hidden">
+                        <div class="mt-3 flex items-start gap-3 rounded-md border border-slate-200 bg-white p-3">
+                            <div class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold">AI</div>
+                            <div class="flex-1 text-sm">
+                                <div><span class="font-medium">FootballIQ AI</span> generated 5 new quiz questions from "RPO Concepts"</div>
+                                <div class="text-xs text-slate-600">Auto-generated • 1 hour ago</div>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex items-start gap-3 rounded-md border border-slate-200 bg-white p-3">
+                            <div class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold">DW</div>
+                            <div class="flex-1 text-sm">
+                                <div><span class="font-medium">David Wilson</span> achieved 95% on "Shotgun Formation" module</div>
+                                <div class="text-xs text-slate-600">Excellent! • 2 hours ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Player Progress -->
+            <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-card">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-semibold">Player Progress</h2>
+                    <div class="flex items-center gap-2 text-xs">
+                        <button class="player-filter rounded-md border border-slate-200 bg-white px-2.5 py-1 hover:bg-slate-50" data-filter="all">All Players</button>
+                        <button class="player-filter rounded-md border border-slate-200 bg-white px-2.5 py-1 hover:bg-slate-50" data-filter="attention">Needs Attention</button>
+                        <button class="player-filter rounded-md border border-slate-200 bg-white px-2.5 py-1 hover:bg-slate-50" data-filter="top">Top Performers</button>
+                    </div>
+                </div>
+
+                <div class="mt-4 grid gap-4 sm:grid-cols-2">
+                    <div class="player-card rounded-lg border border-slate-200 bg-white p-4" data-group="top">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold">TJ</div>
+                                <div>
+                                    <div class="font-medium">Tommy Johnson</div>
+                                    <div class="text-xs text-slate-600">QB • Senior</div>
+                                </div>
+                            </div>
+                            <div class="text-sm font-semibold text-emerald-700">94%</div>
+                        </div>
+                        <div class="mt-3 space-y-2 text-sm">
+                            <div class="flex items-center gap-2"><span class="w-36 text-slate-600">Signal Recognition</span><div class="h-2 w-full overflow-hidden rounded bg-slate-100"><div class="h-2 w-[96%] bg-brand-600"></div></div><span class="w-10 text-right">96%</span></div>
+                            <div class="flex items-center gap-2"><span class="w-36 text-slate-600">Game Situations</span><div class="h-2 w-full overflow-hidden rounded bg-slate-100"><div class="h-2 w-[92%] bg-brand-600"></div></div><span class="w-10 text-right">92%</span></div>
+                        </div>
+                        <div class="mt-2 flex items-center justify-between text-xs text-slate-600">
+                            <span class="rounded-full bg-brand-50 px-2 py-0.5 text-brand-700">Game Ready</span>
+                            <span>Active 30 min ago</span>
+                        </div>
+                    </div>
+
+                    <div class="player-card rounded-lg border border-slate-200 bg-white p-4" data-group="top">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold">DW</div>
+                                <div>
+                                    <div class="font-medium">David Wilson</div>
+                                    <div class="text-xs text-slate-600">LB • Senior</div>
+                                </div>
+                            </div>
+                            <div class="text-sm font-semibold text-emerald-700">91%</div>
+                        </div>
+                        <div class="mt-3 space-y-2 text-sm">
+                            <div class="flex items-center gap-2"><span class="w-36 text-slate-600">Defensive Signals</span><div class="h-2 w-full overflow-hidden rounded bg-slate-100"><div class="h-2 w-[94%] bg-brand-600"></div></div><span class="w-10 text-right">94%</span></div>
+                            <div class="flex items-center gap-2"><span class="w-36 text-slate-600">Coverage Recognition</span><div class="h-2 w-full overflow-hidden rounded bg-slate-100"><div class="h-2 w-[88%] bg-brand-600"></div></div><span class="w-10 text-right">88%</span></div>
+                        </div>
+                        <div class="mt-2 flex items-center justify-between text-xs text-slate-600">
+                            <span class="rounded-full bg-brand-50 px-2 py-0.5 text-brand-700">Game Ready</span>
+                            <span>Active 1 hour ago</span>
+                        </div>
+                    </div>
+
+                    <div class="player-card rounded-lg border border-slate-200 bg-white p-4" data-group="attention">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold">JS</div>
+                                <div>
+                                    <div class="font-medium">Jake Smith</div>
+                                    <div class="text-xs text-slate-600">RB • Sophomore</div>
+                                </div>
+                            </div>
+                            <div class="text-sm font-semibold text-amber-700">67%</div>
+                        </div>
+                        <div class="mt-3 space-y-2 text-sm">
+                            <div class="flex items-center gap-2"><span class="w-36 text-slate-600">Signal Recognition</span><div class="h-2 w-full overflow-hidden rounded bg-slate-100"><div class="h-2 w-[75%] bg-brand-600"></div></div><span class="w-10 text-right">75%</span></div>
+                            <div class="flex items-center gap-2"><span class="w-36 text-slate-600">Pass Protection</span><div class="h-2 w-full overflow-hidden rounded bg-slate-100"><div class="h-2 w-[59%] bg-brand-600"></div></div><span class="w-10 text-right">59%</span></div>
+                        </div>
+                        <div class="mt-2 flex items-center justify-between text-xs text-slate-600">
+                            <span class="rounded-full bg-amber-50 px-2 py-0.5 text-amber-700">Needs Attention</span>
+                            <span>Active 2 hours ago</span>
+                        </div>
+                    </div>
+
+                    <div class="player-card rounded-lg border border-slate-200 bg-white p-4" data-group="improving">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold">MM</div>
+                                <div>
+                                    <div class="font-medium">Marcus Miller</div>
+                                    <div class="text-xs text-slate-600">WR • Junior</div>
+                                </div>
+                            </div>
+                            <div class="text-sm font-semibold text-emerald-700">78%</div>
+                        </div>
+                        <div class="mt-3 space-y-2 text-sm">
+                            <div class="flex items-center gap-2"><span class="w-36 text-slate-600">Signal Recognition</span><div class="h-2 w-full overflow-hidden rounded bg-slate-100"><div class="h-2 w-[85%] bg-brand-600"></div></div><span class="w-10 text-right">85%</span></div>
+                            <div class="flex items-center gap-2"><span class="w-36 text-slate-600">Route Concepts</span><div class="h-2 w-full overflow-hidden rounded bg-slate-100"><div class="h-2 w-[71%] bg-brand-600"></div></div><span class="w-10 text-right">71%</span></div>
+                        </div>
+                        <div class="mt-2 flex items-center justify-between text-xs text-slate-600">
+                            <span class="rounded-full bg-emerald-50 px-2 py-0.5 text-emerald-700">Improving</span>
+                            <span>Active 5 min ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 flex items-center justify-between">
+                    <button class="view-all-players rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs hover:bg-slate-50">View All Players (28)</button>
+                    <div class="text-xs text-slate-500">Filter persists locally</div>
+                </div>
+            </section>
         </div>
     </div>
+
+    <script>
+        // Activity expand
+        document.querySelector('.view-all-activity')?.addEventListener('click', () => {
+            const more = document.querySelector('.more-activity');
+            if (!more) return; more.classList.toggle('hidden');
+        });
+
+        // Player filters with persistence
+        const filterBtns = document.querySelectorAll('.player-filter');
+        const cards = document.querySelectorAll('.player-card');
+        function applyFilter(kind){
+            cards.forEach(c => {
+                const grp = c.getAttribute('data-group') || 'all';
+                const show = kind === 'all' || (kind === 'attention' && grp === 'attention') || (kind === 'top' && grp === 'top') || (kind === 'improving' && grp === 'improving');
+                c.classList.toggle('hidden', !show);
+            });
+            filterBtns.forEach(b => b.classList.remove('ring-2','ring-brand-500'));
+            const active = Array.from(filterBtns).find(b => b.getAttribute('data-filter') === kind);
+            active?.classList.add('ring-2','ring-brand-500');
+            try { localStorage.setItem('fiq_coach_filter', kind); } catch {}
+        }
+        filterBtns.forEach(b => b.addEventListener('click', () => applyFilter(b.getAttribute('data-filter'))));
+        // default
+        const saved = (()=>{ try { return localStorage.getItem('fiq_coach_filter'); } catch { return null; } })();
+        applyFilter(saved || 'all');
+
+        // View all players toast
+        document.querySelector('.view-all-players')?.addEventListener('click', () => toast('Showing all players (UI only)'));
+
+        function toast(msg){
+            const el = document.createElement('div');
+            el.className = 'fixed bottom-6 right-6 z-50 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm shadow-card';
+            el.textContent = msg; document.body.appendChild(el);
+            setTimeout(()=> el.remove(), 1600);
+        }
+    </script>
 </body>
 </html>

@@ -4,73 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FootballIQ - Quiz Interface</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ["Inter", "ui-sans-serif", "system-ui"] },
+                    colors: {
+                        brand: { 500: "#10b981", 600: "#059669", 700: "#047857" },
+                        accent: { 500: "#22c55e", 600: "#16a34a" }
+                    },
+                    boxShadow: {
+                        card: "0 1px 2px rgba(0,0,0,0.08), 0 8px 30px rgba(2,6,23,0.08)",
+                        glow: "0 0 0 1px rgba(16,185,129,0.3), 0 8px 30px rgba(16,185,129,0.15)"
+                    },
+                    keyframes: {
+                        gradient: { '0%,100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } },
+                        shimmer: { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(100%)' } },
+                        pop: { '0%': { transform: 'scale(0.95)' }, '100%': { transform: 'scale(1)' } },
+                        ripple: { '0%': { transform: 'scale(0)', opacity: '0.4' }, '100%': { transform: 'scale(1)', opacity: '0' } },
+                        pulse: { '0%,100%': { opacity: '1' }, '50%': { opacity: '0.5' } }
+                    },
+                    animation: {
+                        gradient: 'gradient 12s ease infinite',
+                        shimmer: 'shimmer 1.5s linear infinite',
+                        pop: 'pop 120ms ease-out',
+                        ripple: 'ripple 500ms ease-out',
+                        pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html, body { height: 100%; }
+        body { font-family: Inter, ui-sans-serif, system-ui; }
+        .particle { position: absolute; border-radius: 9999px; opacity: .25; filter: blur(0.5px); }
+        .option-card input[type="radio"] { display: none; }
+        .option-card input[type="radio"]:checked + .option-label { background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.5); }
+        .option-card input[type="radio"]:checked + .option-label .option-letter { background: #10b981; color: white; }
+    </style>
 </head>
-<body>
-    <div class="quiz-container">
-        <header class="quiz-header">
-            <div class="progress-section">
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 40%"></div>
+<body class="min-h-screen bg-[radial-gradient(1250px_600px_at_50%_-200px,theme(colors.brand.500/.15),transparent_60%),radial-gradient(650px_300px_at_10%_10%,theme(colors.emerald.400/.12),transparent_50%),radial-gradient(650px_300px_at_90%_10%,theme(colors.green.500/.10),transparent_50%)] relative overflow-x-hidden text-white">
+    <div class="pointer-events-none absolute inset-0 -z-10" id="particles"></div>
+    
+    <div class="quiz-container mx-auto max-w-4xl px-6 py-8">
+        <header class="quiz-header sticky top-4 z-20">
+            <div class="rounded-xl border border-white/10 bg-white/5 p-4 shadow-card backdrop-blur">
+                <div class="flex items-center justify-between">
+                    <div class="progress-section flex items-center gap-4">
+                        <div class="progress-bar relative h-3 w-64 overflow-hidden rounded-full bg-white/10">
+                            <div class="progress-fill absolute inset-y-0 left-0 w-[40%] bg-gradient-to-r from-emerald-400 via-emerald-500 to-lime-400 animate-[gradient_8s_ease_infinite] bg-[length:200%_100%]"></div>
+                        </div>
+                        <span class="progress-text text-sm font-medium text-white/80">Question 4 of 10</span>
+                    </div>
+                    <div class="timer-section text-right">
+                        <div class="timer text-2xl font-bold text-emerald-400">02:45</div>
+                        <span class="timer-label text-xs text-white/70">Time Remaining</span>
+                    </div>
                 </div>
-                <span class="progress-text">Question 4 of 10</span>
-            </div>
-            <div class="timer-section">
-                <div class="timer">02:45</div>
-                <span class="timer-label">Time Remaining</span>
             </div>
         </header>
 
-        <main class="quiz-content">
-            <div class="question-section">
-                <div class="question-header">
-                    <span class="question-type">Signal Recognition</span>
-                    <span class="difficulty">Medium</span>
+        <main class="quiz-content mt-8">
+            <div class="question-section rounded-2xl border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur">
+                <div class="question-header flex items-center justify-between">
+                    <span class="question-type rounded-full bg-emerald-500/10 px-3 py-1 text-sm font-medium text-emerald-200">Signal Recognition</span>
+                    <span class="difficulty rounded-full bg-white/10 px-3 py-1 text-sm font-medium text-white/80">Medium</span>
                 </div>
-                <h2 class="question-text">
+                <h2 class="question-text mt-4 text-2xl font-bold leading-relaxed text-white">
                     3rd and 7, trips right formation, safety rotating down - what's the correct hot route signal for this situation?
                 </h2>
-                <div class="scenario-info">
-                    <div class="field-position">Red Zone • 1st Quarter</div>
-                    <div class="formation">11 Personnel • Shotgun</div>
+                <div class="scenario-info mt-4 flex flex-wrap items-center gap-4">
+                    <div class="field-position rounded-md bg-white/10 px-3 py-2 text-sm text-white/80">Red Zone • 1st Quarter</div>
+                    <div class="formation rounded-md bg-white/10 px-3 py-2 text-sm text-white/80">11 Personnel • Shotgun</div>
                 </div>
             </div>
 
-            <div class="options-section">
-                <div class="option-card">
+            <div class="options-section mt-6 grid gap-4">
+                <div class="option-card group cursor-pointer">
                     <input type="radio" id="option-a" name="answer" value="a">
-                    <label for="option-a" class="option-label">
-                        <span class="option-letter">A</span>
-                        <span class="option-text">Point to receiver, tap helmet twice</span>
+                    <label for="option-a" class="option-label flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow">
+                        <span class="option-letter flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 font-bold text-white">A</span>
+                        <span class="option-text text-white">Point to receiver, tap helmet twice</span>
                     </label>
                 </div>
-                <div class="option-card">
+                <div class="option-card group cursor-pointer">
                     <input type="radio" id="option-b" name="answer" value="b">
-                    <label for="option-b" class="option-label">
-                        <span class="option-letter">B</span>
-                        <span class="option-text">Fist pump, then point downfield</span>
+                    <label for="option-b" class="option-label flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow">
+                        <span class="option-letter flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 font-bold text-white">B</span>
+                        <span class="option-text text-white">Fist pump, then point downfield</span>
                     </label>
                 </div>
-                <div class="option-card">
+                <div class="option-card group cursor-pointer">
                     <input type="radio" id="option-c" name="answer" value="c">
-                    <label for="option-c" class="option-label">
-                        <span class="option-letter">C</span>
-                        <span class="option-text">Tap chest, sweep arm left to right</span>
+                    <label for="option-c" class="option-label flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow">
+                        <span class="option-letter flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 font-bold text-white">C</span>
+                        <span class="option-text text-white">Tap chest, sweep arm left to right</span>
                     </label>
                 </div>
-                <div class="option-card">
+                <div class="option-card group cursor-pointer">
                     <input type="radio" id="option-d" name="answer" value="d">
-                    <label for="option-d" class="option-label">
-                        <span class="option-letter">D</span>
-                        <span class="option-text">Two quick claps, point to slot receiver</span>
+                    <label for="option-d" class="option-label flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4 transition-all hover:translate-y-[-2px] hover:bg-white/10 hover:shadow-glow">
+                        <span class="option-letter flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 font-bold text-white">D</span>
+                        <span class="option-text text-white">Two quick claps, point to slot receiver</span>
                     </label>
                 </div>
             </div>
 
-            <div class="confidence-section">
-                <label for="confidence">How confident are you in this answer?</label>
-                <div class="confidence-slider">
-                    <input type="range" id="confidence" min="1" max="5" value="3">
-                    <div class="confidence-labels">
+            <div class="confidence-section mt-6 rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                <label for="confidence" class="block text-lg font-semibold text-white">How confident are you in this answer?</label>
+                <div class="confidence-slider mt-4">
+                    <input type="range" id="confidence" min="1" max="5" value="3" class="w-full cursor-pointer appearance-none rounded bg-white/20 accent-emerald-500">
+                    <div class="confidence-labels mt-2 flex justify-between text-sm text-white/70">
                         <span>Not Sure</span>
                         <span>Very Confident</span>
                     </div>
@@ -78,84 +127,168 @@
             </div>
         </main>
 
-        <footer class="quiz-navigation">
-            <button class="nav-button previous" disabled>Previous</button>
-            <button class="nav-button skip">Skip Question</button>
-            <button class="nav-button next">Next Question</button>
+        <footer class="quiz-navigation mt-8">
+            <div class="flex items-center justify-between">
+                <button class="nav-button previous inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-white/20 disabled:opacity-50" disabled>
+                    ← Previous
+                </button>
+                <button class="nav-button skip inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/10 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-white/20">
+                    Skip Question
+                </button>
+                <button class="nav-button next inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                    Next Question →
+                </button>
+            </div>
         </footer>
     </div>
 
     <!-- Results Screen (Hidden by default) -->
-    <div class="results-screen" style="display: none;">
-        <header class="results-header">
-            <h1>Quiz Complete!</h1>
-            <div class="overall-score">
-                <div class="score-circle">
-                    <span class="score-number">85%</span>
-                    <span class="score-label">Overall Score</span>
+    <div class="results-screen mx-auto max-w-4xl px-6 py-8 hidden">
+        <header class="results-header text-center">
+            <h1 class="text-4xl font-bold text-white">Quiz Complete!</h1>
+            <div class="overall-score mt-8">
+                <div class="score-circle mx-auto flex h-32 w-32 flex-col items-center justify-center rounded-full border-4 border-emerald-400/50 bg-emerald-500/10">
+                    <span class="score-number text-3xl font-bold text-emerald-400">85%</span>
+                    <span class="score-label text-sm text-white/70">Overall Score</span>
                 </div>
             </div>
         </header>
 
-        <main class="results-content">
-            <div class="performance-stats">
-                <div class="stat-card">
-                    <div class="stat-number">8/10</div>
-                    <div class="stat-label">Correct Answers</div>
+        <main class="results-content mt-8">
+            <div class="performance-stats grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <div class="stat-card rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur">
+                    <div class="stat-number text-2xl font-bold text-emerald-400">8/10</div>
+                    <div class="stat-label text-sm text-white/70">Correct Answers</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">4:32</div>
-                    <div class="stat-label">Time Taken</div>
+                <div class="stat-card rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur">
+                    <div class="stat-number text-2xl font-bold text-emerald-400">4:32</div>
+                    <div class="stat-label text-sm text-white/70">Time Taken</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">92%</div>
-                    <div class="stat-label">Signal Recognition</div>
+                <div class="stat-card rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur">
+                    <div class="stat-number text-2xl font-bold text-emerald-400">92%</div>
+                    <div class="stat-label text-sm text-white/70">Signal Recognition</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">78%</div>
-                    <div class="stat-label">Game Situations</div>
-                </div>
-            </div>
-
-            <div class="improvement-areas">
-                <h3>Areas for Improvement</h3>
-                <div class="improvement-item">
-                    <div class="improvement-topic">Cover 3 Adjustments</div>
-                    <div class="improvement-score">2/4 correct</div>
-                    <button class="study-button">Study Now</button>
-                </div>
-                <div class="improvement-item">
-                    <div class="improvement-topic">Red Zone Signals</div>
-                    <div class="improvement-score">1/2 correct</div>
-                    <button class="study-button">Study Now</button>
+                <div class="stat-card rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur">
+                    <div class="stat-number text-2xl font-bold text-yellow-400">78%</div>
+                    <div class="stat-label text-sm text-white/70">Game Situations</div>
                 </div>
             </div>
 
-            <div class="question-review">
-                <h3>Question Review</h3>
-                <div class="review-item correct">
-                    <div class="review-number">Q1</div>
-                    <div class="review-text">Signal recognition in shotgun formation</div>
-                    <div class="review-status">Correct</div>
+            <div class="improvement-areas mt-8 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                <h3 class="text-xl font-bold text-white">Areas for Improvement</h3>
+                <div class="mt-4 grid gap-4">
+                    <div class="improvement-item flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-4">
+                        <div>
+                            <div class="improvement-topic font-semibold text-white">Cover 3 Adjustments</div>
+                            <div class="improvement-score text-sm text-white/70">2/4 correct</div>
+                        </div>
+                        <button class="study-button rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                            Study Now
+                        </button>
+                    </div>
+                    <div class="improvement-item flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-4">
+                        <div>
+                            <div class="improvement-topic font-semibold text-white">Red Zone Signals</div>
+                            <div class="improvement-score text-sm text-white/70">1/2 correct</div>
+                        </div>
+                        <button class="study-button rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                            Study Now
+                        </button>
+                    </div>
                 </div>
-                <div class="review-item incorrect">
-                    <div class="review-number">Q2</div>
-                    <div class="review-text">Hot route vs Cover 3 defense</div>
-                    <div class="review-status">Incorrect</div>
-                </div>
-                <div class="review-item correct">
-                    <div class="review-number">Q3</div>
-                    <div class="review-text">Red zone play calling</div>
-                    <div class="review-status">Correct</div>
+            </div>
+
+            <div class="question-review mt-8 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                <h3 class="text-xl font-bold text-white">Question Review</h3>
+                <div class="mt-4 grid gap-3">
+                    <div class="review-item correct flex items-center justify-between rounded-lg border border-emerald-400/30 bg-emerald-500/10 p-4">
+                        <div class="flex items-center gap-3">
+                            <div class="review-number flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white">Q1</div>
+                            <div class="review-text text-white">Signal recognition in shotgun formation</div>
+                        </div>
+                        <div class="review-status text-sm font-medium text-emerald-400">Correct</div>
+                    </div>
+                    <div class="review-item incorrect flex items-center justify-between rounded-lg border border-red-400/30 bg-red-500/10 p-4">
+                        <div class="flex items-center gap-3">
+                            <div class="review-number flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-sm font-bold text-white">Q2</div>
+                            <div class="review-text text-white">Hot route vs Cover 3 defense</div>
+                        </div>
+                        <div class="review-status text-sm font-medium text-red-400">Incorrect</div>
+                    </div>
+                    <div class="review-item correct flex items-center justify-between rounded-lg border border-emerald-400/30 bg-emerald-500/10 p-4">
+                        <div class="flex items-center gap-3">
+                            <div class="review-number flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white">Q3</div>
+                            <div class="review-text text-white">Red zone play calling</div>
+                        </div>
+                        <div class="review-status text-sm font-medium text-emerald-400">Correct</div>
+                    </div>
                 </div>
             </div>
         </main>
 
-        <footer class="results-actions">
-            <button class="action-button secondary">Review Answers</button>
-            <button class="action-button primary">Take Another Quiz</button>
-            <button class="action-button secondary">Back to Dashboard</button>
+        <footer class="results-actions mt-8">
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <button class="action-button secondary rounded-md border border-white/10 bg-white/10 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-white/20">
+                    Review Answers
+                </button>
+                <button class="action-button primary rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                    Take Another Quiz
+                </button>
+                <button class="action-button secondary rounded-md border border-white/10 bg-white/10 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-white/20">
+                    Back to Dashboard
+                </button>
+            </div>
         </footer>
     </div>
+
+    <script>
+        // Particle system
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.width = Math.random() * 4 + 1 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.backgroundColor = '#10b981';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particle.style.animation = 'pulse 2s ease-in-out infinite';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Option selection with animations
+        document.querySelectorAll('.option-card').forEach(card => {
+            card.addEventListener('click', () => {
+                // Remove selection from other cards
+                document.querySelectorAll('.option-card').forEach(c => c.classList.remove('animate-pop'));
+                
+                // Add pop animation to selected card
+                card.classList.add('animate-pop');
+                setTimeout(() => card.classList.remove('animate-pop'), 120);
+            });
+        });
+
+        // Button interactions
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.classList.add('animate-pop');
+                setTimeout(() => btn.classList.remove('animate-pop'), 120);
+            });
+        });
+
+        // Show results screen (for demo)
+        setTimeout(() => {
+            document.querySelector('.quiz-container').style.display = 'none';
+            document.querySelector('.results-screen').classList.remove('hidden');
+        }, 10000);
+    </script>
+    <script>
+        (function(){
+            const back = document.querySelector('.back-button');
+            if (back) back.addEventListener('click', () => history.back());
+        })();
+    </script>
 </body>
 </html>
